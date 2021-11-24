@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>eip-common</artifactId>
+        <groupId>com.eip.cloud</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>eip-common-lock</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
+        <!-- TODO
+            redisson-spring-boot-starter
+            https://gitee.com/ztp/redisson-spring-boot-starter
+            https://github.com/z744489075/redisson-spring-boot-starter
+            1. 为一款开源的集成redission starter插件
+            2. 底层封装逻辑类似，更细更具体
+            3. 但都有待生产验证
+            4. 因逻辑重复，所以不能在这里直接依赖
+        -->
+        <!--<dependency>-->
+            <!--<groupId>org.redisson</groupId>-->
+            <!--<artifactId>redisson-spring-boot-starter</artifactId>-->
+        <!--</dependency>-->
+
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>3.5.4</version>
+        </dependency>
+
+        <!-- spring对数据库的支持 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+        </dependency>
+
+    </dependencies>
+
+</project>

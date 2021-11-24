@@ -1,0 +1,31 @@
+server:
+  port: 8888
+eip:
+  api:
+    doc:
+      swagger:
+        enabled: true
+        group-name: business
+        title: "昂立课堂(业务版)"
+        version: 1.0.0
+        contact:
+          name: 朱增亮
+          emial: zhangsan@163.com
+          url: http://localhost:8888/doc.html#/home
+        description: "昂立课堂第二版，在SDK版上升级了业务模块，业务模块包括：用户、老师、学生、课程、课节、上课统计流水等。"
+        host: http://localhost:1111
+  lock:
+    redisson:
+      server:
+        type: STANDALONE
+        address: 192.168.100.54:6379
+        database: 2
+        password: 123456
+knife4j:
+  enable: true
+  production: false #生产环境屏蔽所有swagger资源
+  basic:
+    enable: true   #开启账号密码验证
+    username: admin
+    password: admin
+
