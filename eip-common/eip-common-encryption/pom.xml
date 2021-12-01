@@ -12,4 +12,10 @@
     <artifactId>eip-common-encryption</artifactId>
 
 
+    <dependencies>
+        <dependency>
+            <groupId>com.eip.cloud</groupId>
+            <artifactId>eip-common-core</artifactId>
+        </dependency>
+    </dependencies>
 </project>

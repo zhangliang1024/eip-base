@@ -28,7 +28,7 @@ public class ApplicationStartEventListener implements GenericApplicationListener
 
     @Override
     public void onApplicationEvent(ApplicationEvent event) {
-//        System.out.println("监听器执行了！！！！");
+        System.out.println("监听器执行了！！！！");
         //获得当前系统环境配置对象
         ConfigurableEnvironment envi = ((ApplicationEnvironmentPreparedEvent) event).getEnvironment();
         //获得配置源对象
@@ -45,7 +45,7 @@ public class ApplicationStartEventListener implements GenericApplicationListener
         if (ps != null) {
             String logName = (String) ps.getProperty(LOG_NAME_KEY);
             String logPath = (String) ps.getProperty(APPLICATION_NAME);
-            if (StringUtils.isEmpty(logName)){
+            if (StringUtils.isEmpty(logName)) {
                 logName = (String) ps.getProperty(APPLICATION_NAME);
             }
 //            System.out.println(logName + "  " + logPath);

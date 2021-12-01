@@ -16,6 +16,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -29,14 +35,20 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-
-
-        <dependency>
             <groupId>com.eip.cloud</groupId>
             <artifactId>eip-common-apidoc</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
+
+
+        <!--<dependency>-->
+        <!--<groupId>com.squareup.okhttp3</groupId>-->
+        <!--<artifactId>okhttp</artifactId>-->
+        <!--</dependency>-->
+
     </dependencies>
 </project>
