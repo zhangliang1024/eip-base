@@ -12,4 +12,23 @@
     <artifactId>eip-common-alert</artifactId>
 
 
+    <dependencies>
+        <dependency>
+            <groupId>com.eip.cloud</groupId>
+            <artifactId>eip-common-core</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>alibaba-dingtalk-service-sdk</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+        </dependency>
+    </dependencies>
 </project>
