@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.zhliang.pzy.dynamic.datasource.config.DataSourceConfig,\
+  com.zhliang.pzy.dynamic.datasource.config.MyBatisConfig,\
+  com.zhliang.pzy.dynamic.datasource.aop.DataSourceAop
+

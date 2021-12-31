@@ -57,13 +57,13 @@ public class NacosConfigUpdateListener {
                     }
 
                     dynamicThreadPoolManager.refreshThreadPoolExecutor();
-                    log.info("[dynamic pool] - nacos config change , refresh finished");
+                    log.info("[dynamic pool] - nacos filter change , refresh finished");
                 }
             });
         } catch (NacosException e) {
-            log.error("[dynamic pool] - nacos config refresh error , {}",e);
+            log.error("[dynamic pool] - nacos filter refresh error , {}",e);
         }
-        log.info("[dynamic pool] - nacos config listener init");
+        log.info("[dynamic pool] - nacos filter listener init");
     }
 
     private void waitConfigRefreshOver() {

@@ -1,0 +1,1 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.zhliang.pzy.distributed.limit.config.RedisLimitAutoConfiguration

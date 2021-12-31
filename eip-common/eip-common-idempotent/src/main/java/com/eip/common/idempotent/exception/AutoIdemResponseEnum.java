@@ -13,24 +13,24 @@ import com.eip.common.core.core.assertion.BusinessExceptionAssert;
 public enum AutoIdemResponseEnum implements BusinessExceptionAssert {
 
 
-    OPERATE_EXCEPTION(500500,"服务端异常"),
-    REQUEST_REPEAT(500501,"重复请求"),
-    REQUEST_TOKEN_IS_NULL(500502,"请求TOKEN为空"),
-    REQUEST_TOKEN_ERROR(500503,"请求TOKEN错误"),
+    OPERATE_EXCEPTION("500500","服务端异常"),
+    REQUEST_REPEAT("500501","重复请求"),
+    REQUEST_TOKEN_IS_NULL("500502","请求TOKEN为空"),
+    REQUEST_TOKEN_ERROR("500503","请求TOKEN错误"),
 
     ;
 
 
-    private int code;
+    private String code;
     private String message;
 
-    AutoIdemResponseEnum(int code, String message){
+    AutoIdemResponseEnum(String code, String message){
         this.code = code;
         this.message = message;
     }
 
     @Override
-    public int getCode() {
+    public String getCode() {
         return code;
     }
 

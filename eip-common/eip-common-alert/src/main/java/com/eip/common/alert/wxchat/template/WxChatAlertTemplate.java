@@ -12,9 +12,29 @@ public class WxChatAlertTemplate {
 
 
     /**
+     * 服务上下线email通知文本
+     */
+    public static final String EMAIL_SERVER_NOTIFY_TXT =
+                "<html><head></head><body>" +
+                    "<font color='info'><b>【 通知 】</b> </font>服务上下线变更动态通知 <br>" +
+                    " <br> " +
+                    "<font color='#708090'>服务环境：<b>【 %s 】</b></font> <br> " +
+                    "<font color='#708090'>服务名称：%s</font> <br> " +
+                    "<font color='#708090'>服务实例：%s</font> <br> " +
+                    "<font color='#FF0000'>服务状态：%s</font> <br> " +
+                    "<font color='#708090'>服务地址：<a href=%s>%s</a></font> <br> " +
+                    " <br>  " +
+                    "<font color='#708090'>提醒：<b>%s</b></font> <br>" +
+                    "<font color='#708090'>提示：服务上下线变更实时通知（无限制）</font> <br>" +
+                    " <br>  " +
+                    "<b>播报时间：%s</b> <br>" +
+                "</body></html>";
+
+
+    /**
      * 服务上下线通知文本
      */
-    public static final String WX_CHART_SERVER_ALARM_TXT =
+    public static final String WX_CHART_SERVER_NOTIFY_TXT =
             "<font color='info'>【**通知**】 </font>服务上下线变更动态通知 \n\n" +
                     " \n\n " +
                     "<font color='comment' size=14>服务环境：【**%s**】</font> \n\n " +
@@ -24,7 +44,7 @@ public class WxChatAlertTemplate {
                     "<font color='comment' size=14>服务地址：%s</font> \n\n " +
                     " \n\n  " +
                     "<font color='comment' size=14>提醒：**@%s**</font> \n\n" +
-                    "<font color='comment' size=14>  提示：服务变更实时通知（无限制）</font> \n\n" +
+                    "<font color='comment' size=14>  提示：服务上下线变更实时通知（无限制）</font> \n\n" +
                     " \n\n  " +
                     "**播报时间：%s**";
 

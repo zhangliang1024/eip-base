@@ -1,0 +1,21 @@
+
+management:
+  metrics:
+    export:
+      prometheus:
+        enabled: true # 启用prometheus端点，默认就是true
+    tags:
+      application: ${spring.application.name} # 增加每个指标的全局的tag及给每个指标一个application的tag,值是spring.application.name的值
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    prometheus:
+      enabled: true
+    metrics:
+      enabled: true
+server:
+  port: 9002

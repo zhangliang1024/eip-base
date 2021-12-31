@@ -31,6 +31,7 @@ public class AutoIdempotentAspectHandler {
     public void pointcut(){
     }
 
+    //TODO 没有考虑事务及异常问题
     @Around("pointcut()")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable{
         Method method = getMethod(joinPoint);

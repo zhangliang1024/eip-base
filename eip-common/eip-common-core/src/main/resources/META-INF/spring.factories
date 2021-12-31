@@ -1,6 +1,6 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.eip.base.common.core.exception.handler.GlobalExceptionHandler,\
-com.eip.base.common.core.exception.i18n.I18nMessageSource,\
-com.eip.base.common.core.config.JacksonConfig,\
-com.eip.base.common.core.config.SwaggerMvcConfigurer
+com.eip.common.core.exception.handler.GlobalExceptionHandler,\
+com.eip.common.core.exception.i18n.I18nMessageSource,\
+com.eip.common.core.config.JacksonConfig,\
+com.eip.common.core.config.SwaggerMvcConfigurer
 

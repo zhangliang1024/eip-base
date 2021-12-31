@@ -1,0 +1,24 @@
+                                                                                                                         dddddddd
+JJJJJJJJJJJJJJJJJJJJJJJ                              CCCCCCCCCCCCClllllll                                                d::::::d
+J:::::::::::::::::::::J                           CCC::::::::::::Cl:::::l                                                d::::::d
+JJJJJJJJJJJJJJJJJJJJJJJ                         CC:::::::::::::::Cl:::::l                                                d::::::d
+        J:::::J                                C:::::CCCCCCCC::::Cl:::::l                                                d:::::d
+        J:::::J      yyyyyyy           yyyyyyyC:::::C       CCCCCC l::::l    ooooooooooo   uuuuuu    uuuuuu      ddddddddd:::::d
+        J:::::J       y:::::y         y:::::yC:::::C               l::::l  oo:::::::::::oo u::::u    u::::u    dd::::::::::::::d
+        J:::::J        y:::::y       y:::::y C:::::C               l::::l o:::::::::::::::ou::::u    u::::u   d::::::::::::::::d
+        J:::::J         y:::::y     y:::::y  C:::::C               l::::l o:::::ooooo:::::ou::::u    u::::u  d:::::::ddddd:::::d
+        J:::::J          y:::::y   y:::::y   C:::::C               l::::l o::::o     o::::ou::::u    u::::u  d::::::d    d:::::d
+        J:::::J           y:::::y y:::::y    C:::::C               l::::l o::::o     o::::ou::::u    u::::u  d:::::d     d:::::d
+        J:::::J            y:::::y:::::y     C:::::C               l::::l o::::o     o::::ou::::u    u::::u  d:::::d     d:::::d
+        J:::::J             y:::::::::y       C:::::C       CCCCCC l::::l o::::o     o::::ou:::::uuuu:::::u  d:::::d     d:::::d
+        J:::::J              y:::::::y         C:::::CCCCCCCC::::Cl::::::lo:::::ooooo:::::ou:::::::::::::::uud::::::ddddd::::::dd
+JJJJJJJJJ:::::J              y:::::y           CC:::::::::::::::Cl::::::lo:::::::::::::::o u:::::::::::::::u d:::::::::::::::::d
+J:::::::::::::J              y:::::y              CCC::::::::::::Cl::::::l oo:::::::::::oo   uu::::::::uu:::u  d:::::::::ddd::::d
+JJJJJJJJJJJJJJJ             y:::::y                  CCCCCCCCCCCCCllllllll   ooooooooooo       uuuuuuuu  uuuu   ddddddddd   ddddd
+                           y:::::y
+                          y:::::y
+                         y:::::y
+                        y:::::y
+                       yyyyyyy
+
+${application.title} ${application.version}

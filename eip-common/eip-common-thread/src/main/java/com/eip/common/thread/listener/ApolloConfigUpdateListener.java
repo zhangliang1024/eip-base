@@ -67,9 +67,9 @@ public class ApolloConfigUpdateListener {
             }
 
             dynamicThreadPoolManager.refreshThreadPoolExecutor();
-            log.info("[dynamic pool] - apollo config refresh finished");
+            log.info("[dynamic pool] - apollo filter refresh finished");
         });
-        log.info("[dynamic pool] - apollo config listener init");
+        log.info("[dynamic pool] - apollo filter listener init");
     }
 
     private void waitConfigRefreshOver() {

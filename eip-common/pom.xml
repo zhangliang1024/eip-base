@@ -13,9 +13,13 @@
     <artifactId>eip-common</artifactId>
     <packaging>pom</packaging>
 
+    <properties>
+        <log4j2.version>2.16.0</log4j2.version>
+    </properties>
 
     <modules>
-        <module>eip-common-log</module>
+        <module>eip-common-log4j</module>
+        <module>eip-common-logback</module>
         <module>eip-common-thread</module>
         <module>eip-common-lock</module>
         <module>eip-common-cache</module>
@@ -27,6 +31,17 @@
         <module>eip-common-alert</module>
         <module>eip-common-sms</module>
         <module>eip-common-apidoc</module>
+        <module>eip-common-xss</module>
+        <module>eip-common-oss</module>
+        <module>eip-common-limit</module>
+        <module>eip-common-datasource</module>
+        <module>eip-common-job</module>
+        <module>eip-common-banner</module>
+        <module>eip-common-gray</module>
+        <module>eip-common-auth</module>
+        <module>eip-common-uid</module>
+        <module>eip-common-trace</module>
+        <module>eip-common-metrics</module>
     </modules>
 
 
@@ -56,6 +71,10 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
 
     </dependencies>
 
