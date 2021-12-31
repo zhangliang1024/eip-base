@@ -2,6 +2,7 @@ package com.eip.base.business.web;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
  * @创建时间：2021/11/23 11:31
  * @version：V1.0
  */
+@EnableDiscoveryClient
 @SpringBootApplication
 @ComponentScan({"com.eip.base.*"})
 public class BussinessApplication {

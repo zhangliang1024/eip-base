@@ -20,13 +20,24 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.eip.cloud</groupId>
             <artifactId>eip-common-apidoc</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.eip.cloud</groupId>
             <artifactId>eip-common-lock</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.eip.cloud</groupId>
+            <artifactId>eip-common-idempotent</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.eip.cloud</groupId>
+            <artifactId>eip-common-log</artifactId>
         </dependency>
     </dependencies>
 

@@ -1,5 +1,8 @@
 server:
-  port: 8888
+  port: 8001
+#  servlet:
+#    context-path: /api
+
 eip:
   api:
     doc:
@@ -11,7 +14,7 @@ eip:
         contact:
           name: 朱增亮
           emial: zhangsan@163.com
-          url: http://localhost:8888/doc.html#/home
+          url: http://localhost:8001/doc.html#/home
         description: "昂立课堂第二版，在SDK版上升级了业务模块，业务模块包括：用户、老师、学生、课程、课节、上课统计流水等。"
         host: http://localhost:1111
   lock:
@@ -28,4 +31,47 @@ knife4j:
     enable: true   #开启账号密码验证
     username: admin
     password: admin
+spring:
+  redis:
+    host: 192.168.100.54
+    database: 7
+    password: 123456
+  application:
+    name: eip-business-web
+  profiles:
+    active: '@my-profile@'
 
+
+eureka:
+  client:
+    registry-fetch-interval-seconds: 5
+    service-url:
+      defaultZone: ${EUEEKA_SERVER_URL:http://localhost:9001/eureka/}
+  instance:
+    hostname: ${spring.cloud.client.ip-address} #服务注册中心地址
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+#    metadata-map:
+#      user.name: ${spring.security.user.name}
+#      user.password: ${spring.security.user.password}
+#      startup: ${random.int}    #needed to trigger info and endpoint update after restart
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+#logback日志配置
+logging:
+  file: #springboot admin动态日志
+    name: ./logs/${spring.application.name}-all.log4j
+  level:
+    root: info
+  config: classpath:log4j/logback.xml
+log:
+  path: ./logs
+  name: eip-business-web

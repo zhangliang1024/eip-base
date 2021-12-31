@@ -1,0 +1,69 @@
+server:
+  port: 9003
+
+spring:
+  application:
+    name: admin-server
+  security:
+    user:
+      name: admin
+      password: admin
+  boot:
+    admin:
+      ui:
+        title: "应用监控管理"
+        brand: "<img src='assets/img/icon-spring-boot-admin.svg'><span>应用监控管理</span>"
+        available-languages: zh-CN
+  mail:
+    host: smtp.qq.com
+    username: 493478910@qq.com
+    password: wzxkansvjpttbjeh
+    properties:
+      from:  493478910@qq.com
+    default-encoding: UTF-8
+    to: zhangliang1024_job@126.com
+
+
+eureka:
+  client:
+    registry-fetch-interval-seconds: 5
+    service-url:
+      defaultZone: ${EUEEKA_SERVER_URL:http://localhost:9001/eureka/}
+  instance:
+    hostname: ${spring.cloud.client.ip-address} #服务注册中心地址
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    metadata-map:
+      user.name: ${spring.security.user.name}
+      user.password: ${spring.security.user.password}
+      startup: ${random.int}    #needed to trigger info and endpoint update after restart
+
+management:
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    prometheus:
+      enabled: true
+    metrics:
+      enabled: true
+
+eip:
+  mail:
+    enabled: false
+  alert:
+    enabled: true
+    type: WXCHAT
+    receives:
+    ding:
+      enabled : false
+      secret-key: 93951e9db2c46cf5bc4234c0e4e413baa0dc9932bd39d5025a144d346d21fad7
+    wx-chat:
+      enabled: false
+      secret-key: bdfcf311-5d5f-4510-a291-9620300a6ee2
