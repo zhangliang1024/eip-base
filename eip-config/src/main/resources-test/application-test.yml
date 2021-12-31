@@ -1,0 +1,6 @@
+spring:
+  profiles:
+    include:
+      - db
+      - log4j
+      - redis
