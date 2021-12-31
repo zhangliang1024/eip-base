@@ -1,0 +1,61 @@
+server:
+  port: 9001
+
+spring:
+  application:
+    name: eureka-server
+  profiles:
+    active: @my-profile@
+
+eureka:
+  instance:
+    hostname: ${spring.cloud.client.ip-address} #服务注册中心地址
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    lease-renewal-interval-in-seconds: 5 #服务续约任务的调用时间间隔，默认30秒。客户端不配置，默认走server端配置
+    lease-expiration-duration-in-seconds: 10 #服务失效时间，默认90秒。客户端不配置，默认走server端配置
+    health-check-url-path: /actuator/health #配置actuator的检查路径，默认也是：/actuator/health
+    prefer-ip-address: true
+  server:
+    enable-self-preservation: false
+    eviction-interval-timer-in-ms: 8000 #续期时间，即扫描失效服务的间隔时间(缺省为：60*1000ms)
+    response-cache-update-interval-ms: 5000 #readOnlyCache缓存更新时间
+  client:
+    fetch-registry: true # 是否从Eureka Server获取注册信息，默认true。单点可以设置为false，集群设置为true。
+    register-with-eureka: true #是否将自身实例注册到Eureka Server
+    registry-fetch-interval-seconds: 5 #从Eureka Server服务端获取注册信息的间隔时间，单位：秒
+    service-url:
+      defaultZone: ${EUEEKA_SERVER_URL:http://localhost:9001/eureka/}
+
+management:
+  server:
+    port: 19001
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+
+#Banner Settings
+application:
+  title: ${APPLICATION_TITOLE:精友-EUREKA注册中心}
+  version: ${APPLICATION_VERSION:v1.0.0}
+
+#服务信息
+info:
+  app:
+    name: ${application.title}
+    version: ${application.version}
+    description: ${application.title}
+
+#日志配置
+logging:
+  config: classpath:logback/logback-spring.xml
+log:
+  name: ${spring.application.name}
+  file:
+    path: logs
+
+
