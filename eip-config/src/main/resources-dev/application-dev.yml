@@ -4,3 +4,4 @@ spring:
       - banner
       - eureka
       - actuator
+      - logback

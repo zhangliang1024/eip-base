@@ -1,4 +1,4 @@
 # Banner Settings
 application:
-  title: ${APPLICATION_TITOLE:精友-EUREKA注册中心}
+  title: ${APPLICATION_TITOLE:精友-架构中心}
   version: ${APPLICATION_VERSION:v1.0.0}

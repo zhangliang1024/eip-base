@@ -12,4 +12,33 @@
     <artifactId>eip-config</artifactId>
 
 
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>src/main/resources-default</directory>
+            </resource>
+            <resource>
+                <directory>src/main/resources-dev</directory>
+            </resource>
+            <resource>
+                <directory>src/main/resources-prod</directory>
+            </resource>
+            <resource>
+                <directory>src/main/resources-test</directory>
+            </resource>
+        </resources>
+    </build>
+
+
 </project>
