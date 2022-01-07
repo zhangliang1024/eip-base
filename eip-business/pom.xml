@@ -37,7 +37,7 @@
         </dependency>
         <dependency>
             <groupId>com.eip.cloud</groupId>
-            <artifactId>eip-common-log</artifactId>
+            <artifactId>eip-common-log4j</artifactId>
         </dependency>
     </dependencies>
 

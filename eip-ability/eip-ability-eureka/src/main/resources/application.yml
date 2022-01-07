@@ -26,23 +26,6 @@ eureka:
     service-url:
       defaultZone: ${EUEEKA_SERVER_URL:http://localhost:9001/eureka/}
 
-management:
-  server:
-    port: 19001
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: always
-
-
-#Banner Settings
-application:
-  title: ${APPLICATION_TITOLE:精友-EUREKA注册中心}
-  version: ${APPLICATION_VERSION:v1.0.0}
-
 #服务信息
 info:
   app:
@@ -50,12 +33,8 @@ info:
     version: ${application.version}
     description: ${application.title}
 
-#日志配置
 logging:
-  config: classpath:logback/logback-spring.xml
-log:
-  name: ${spring.application.name}
   file:
+    name: ${spring.application.name}
     path: logs
-
 

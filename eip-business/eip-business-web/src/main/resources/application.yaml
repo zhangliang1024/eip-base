@@ -68,10 +68,11 @@ management:
 #logback日志配置
 logging:
   file: #springboot admin动态日志
-    name: ./logs/${spring.application.name}-all.log4j
+    path: ./logs
+    name: ./logs/${spring.application.name}-all.log
   level:
     root: info
-  config: classpath:log4j/logback.xml
+  config: classpath:logback/spring-logback.xml
 log:
   path: ./logs
   name: eip-business-web
