@@ -147,7 +147,7 @@
             </dependency>
             <dependency>
                 <groupId>com.eip.cloud</groupId>
-                <artifactId>eip-common-log</artifactId>
+                <artifactId>eip-common-log4j</artifactId>
                 <version>${eip.base.version}</version>
             </dependency>
             <dependency>
@@ -280,24 +280,17 @@
                     <showWarnings>true</showWarnings>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot-dependencies.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <!--
-                    spring boot不用parent引入，采用dependencyManagement引入后的坑
-                    原文链接：https://blog.csdn.net/NeverSad_/article/details/87270145
-                -->
-            </plugin>
         </plugins>
 
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot-dependencies.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
 
         <!-- 配置环境占位符 -->
         <resources>
@@ -306,7 +299,9 @@
                 <filtering>true</filtering>
                 <directory>src/main/resources</directory>
                 <includes>
+                    <include>META-INF/**</include>
                     <include>**/*.xml</include>
+                    <include>**/banner.txt</include>
                     <include>bootstrap.yml</include>
                     <include>bootstrap-${my-profile}.yml</include>
                     <include>application.yml</include>
@@ -314,8 +309,6 @@
                 </includes>
             </resource>
         </resources>
-
-
     </build>
 
 
