@@ -30,7 +30,7 @@ public class IPLogDefiner extends PropertyDefinerBase {
         try {
             localIp = InetAddress.getLocalHost().getHostAddress();
         } catch (UnknownHostException e) {
-            logger.error("[log4j-ip] - fail to get ip...", e);
+            logger.error("[log-ip] - fail to get ip...", e);
         }
         String uniqName = UUID.randomUUID().toString().replace("-", "");
         if (localIp != null) {

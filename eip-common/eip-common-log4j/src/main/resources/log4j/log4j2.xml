@@ -16,7 +16,7 @@
         <!--<property name="LOG_PATTERN" value="%date{yy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} [%X{X-B3-TraceId}, %X{X-B3-SpanId}, %X{X-B3-ParentSpanId}, %X{X-Span-Export}] - %msg%n" />-->
         <property name="LOG_PATTERN" value="%date{yy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} [%traceId] - %msg%n"/>
         <!-- 定义日志存储的路径，不要配置相对路径 -->
-        <property name="FILE_PATH" value="./logs/${ctx:logPath}"/>
+        <property name="FILE_PATH" value="${ctx:logPath}/${ctx:logName}"/>
         <property name="FILE_NAME" value="${ctx:logName}"/>
     </Properties>
 
