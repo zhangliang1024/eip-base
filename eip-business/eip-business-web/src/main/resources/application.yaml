@@ -37,7 +37,7 @@ spring:
     database: 7
     password: 123456
   application:
-    name: eip-business-interceptor
+    name: eip-business-web
   profiles:
     active: '@my-profile@'
 
@@ -75,4 +75,4 @@ logging:
   config: classpath:logback/spring-logback.xml
 log:
   path: ./logs
-  name: eip-business-interceptor
+  name: eip-business-web

@@ -3,6 +3,7 @@ package com.eip.common.web.interceptor;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  * @version V1.0.0
  */
 @Component
-public class GlobalTraceLogIdInterceptor implements HandlerInterceptor {
+public class GlobalTraceLogIdInterceptor extends HandlerInterceptorAdapter {
 
     public static ThreadLocal<String> GLOBAL_TRACE = new ThreadLocal();
 
