@@ -28,6 +28,6 @@ public class EurekaServerApplication {
 
 
 ### 文档
-[自定义banner](https://www.bootschool.net/ascii)
-
-[Spring Boot自定义Banner](https://www.jianshu.com/p/a53f324c92f2)
+* [自定义banner](https://www.bootschool.net/ascii)
+* [Spring Boot自定义Banner](https://www.jianshu.com/p/a53f324c92f2)
+* [pom文件resources导致资源加载失败](https://blog.csdn.net/qq_41250229/article/details/115422612)

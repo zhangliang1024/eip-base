@@ -1,13 +1,12 @@
 # `logback`记录日志
 > `springcloud`项目用`bootstrap.yml`文件
 
-## 配置使用
+### 配置使用
 ```yaml
 logging:
   file:
     name: ${spring.application.name}
     path: logs
-```
 ```
 
 
@@ -34,8 +33,6 @@ logging:
 
 ### 参考文档
 * [如何在logback.xml中自定义动态属性 ](https://www.cnblogs.com/spec-dog/p/11386668.html)
-* []()
 * [springboot超级详细的日志配置(基于logback)](https://cloud.tencent.com/developer/article/1445599)
-* []()
-* []()
+* [MDC日志链路设计](https://www.cnblogs.com/zdd-java/p/15630210.html)
 * []()
