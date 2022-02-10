@@ -60,11 +60,17 @@ public class EmailJobAlarm implements JobAlarm {
 
             Set<String> emailSet = new HashSet<String>(Arrays.asList(info.getAlarmEmail().split(",")));
             for (String email : emailSet) {
-
                 // make mail
                 try {
-                    MimeMessage mimeMessage = XxlJobAdminConfig.getAdminConfig().getMailSender().createMimeMessage();
+                   /* MailRequest mailRequest = new MailRequest();
+                    mailRequest.setFrom(XxlJobAdminConfig.getAdminConfig().getEmailFrom());
+                    mailRequest.setTo(email);
+                    mailRequest.setSubject(title);
+                    mailRequest.setText(content);
+                    mailRequest.setHtml(true);
+                    mailSendService.sendMail(mailRequest);*/
 
+                    MimeMessage mimeMessage = XxlJobAdminConfig.getAdminConfig().getMailSender().createMimeMessage();
                     MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
                     helper.setFrom(XxlJobAdminConfig.getAdminConfig().getEmailFrom(), personal);
                     helper.setTo(email);
@@ -73,11 +79,9 @@ public class EmailJobAlarm implements JobAlarm {
 
                     XxlJobAdminConfig.getAdminConfig().getMailSender().send(mimeMessage);
                 } catch (Exception e) {
-                    logger.error(">>>>>>>>>>> xxl-job, job fail alarm email send error, JobLogId:{}", jobLog.getId(), e);
-
+                    logger.error("[eip-xxl-job] - job fail alarm email send error, JobLogId:{}", jobLog.getId(), e);
                     alarmResult = false;
                 }
-
             }
         }
 
