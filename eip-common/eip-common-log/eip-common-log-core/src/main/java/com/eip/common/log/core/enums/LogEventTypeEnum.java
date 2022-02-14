@@ -8,7 +8,7 @@ package com.eip.common.log.core.enums;
  * @author 张良 E-mail:zhangliang01@jingyougroup.com
  * @version V1.0.0
  */
-public enum  LogEventTypeEnum {
+public enum LogEventTypeEnum {
 
     SYSTEM("SYSTEM"), //系统事件
 

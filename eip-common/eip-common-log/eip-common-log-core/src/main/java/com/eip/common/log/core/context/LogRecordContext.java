@@ -15,17 +15,17 @@ public class LogRecordContext {
 
     private static final ThreadLocal<StandardEvaluationContext> CONTEXT_THREAD_LOCAL = new NamedThreadLocal<>("ThreadLocal StandardEvaluationContext");
 
-    public static StandardEvaluationContext getContext(){
+    public static StandardEvaluationContext getContext() {
         return CONTEXT_THREAD_LOCAL.get() == null ? new StandardEvaluationContext() : CONTEXT_THREAD_LOCAL.get();
     }
 
-    public static void putVariables(String key,String value){
+    public static void putVariables(String key, String value) {
         StandardEvaluationContext context = getContext();
-        context.setVariable(key,value);
+        context.setVariable(key, value);
         CONTEXT_THREAD_LOCAL.set(context);
     }
 
-    public static void clearContext(){
+    public static void clearContext() {
         CONTEXT_THREAD_LOCAL.remove();
     }
 }

@@ -3,7 +3,7 @@ package com.eip.common.log.core.service.impl;
 import com.eip.common.core.utils.JacksonUtil;
 import com.eip.common.log.core.config.LogProperties;
 import com.eip.common.log.core.constant.LogConstans;
-import com.eip.common.log.core.model.LogOperationDTO;
+import com.eip.common.core.log.LogOperationDTO;
 import com.eip.common.log.core.service.LogService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -36,7 +36,7 @@ public class RabbitMqLogServiceImpl implements LogService {
         String routingKey = properties.getRabbitMq().getRoutingKey();
         String message = JacksonUtil.objectToStr(operationDTO);
         log.info("[operation-log] - rabbitMq send routingKey [{}] message [{}]", routingKey, message);
-        rabbitTemplate.convertAndSend(routingKey,message );
+        rabbitTemplate.convertAndSend(routingKey, message);
         return true;
     }
 }

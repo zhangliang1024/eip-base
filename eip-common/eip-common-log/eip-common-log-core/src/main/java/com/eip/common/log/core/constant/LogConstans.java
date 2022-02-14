@@ -12,11 +12,16 @@ import org.apache.logging.log4j.util.Strings;
  */
 public class LogConstans {
 
+    //日志记录服务
+    public final static String SAVE_AUDIT_URL = "http://audit-log/audit-log/bus/add";
+
     public static final String DEFAULT_CHARSET = "UTF-8";
 
     public static final String ROCKET_MQ = "rocketMq";
 
     public static final String RABBIT_MQ = "rabbitMq";
+
+    public static final String NATIVE = "native";
 
     public static final String STREAM = "stream";
 

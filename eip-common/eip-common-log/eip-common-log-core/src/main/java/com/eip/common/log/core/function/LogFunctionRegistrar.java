@@ -43,13 +43,13 @@ public class LogFunctionRegistrar implements ApplicationContextAware {
                             if (StringUtils.hasText(prefixName)) {
                                 prefixName += "_";
                             }
-                            if(methods.length > 0){
+                            if (methods.length > 0) {
                                 for (Method method : methods) {
-                                    if(method.isAnnotationPresent(LogFunction.class) && isStaticMethod(method)){
+                                    if (method.isAnnotationPresent(LogFunction.class) && isStaticMethod(method)) {
                                         LogFunction logFunction = method.getAnnotation(LogFunction.class);
                                         String registerName = StringUtils.hasText(logFunction.value()) ? logFunction.value() : method.getName();
-                                        functionMap.put(prefixName + registerName,method);
-                                        log.info("[operation-log] register function - [{}] as name [{}]",method,registerName);
+                                        functionMap.put(prefixName + registerName, method);
+                                        log.info("[operation-log] register function - [{}] as name [{}]", method, registerName);
                                     }
                                 }
                             }
@@ -61,14 +61,14 @@ public class LogFunctionRegistrar implements ApplicationContextAware {
      * 判断是否为静态方法
      */
     private boolean isStaticMethod(Method method) {
-        if(method == null){
-           return false;
+        if (method == null) {
+            return false;
         }
         int modifiers = method.getModifiers();
         return Modifier.isStatic(modifiers);
     }
 
-    public static void register(StandardEvaluationContext context){
+    public static void register(StandardEvaluationContext context) {
         functionMap.forEach(context::registerFunction);
     }
 }

@@ -14,7 +14,7 @@ public enum LogLevelEnum {
 
     MEDIUM("MEDIUM"),
 
-    HIGH("HIGH")
+    HIGH("HIGH"),
 
     ;
     private final String value;

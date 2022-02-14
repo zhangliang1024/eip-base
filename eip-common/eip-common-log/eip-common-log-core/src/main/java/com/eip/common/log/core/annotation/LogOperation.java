@@ -23,26 +23,32 @@ public @interface LogOperation {
      * 日志级别
      */
     LogLevelEnum level() default LogLevelEnum.LOW;
+
     /**
      * 事件类型
      */
     LogEventTypeEnum eventType() default LogEventTypeEnum.BUSINESS;
+
     /**
      * 操作类型
      */
     LogOperateTypeEnum operateType() default LogOperateTypeEnum.OPERATION;
+
     /**
      * 操作模块
      */
     String operateModule() default "";
+
     /**
      * 业务日志ID
      */
     String businessId();
+
     /**
      * 业务类型
      */
     String businessType();
+
     /**
      * 日志message
      */

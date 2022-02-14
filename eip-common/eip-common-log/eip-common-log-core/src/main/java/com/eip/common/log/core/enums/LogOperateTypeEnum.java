@@ -8,7 +8,7 @@ package com.eip.common.log.core.enums;
  * @author 张良 E-mail:zhangliang01@jingyougroup.com
  * @version V1.0.0
  */
-public enum LogOperateTypeEnum implements LogOperateType {
+public enum LogOperateTypeEnum {
 
     ADD("ADD"),
 
@@ -32,7 +32,7 @@ public enum LogOperateTypeEnum implements LogOperateType {
 
     AUDIT_REJECT("AUDIT_REJECT"), //审核驳回
 
-    OPERATION("OPERATION")
+    OPERATION("OPERATION"),
 
     ;
 

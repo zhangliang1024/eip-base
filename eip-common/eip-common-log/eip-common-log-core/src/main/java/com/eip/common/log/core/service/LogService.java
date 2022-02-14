@@ -1,6 +1,6 @@
 package com.eip.common.log.core.service;
 
-import com.eip.common.log.core.model.LogOperationDTO;
+import com.eip.common.core.log.LogOperationDTO;
 
 /**
  * ClassName: LogService

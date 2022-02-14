@@ -14,8 +14,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.eip.cloud</groupId>
-            <artifactId>eip-common-core</artifactId>
+            <artifactId>eip-common-web</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.amqp</groupId>
@@ -28,12 +32,12 @@
             <artifactId>rocketmq-client</artifactId>
             <version>4.9.2</version>
             <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <artifactId>fastjson</artifactId>
-                    <groupId>com.alibaba</groupId>
-                </exclusion>
-            </exclusions>
+            <!--<exclusions>-->
+                <!--<exclusion>-->
+                    <!--<artifactId>fastjson</artifactId>-->
+                    <!--<groupId>com.alibaba</groupId>-->
+                <!--</exclusion>-->
+            <!--</exclusions>-->
         </dependency>
     </dependencies>
 </project>
