@@ -1,6 +1,8 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.eip.common.core.exception.handler.GlobalExceptionHandler,\
-com.eip.common.core.exception.i18n.I18nMessageSource,\
-com.eip.common.core.config.JacksonConfig,\
-com.eip.common.core.config.SwaggerMvcConfigurer
+  com.eip.common.core.config.ValidateConfig,\
+  com.eip.common.core.config.RedisConfig,\
+  com.eip.common.core.core.exception.i18n.I18nMessageSource,\
+  com.eip.common.core.service.RedisService,\
+  com.eip.common.core.service.snowflake.LocalGlobalUidService,\
+  com.eip.common.core.http.OkHttpConfiguration
 

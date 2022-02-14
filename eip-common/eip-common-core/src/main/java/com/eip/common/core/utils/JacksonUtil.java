@@ -1,6 +1,6 @@
 package com.eip.common.core.utils;
 
-import com.eip.common.core.exception.BaseRuntimeException;
+import com.eip.common.core.core.exception.BaseRuntimeException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.json.JsonSanitizer;

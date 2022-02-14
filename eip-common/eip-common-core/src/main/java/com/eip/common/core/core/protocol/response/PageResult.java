@@ -8,7 +8,7 @@ import java.util.List;
  * 分页返回数据
  */
 @Data
-public class PageResult<T> {
+public class PageResult<T> extends ResponseDTO{
 
     /**
      * 当前页码

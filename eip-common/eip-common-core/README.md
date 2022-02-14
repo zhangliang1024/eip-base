@@ -50,7 +50,29 @@ public void updateSysUserState(Long id, Integer state) {
 
 ```
 
+## 三、集成`okhttp`
+- `application.yml`
+```yaml
+ok.http.connect-timeout=30
+ok.http.keep-alive-duration=300
+ok.http.max-idle-connections=200
+ok.http.read-timeout=30
+ok.http.write-timeout=30
+```
+- 代码
+```java
+@Component
+public class Business{
+    
+    @Autowired
+    private OkHttpService httpService;
+    
+    public void send(){
+        httpService.doGet("http://www.baidu.com");
+    }
+}
 
+```
 
 ### 二、参考文档
 
@@ -66,3 +88,13 @@ public void updateSysUserState(Long id, Integer state) {
 [全局异常add-mappings配置false请求swagger-ui页面后台报错问题](https://blog.csdn.net/weixin_43241706/article/details/112303307)
 [spring boot 异常(exception)处理 ](https://www.cnblogs.com/haibianren/p/11720502.html)
 [静态资源的访问规则#](https://www.cnblogs.com/yoshi/p/14346943.html)
+
+#### `全局ID`
+* [基于Spring Boot的可直接运行的分布式ID生成器的实现以及SnowFlake算法详解](https://www.cnblogs.com/csonezp/p/12088432.html)
+* [使用雪花算法为分布式下全局ID、订单号等简单解决方案考虑到时钟回拨](https://blog.csdn.net/ycb1689/article/details/89331634)
+* [关于分布式唯一ID，snowflake的一些思考及改进(完美解决时钟回拨问题)](https://blog.csdn.net/WGH100817/article/details/101719325)
+
+#### `okhttp`
+* [Java封装OkHttp3工具类，用着贼舒服](https://blog.csdn.net/lilizhou2008/article/details/117537867)
+* [OkHttpClient连接池问题](https://www.jianshu.com/p/e23c113f97f6)
+* [再见，HttpClient！再见，Okhttp！](https://www.cnblogs.com/javastack/archive/2021/03/08/14501674.html)

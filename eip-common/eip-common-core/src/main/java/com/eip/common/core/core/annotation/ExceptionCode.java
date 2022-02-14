@@ -11,8 +11,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD}) // 表明该注解只能放在类的字段上
 public @interface ExceptionCode {
+
     // 响应码code
     String value() default "10000";
+
     // 响应信息msg
-    String message() default  "参数校验错误";
+    String message() default "参数校验错误";
 }

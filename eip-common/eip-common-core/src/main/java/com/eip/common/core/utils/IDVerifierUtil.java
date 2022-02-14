@@ -1,5 +1,6 @@
 package com.eip.common.core.utils;
 
+import com.eip.common.core.utils.date.CalendarUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -211,7 +212,7 @@ public class IDVerifierUtil {
             try {
                 birthdate = new SimpleDateFormat("yyMMdd").parse(birthday);
             } catch (ParseException e) {
-                LogUtils.error("isValidate15Idcard", e.getMessage());
+                LogUtil.error("isValidate15Idcard", e.getMessage());
             }
             if (birthdate == null || new Date().before(birthdate)) {
                 return false;
@@ -289,7 +290,7 @@ public class IDVerifierUtil {
             try {
                 birthdate = new SimpleDateFormat("yyMMdd").parse(birthday);
             } catch (ParseException e) {
-                LogUtils.error("convertIdcarBy15bit", e.getMessage());
+                LogUtil.error("convertIdcarBy15bit", e.getMessage());
             }
             Calendar cday = Calendar.getInstance();
             cday.setTime(birthdate);
@@ -553,7 +554,7 @@ public class IDVerifierUtil {
                 this.day = currentDay.get(Calendar.DAY_OF_MONTH);
             }
         } catch (Exception e) {
-            LogUtils.error("initIdProperties", e.getMessage());
+            LogUtil.error("initIdProperties", e.getMessage());
         }
         return this;
     }

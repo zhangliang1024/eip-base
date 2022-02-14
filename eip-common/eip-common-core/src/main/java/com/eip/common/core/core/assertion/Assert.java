@@ -1,6 +1,6 @@
 package com.eip.common.core.core.assertion;
 
-import com.eip.common.core.exception.BaseRuntimeException;
+import com.eip.common.core.core.exception.BaseRuntimeException;
 
 import java.util.Collection;
 import java.util.Map;
