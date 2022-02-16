@@ -18,12 +18,12 @@ public class LogController {
     private LogService logService;
 
     @GetMapping("/success")
-    public ApiResult<LogDTO> testSuccess() throws Exception {
+    public LogDTO testSuccess() throws Exception {
         LogDTO log = new LogDTO();
         log.setId(1L);
         log.setStr("str");
         log.setList(Arrays.asList("1","2","3"));
-        return ApiResult.ok(logService.serviceFunc(log, true));
+        return logService.serviceFunc(log, true);
     }
 
     @GetMapping("/failure")

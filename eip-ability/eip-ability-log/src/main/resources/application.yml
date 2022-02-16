@@ -1,0 +1,70 @@
+server:
+  port: 8006
+  servlet:
+    context-path: /eip-ability-log
+spring:
+  application:
+    name: eip-ability-log
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql:///eip-log?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+    druid:
+      initial-size: 1
+      min-idle: 1
+      max-active: 100
+      max-wait: 60000
+      test-while-idle: true
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 30000
+      validation-query: select 'x'
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      filter: stat,wall,log4j
+      connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+      use-global-data-source-stat: true
+      keep-alive: true
+  rabbitmq:
+    host: 192.168.100.54
+    port: 5672
+    username: admin
+    password: admin
+    template:
+      exchange: logRecord
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #开启sql日志
+    map-underscore-to-camel-case: true
+    # 该配置就是将带有下划线的表字段映射为驼峰格式的实体类属性
+#  mapper-locations: classpath*:/mapper/**/*.xml
+
+eip:
+  api:
+    doc:
+      swagger:
+        enabled: true
+        group-name: business
+        title: "昂立课堂(业务版)"
+        version: 1.0.0
+        contact:
+          name: 朱增亮
+          emial: zhangsan@163.com
+          url: http://localhost:8001/doc.html#/home
+        description: "昂立课堂第二版，在SDK版上升级了业务模块，业务模块包括：用户、老师、学生、课程、课节、上课统计流水等。"
+        host: http://localhost:1111
+  log:
+    operation:
+      pipeline: rabbitmq
+      rabbit-mq:
+        host: 192.168.100.54
+        port: 5672
+        username: admin
+        password: admin
+        queue-name: logRecord
+        exchange-name: logRecord
+        routing-key:

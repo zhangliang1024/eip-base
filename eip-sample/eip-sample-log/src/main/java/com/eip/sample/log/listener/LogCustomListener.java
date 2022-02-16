@@ -14,6 +14,6 @@ public class LogCustomListener extends NativeLogListener {
 
     @Override
     public void createLog(LogOperationDTO logDTO) throws Exception {
-        log.info("TestCustomLogListener 本地接收到日志 [{}]", logDTO);
+        log.info("LogCustomListener 本地接收到日志 [{}]", logDTO);
     }
 }

@@ -1,21 +1,23 @@
-package com.eip.common.auth;
+package com.eip.ability.log;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * ClassName: AuthServerApplication
+ * ClassName: EipLogerApplication
  * Function:
- * Date: 2021年12月17 17:55:26
+ * Date: 2022年02月11 16:49:57
  *
  * @author 张良 E-mail:zhangliang01@jingyougroup.com
  * @version V1.0.0
  */
 @SpringBootApplication
-public class AuthServerApplication {
+@MapperScan("com.eip.ability.log")
+public class LogWebApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(AuthServerApplication.class,args);
+        SpringApplication.run(LogWebApplication.class,args);
     }
 
 }

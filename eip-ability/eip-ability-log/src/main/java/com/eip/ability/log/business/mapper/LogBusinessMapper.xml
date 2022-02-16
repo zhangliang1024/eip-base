@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.eip.ability.log.business.mapper.LogBusinessMapper">
+
+
+    <insert id="insertLog" parameterType="com.eip.ability.log.business.model.LogOperate">
+        INSERT
+          INTO log_operate
+            (
+            log_id, business_id, event_type, business_type, operate_type, log_message, event_level,
+            operate_module, ip, mac_address, request_url, operate_sub_system, operator, success,
+            result, exception_msg, operate_time, execution_time
+            )
+          VALUES
+            (
+            #{operate.logId}, #{operate.businessId}, #{operate.eventType}, #{operate.businessType},
+            #{operate.operateType}, #{operate.logMessage}, #{operate.eventLevel}, #{operate.operateModule},
+            #{operate.ip},#{operate.macAddress}, #{operate.requestUrl}, #{operate.operateSubSystem}, #{operate.operator},
+            #{operate.success}, #{operate.result},  #{operate.exceptionMsg}, #{operate.operateTime}, #{operate.executionTime}
+            )
+    </insert>
+
+</mapper>
