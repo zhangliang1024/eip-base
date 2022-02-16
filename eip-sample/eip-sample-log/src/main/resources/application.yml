@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: eip-sample-log
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql:///eip-log?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+  rabbitmq:
+    host: 192.168.100.54
+    port: 5672
+    username: admin
+    password: admin
+    template:
+      exchange: logRecord
+
+eip:
+  log:
+    operation:
+      pipeline: native
+      rabbit-mq:
+        host: 192.168.100.54
+        port: 5672
+        username: admin
+        password: admin
+        queue-name: logRecord
+        exchange-name: logRecord
+        routing-key:
