@@ -41,8 +41,9 @@ public class LogAutoConfiguration {
         return new LogFunctionRegistrar();
     }
 
+    //TODO 测试阶段 不接入loadBalanced负载
     @Bean("logRestTemplate")
-    @LoadBalanced
+    //@LoadBalanced
     public RestTemplate restTemplate() {
         ClientHttpRequestFactory factory = httpRequestFactory();
         RestTemplate restTemplate = new RestTemplate(factory);

@@ -1,16 +1,14 @@
 package com.eip.common.log.core.service.impl;
 
-import cn.hutool.json.JSONObject;
+import com.eip.common.core.log.LogOperationDTO;
 import com.eip.common.core.utils.JacksonUtil;
 import com.eip.common.log.core.config.LogProperties;
 import com.eip.common.log.core.constant.LogConstans;
-import com.eip.common.core.log.LogOperationDTO;
 import com.eip.common.log.core.service.LogService;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -49,9 +47,8 @@ public class NativeLogServiceImpl implements LogService {
             HttpEntity<String> request = new HttpEntity<>(body, requestHeaders);
             try {
                 ResponseEntity response = restTemplate.postForEntity(LogConstans.SAVE_AUDIT_URL, request, Object.class);
-                Object result = response.getBody();
                 HttpStatus statusCode = response.getStatusCode();
-                log.error("[Operation-Log] Send Native Service success : {}", result);
+                log.info("[Operation-Log] Send Native Service success [{}]", statusCode.value());
             } catch (Exception e) {
                 log.error("[Operation-Log] Send Native Service Error : {}", e);
             }

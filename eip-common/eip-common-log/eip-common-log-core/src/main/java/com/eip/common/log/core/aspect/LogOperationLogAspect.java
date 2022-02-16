@@ -2,14 +2,17 @@ package com.eip.common.log.core.aspect;
 
 import com.eip.common.core.auth.AuthUserContext;
 import com.eip.common.core.auth.AuthUserDetail;
+import com.eip.common.core.constants.GlobalConstans;
+import com.eip.common.core.log.LogOperationDTO;
+import com.eip.common.core.utils.JacksonUtil;
+import com.eip.common.core.utils.uid.GenerateUtil;
+import com.eip.common.log.core.annotation.LogOperation;
+import com.eip.common.log.core.constant.LogConstans;
 import com.eip.common.log.core.context.LogRecordContext;
 import com.eip.common.log.core.exception.LogOperateEnum;
 import com.eip.common.log.core.function.LogFunctionRegistrar;
-import com.eip.common.core.log.LogOperationDTO;
 import com.eip.common.log.core.service.LogService;
 import com.eip.common.log.core.service.NativeLogListener;
-import com.eip.common.core.utils.JacksonUtil;
-import com.eip.common.log.core.annotation.LogOperation;
 import com.eip.common.web.utils.HttpServletContext;
 import com.eip.common.web.utils.IPUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +22,7 @@ import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.DefaultParameterNameDiscoverer;
@@ -26,7 +30,6 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.util.StopWatch;
-import org.springframework.web.context.request.RequestContextHolder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
@@ -75,7 +78,7 @@ public class LogOperationLogAspect {
             //方法执行异常，自定义上线文未写入；但是任然需要初始化其它变量
             operation = resolveExpress(point, null);
             operation.setSuccess(false);
-            operation.setException(e.getMessage());
+            operation.setExceptionMsg(e.getMessage());
             throw e;
         } finally {
             watch.stop();
@@ -104,6 +107,13 @@ public class LogOperationLogAspect {
 
         //记录日志
         LogOperationDTO operation = new LogOperationDTO();
+        //全局日志唯一ID
+        String logTraceId = MDC.get(GlobalConstans.GLOBAL_TRACE_ID);
+        if(StringUtils.isBlank(logTraceId)){
+            operation.setLogId(GenerateUtil.getLogTraceId());
+        }else {
+            operation.setLogId(logTraceId);
+        }
 
         //日志级别
         operation.setEventLevel(logOperation.level().getValue());
@@ -123,7 +133,7 @@ public class LogOperationLogAspect {
         operation.setOperateModule(operateModule);
 
         //子系统
-        operation.setOperateSubsystem(applicationName);
+        operation.setOperateSubSystem(applicationName);
 
         //获取表达式
         String businessIdSpel = logOperation.businessId();
@@ -155,24 +165,29 @@ public class LogOperationLogAspect {
 
         operation.setLogId(UUID.randomUUID().toString());
         operation.setSuccess(true);
-        operation.setOperateDate(new Date());
+        operation.setOperateTime(new Date());
         operation.setResult(JacksonUtil.objectToStr(result));
 
         //当前操作人员
         AuthUserDetail authUser = AuthUserContext.get();
-        operation.setOperator(authUser.getUserName());
+        if(Objects.isNull(authUser)){
+            log.warn("[operation-log] - operater is null");
+            operation.setOperator(LogConstans.DEFAULT_OPERATER);
+        }else {
+            operation.setOperator(authUser.getUserName());
+        }
 
         HttpServletRequest request = HttpServletContext.getRequest();
-        if (!Objects.isNull(request)) {
+        if (Objects.isNull(request)) {
+            log.warn("[operation-log] - request is null ...");
+        } else {
             //接口地址
-            String requestURI = request.getRequestURI();
-            operation.setRequestURI(requestURI);
+            String requestURI = request.getRequestURL().toString();
+            operation.setRequestUrl(requestURI);
 
             //请求IP
             String ipAddr = IPUtil.getIpAddr(request);
             operation.setIp(ipAddr);
-        } else {
-            log.warn("[operation-log] - httpRequest is null ...");
         }
         return operation;
     }

@@ -13,7 +13,7 @@ import org.apache.logging.log4j.util.Strings;
 public class LogConstans {
 
     //日志记录服务
-    public final static String SAVE_AUDIT_URL = "http://audit-log/audit-log/bus/add";
+    public final static String SAVE_AUDIT_URL = "http://localhost:8006/eip-ability-log/bussiness-log/save";
 
     public static final String DEFAULT_CHARSET = "UTF-8";
 
@@ -24,6 +24,8 @@ public class LogConstans {
     public static final String NATIVE = "native";
 
     public static final String STREAM = "stream";
+
+    public static final String DEFAULT_OPERATER = "operater";
 
     public static final String ROCKET_MQ_TOPIC = "logRecord";
     public static final String ROCKET_MQ_TAG = Strings.EMPTY;
