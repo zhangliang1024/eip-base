@@ -1,6 +1,6 @@
 package com.eip.common.web.valid.annotaion.constraint;
 
-import com.eip.common.core.utils.ApplicationContextUtils;
+import com.eip.common.core.context.ApplicationContextUtil;
 import com.eip.common.web.valid.annotaion.CustomVaild;
 import com.eip.common.web.valid.extend.ValidHandler;
 
@@ -27,7 +27,7 @@ public class CustomValidConstraint implements ConstraintValidator<CustomVaild,Ob
     @Override
     public boolean isValid(Object obj, ConstraintValidatorContext constraintValidatorContext) {
         //获取实际校验器
-        ValidHandler handler = ApplicationContextUtils.getBean(customVaild.handler());
+        ValidHandler handler = ApplicationContextUtil.getBean(customVaild.handler());
         //执行校验
         return handler.handler(customVaild,obj);
     }

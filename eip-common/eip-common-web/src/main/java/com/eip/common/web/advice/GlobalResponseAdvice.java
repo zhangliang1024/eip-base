@@ -1,4 +1,4 @@
-package com.eip.common.web.config;
+package com.eip.common.web.advice;
 
 import com.eip.common.core.core.annotation.NotResponseBody;
 import com.eip.common.core.core.assertion.enums.ArgumentResponseEnum;
@@ -14,8 +14,8 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
-@RestControllerAdvice(basePackages = {"com.eib.base.business.**"})
-public class ResponseControllerAdvice implements ResponseBodyAdvice<Object> {
+@RestControllerAdvice(basePackages = {"com.eip.sample","com.eip.ability"})
+public class GlobalResponseAdvice implements ResponseBodyAdvice<Object> {
 
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> aClass) {

@@ -19,7 +19,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @author 张良 E-mail:zhangliang01@jingyougroup.com
  * @version V1.0.0
  */
-@Configuration
 public class SwaggerMvcConfigurer implements WebMvcConfigurer {
 
     @Override

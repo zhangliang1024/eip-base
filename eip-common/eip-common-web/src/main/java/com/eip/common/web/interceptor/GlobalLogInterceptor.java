@@ -1,5 +1,6 @@
 package com.eip.common.web.interceptor;
 
+import com.eip.common.core.constants.GlobalConstans;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -9,26 +10,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * ClassName: GlobalTraceLogIdInterceptor
+ * ClassName: GlobalLogInterceptor
  * Function:
  * Date: 2021年12月23 13:14:37
  *
  * @author 张良 E-mail:zhangliang01@jingyougroup.com
  * @version V1.0.0
  */
-@Component
-public class GlobalTraceLogIdInterceptor extends HandlerInterceptorAdapter {
+public class GlobalLogInterceptor extends HandlerInterceptorAdapter {
 
-    public static ThreadLocal<String> GLOBAL_TRACE = new ThreadLocal();
-
-    public static final String TRACE_ID = "tid";
-    public static final String GLOBAL_TRACE_ID = "global_trace_id";
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String traceId = request.getHeader(GLOBAL_TRACE_ID);
-        MDC.put(TRACE_ID,traceId);
-        GLOBAL_TRACE.set(traceId);
+        String traceId = request.getHeader(GlobalConstans.GLOBAL_TRACE_ID);
+        MDC.put(GlobalConstans.TRACE_LOG_ID,traceId);
+        GlobalConstans.GLOBAL_TRACE.set(traceId);
         return true;
     }
 }

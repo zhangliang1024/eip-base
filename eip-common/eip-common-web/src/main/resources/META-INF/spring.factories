@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.eip.common.web.config.BaseAutoConfiguration
+com.eip.common.web.config.BaseAutoConfiguration,\
+com.eip.common.web.config.WebConfiguration

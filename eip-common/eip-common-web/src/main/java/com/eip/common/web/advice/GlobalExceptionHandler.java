@@ -1,4 +1,4 @@
-package com.eip.common.web.handler;
+package com.eip.common.web.advice;
 
 import com.eip.common.core.core.annotation.ExceptionCode;
 import com.eip.common.core.core.assertion.enums.ArgumentResponseEnum;
@@ -8,6 +8,7 @@ import com.eip.common.core.core.protocol.response.ApiResult;
 import com.eip.common.core.core.exception.BaseRuntimeException;
 import com.eip.common.core.core.exception.BusinessRuntimeException;
 import com.eip.common.core.core.exception.i18n.I18nMessageSource;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.ConversionNotSupportedException;
@@ -149,7 +150,7 @@ public class GlobalExceptionHandler {
     public ApiResult handleValidException(MethodArgumentNotValidException e) throws NoSuchFieldException {
 
         // 从异常对象中拿到错误信息
-        String defaultMessage = e.getBindingResult().getAllErrors().get(0).getDefaultMessage();
+        String defaultErrorMsg = e.getBindingResult().getAllErrors().get(0).getDefaultMessage();
 
         // 参数的Class对象，等下好通过字段名称获取Field对象
         Class<?> parameterType = e.getParameter().getParameterType();
@@ -161,7 +162,11 @@ public class GlobalExceptionHandler {
 
         // 有注解的话就返回注解的响应信息
         if (annotation != null) {
-            return new ApiResult(annotation.value(),annotation.message(),defaultMessage);
+            String errorMsg = annotation.message();
+            if(StringUtils.isBlank(errorMsg)){
+                errorMsg = defaultErrorMsg;
+            }
+            return new ApiResult(annotation.value(),errorMsg);
         }
 
 

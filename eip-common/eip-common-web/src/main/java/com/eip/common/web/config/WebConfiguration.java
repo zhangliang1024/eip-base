@@ -1,6 +1,6 @@
 package com.eip.common.web.config;
 
-import com.eip.common.web.interceptor.GlobalTraceLogIdInterceptor;
+import com.eip.common.web.interceptor.GlobalLogInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -18,11 +18,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfiguration implements WebMvcConfigurer {
 
     @Autowired
-    private GlobalTraceLogIdInterceptor globalTraceLogIdInterceptor;
+    private GlobalLogInterceptor globalLogInterceptor;
 
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(globalTraceLogIdInterceptor);
+        registry.addInterceptor(globalLogInterceptor);
     }
 }
