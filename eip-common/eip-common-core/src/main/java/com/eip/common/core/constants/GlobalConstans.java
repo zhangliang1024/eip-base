@@ -10,6 +10,12 @@ package com.eip.common.core.constants;
  */
 public interface GlobalConstans {
 
+    ThreadLocal<String> GLOBAL_TRACE = new ThreadLocal();
+
+
+    String TRACE_LOG_ID = "tid";
+
+
     //全局trace-id
     String GLOBAL_TRACE_ID = "global_trace_id";
 
@@ -17,4 +23,9 @@ public interface GlobalConstans {
      * 验证码有效期：2分钟
      */
     Integer LOGIN_CAPTCHA_EXPIRATION = 120;
+
+    /**
+     * 接口请求hearder增加token
+     */
+    String AUTH_TOKEN = "Auth-Token";
 }

@@ -6,11 +6,11 @@ import cn.hutool.core.lang.UUID;
  * ID生成器工具类
  *
  */
-public class UUIDUtils {
+public class UUIDUtil {
 
     public static String generateShortUuid() {
         StringBuffer shortBuffer = new StringBuffer();
-        String uuid = java.util.UUID.randomUUID().toString().replace("-", "");
+        String uuid = UUID.randomUUID().toString().replace("-", "");
         for (int i = 0; i < 8; i++) {
             String str = uuid.substring(i * 4, i * 4 + 4);
             int x = Integer.parseInt(str, 16);
@@ -67,6 +67,6 @@ public class UUIDUtils {
 
 
     public static void main(String[] args) {
-        System.out.println(generateShortUuid());
+        System.out.println(fastSimpleUUID());
     }
 }

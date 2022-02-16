@@ -65,11 +65,11 @@ public class LogOperationDTO {
     /**
      * 请求路径
      */
-    private String requestURI;
+    private String requestUrl;
     /**
      * 子系统
      */
-    private String operateSubsystem;
+    private String operateSubSystem;
     /**
      * 操作人账号
      */
@@ -85,11 +85,11 @@ public class LogOperationDTO {
     /**
      * 函数执行失败时写入异常信息
      */
-    private String exception;
+    private String exceptionMsg;
     /**
      * 操作执行时间
      */
-    private Date operateDate;
+    private Date operateTime;
     /**
      * 方法执行耗时（毫秒）
      */

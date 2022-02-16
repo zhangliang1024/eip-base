@@ -23,15 +23,15 @@ public class IgnoreMarkerFilter extends AbstractMatcherFilter<ILoggingEvent> {
     @Override
     public FilterReply decide(ILoggingEvent event) {
         if (!isStarted()) {
-            return FilterReply.DENY;
+            return FilterReply.DENY; //拒绝，删除日志事件，不调用下游过滤器
         }
         Marker marker = event.getMarker();
         if (Objects.isNull(marker)) {
-            return FilterReply.NEUTRAL;
+            return FilterReply.NEUTRAL; //中立 继续调用下一个过滤器，若没有则正常处理记录日志事件
         }
 
         if (marker.contains(marker)) {
-            return FilterReply.ACCEPT;
+            return FilterReply.ACCEPT; //通过，跳过其余的过滤器调用
         } else {
             return FilterReply.NEUTRAL;
         }

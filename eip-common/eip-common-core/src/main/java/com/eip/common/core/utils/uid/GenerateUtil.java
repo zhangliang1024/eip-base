@@ -1,5 +1,8 @@
 package com.eip.common.core.utils.uid;
 
+import com.eip.common.core.utils.date.CalendarUtil;
+
+import java.util.Date;
 import java.util.Random;
 
 /**
@@ -94,7 +97,17 @@ public class GenerateUtil {
         return sb.toString();
     }
 
+    /**
+     * 日志链路全局ID
+     * @return
+     */
+    public static String getLogTraceId() {
+        String dateTime = CalendarUtil.getDateNotSlashFormat(new Date());
+        return UUIDUtil.fastSimpleUUID().substring(10).toUpperCase() + "_" + dateTime;
+    }
+
     public static void main(String[] args) {
         System.out.println(generateNumber(16));
+        System.out.println(getLogTraceId());
     }
 }

@@ -31,12 +31,46 @@ public class ApplicationContextUtil {
         ApplicationContextUtil.staticApplicationContext = applicationContext;
     }
 
-    public static <T> T getBean(Class<T> c){
+    /**
+     * 获取applicationContext
+     *
+     * @return
+     */
+    public static ApplicationContext getApplicationContext() {
+        return staticApplicationContext;
+    }
+
+
+    /**
+     * 通过class获取Bean.
+     *
+     * @param clazz
+     */
+    public static <T> T getBean(Class<T> clazz){
         if(!Objects.isNull(staticApplicationContext)){
-            return staticApplicationContext.getBean(c);
+            return staticApplicationContext.getBean(clazz);
         }
         return null;
     }
 
+    /**
+     * 通过name获取 Bean.
+     *
+     * @param name
+     */
+    public static Object getBean(String name) {
+        return getApplicationContext().getBean(name);
+    }
+
+
+    /**
+     * 通过name及Clazz返回指定的Bean
+     *
+     * @param name
+     * @param clazz
+     */
+    public static <T> T getBean(String name, Class<T> clazz) {
+        return getApplicationContext().getBean(name, clazz);
+    }
 
 }

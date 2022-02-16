@@ -1,13 +1,11 @@
 package com.eip.common.core.utils.encrypt;
 
 import org.apache.commons.codec.binary.Base64;
+import sun.misc.BASE64Decoder;
 
 import javax.crypto.Cipher;
 import java.io.ByteArrayOutputStream;
-import java.security.Key;
-import java.security.KeyFactory;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
+import java.security.*;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
@@ -162,10 +160,29 @@ public class RSAUtils {
         return Base64.encodeBase64String(key.getEncoded());
     }
 
-
-    public static void main(String[] args) {
-        System.out.println("private: " + getPrivateKey());
-        System.out.println("public: " + getPublicKey());
+    public static PublicKey getPublicKey(String publicKey) throws Exception {
+        byte[] keyBytes = new BASE64Decoder().decodeBuffer(publicKey);
+        X509EncodedKeySpec spec = new X509EncodedKeySpec(keyBytes);
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        return keyFactory.generatePublic(spec);
     }
+
+    public static PrivateKey getPrivateKey(String privateKey) throws Exception {
+        byte[] keyBytes = new BASE64Decoder().decodeBuffer(privateKey);
+        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(keyBytes);
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        return keyFactory.generatePrivate(spec);
+    }
+
+    public static void main(String[] args) throws Exception {
+        System.out.println("private: " + getPrivateKey());
+        PrivateKey privateKey = getPrivateKey(getPrivateKey());
+        System.out.println("private: " + Base64.encodeBase64String(privateKey.getEncoded()));
+
+        System.out.println("public: " + getPublicKey());
+        PublicKey publicKey = getPublicKey(getPublicKey());
+        System.out.println("public: " + Base64.encodeBase64String(publicKey.getEncoded()));
+    }
+
 
 }
