@@ -98,3 +98,29 @@ public class Business{
 * [Java封装OkHttp3工具类，用着贼舒服](https://blog.csdn.net/lilizhou2008/article/details/117537867)
 * [OkHttpClient连接池问题](https://www.jianshu.com/p/e23c113f97f6)
 * [再见，HttpClient！再见，Okhttp！](https://www.cnblogs.com/javastack/archive/2021/03/08/14501674.html)
+* ★★★ [基于springboot的RestTemplate、okhttp和HttpClient对比](https://www.cnblogs.com/wzk-0000/p/10955406.html)
+* [RestTemplate + okhttp3 简单使用](https://www.jianshu.com/p/e4fded8e126a)
+
+---
+## `okhttp`
+> `OkHttp`是一个高效的`HTTP`客户端，允许所有同一主机地址的请求共享同一`socket`连接；连接池减少请求延时;
+
+--- 
+## `Logback`
+> `logback`提供两种类型的过滤器，一种是`常规过滤器`，另一种是`全局过滤器`。`常规过滤器`与`appender`绑定，`全局过滤器`与`logger context`绑定。
+> - `全局过滤器`过滤所有`logging request`，`常规过滤器`只过滤某个`appender`的`logging request`。
+
+* [Logback 日志过滤器的使用-日志分类归档方案](https://blog.csdn.net/weixin_45505313/article/details/107382558)
+* [java基础教程栏目介绍如何解决Java日志级别等问题](https://www.yht7.com/news/126652)
+
+
+--- 
+## 数据脱密
+> {
+>      "name":"L****",
+>      "idNum":"1234************89",
+>      "phone":"130****6666",
+>      "address":"深圳市##########01",
+>      "password":"a******we"
+> }
+* [Spring Boot 自定义注解之脱敏注解](https://juejin.cn/post/7022455226984726535)
