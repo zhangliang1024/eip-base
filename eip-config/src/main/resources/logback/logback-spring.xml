@@ -6,7 +6,7 @@
 <configuration scan="true" scanPeriod="10 seconds">
     <contextName>logback</contextName>
 
-    <define name="ip" class="com.eip.common.logback.IPLogDefiner"/>
+    <define name="ip" class="com.eip.common.log.logback.IPLogDefiner"/>
 
     <!-- 日志输出路径: logging.path 在application.properties中配置，注意下面是 springProperty 不是 property -->
     <springProperty scope="context" name="logPath" source="logging.file.path"/>
@@ -22,11 +22,14 @@
     <!-- 彩色日志 -->
     <!-- 彩色日志依赖的渲染类 -->
     <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
-    <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
-    <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="wex"
+                    converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="wEx"
+                    converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
 
     <!-- 彩色日志格式 -->
-    <property name="CONSOLE_LOG_PATTERN" value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} [${SERVER_NAME} ${SERVER_IP}] %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+    <property name="CONSOLE_LOG_PATTERN"
+              value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} [${SERVER_NAME} ${SERVER_IP}] %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
 
 
     <!--输出到控制台-->
@@ -46,12 +49,13 @@
     <!--输出到文件-->
 
     <!-- 时间滚动输出 level为 DEBUG 日志 -->
-    <appender name="DEBUG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="DEBUG-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!-- 正在记录的日志文件的路径及文件名 -->
         <file>${LOG_PATH}/${LOG_NAME}_debug.log</file>
         <!--日志文件输出格式-->
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [${SERVER_NAME} ${SERVER_IP}] [%thread] %-5level %logger{50} - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [${SERVER_NAME} ${SERVER_IP}] [%thread] %-5level %logger{50} - %msg%n
+            </pattern>
             <charset>UTF-8</charset> <!-- 设置字符集 -->
         </encoder>
         <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
@@ -73,12 +77,13 @@
     </appender>
 
     <!-- 时间滚动输出 level为 INFO 日志 -->
-    <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="INFO-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!-- 正在记录的日志文件的路径及文件名 -->
         <file>${LOG_PATH}/${LOG_NAME}_info.log</file>
         <!--日志文件输出格式-->
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [${SERVER_NAME} ${SERVER_IP}] [%thread] %-5level %logger{50} - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [${SERVER_NAME} ${SERVER_IP}] [%thread] %-5level %logger{50} - %msg%n
+            </pattern>
             <charset>UTF-8</charset>
         </encoder>
         <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
@@ -100,12 +105,13 @@
     </appender>
 
     <!-- 时间滚动输出 level为 WARN 日志 -->
-    <appender name="WARN_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="WARN-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!-- 正在记录的日志文件的路径及文件名 -->
         <file>${LOG_PATH}/${LOG_NAME}_warn.log</file>
         <!--日志文件输出格式-->
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [${SERVER_NAME} ${SERVER_IP}] [%thread] %-5level %logger{50} - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [${SERVER_NAME} ${SERVER_IP}] [%thread] %-5level %logger{50} - %msg%n
+            </pattern>
             <charset>UTF-8</charset> <!-- 此处设置字符集 -->
         </encoder>
         <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
@@ -127,12 +133,13 @@
 
 
     <!-- 时间滚动输出 level为 ERROR 日志 -->
-    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="ERROR-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!-- 正在记录的日志文件的路径及文件名 -->
         <file>${LOG_PATH}/${LOG_NAME}_error.log</file>
         <!--日志文件输出格式-->
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [${SERVER_NAME} ${SERVER_IP}] [%thread] %-5level %logger{50} - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [${SERVER_NAME} ${SERVER_IP}] [%thread] %-5level %logger{50} - %msg%n
+            </pattern>
             <charset>UTF-8</charset> <!-- 此处设置字符集 -->
         </encoder>
         <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
@@ -150,6 +157,31 @@
             <onMatch>ACCEPT</onMatch>
             <onMismatch>DENY</onMismatch>
         </filter>
+    </appender>
+
+    <!-- 异步输出 -->
+    <appender name="ASYNC-DEBUG" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+        <discardingThreshold>0</discardingThreshold>
+        <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
+        <queueSize>256</queueSize>
+        <!-- 添加附加的appender,最多只能添加一个 -->
+        <appender-ref ref="DEBUG-FILE"/>
+    </appender>
+    <appender name="ASYNC-INFO" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>256</queueSize>
+        <appender-ref ref="INFO-FILE"/>
+    </appender>
+    <appender name="ASYNC-WARN" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>256</queueSize>
+        <appender-ref ref="WARN-FILE"/>
+    </appender>
+    <appender name="ASYNC-ERROR" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>256</queueSize>
+        <appender-ref ref="ERROR-FILE"/>
     </appender>
 
     <!--
@@ -182,10 +214,10 @@
         <logger name="com.eip.ability" level="debug"/>
         <root level="info">
             <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="DEBUG_FILE"/>
-            <appender-ref ref="INFO_FILE"/>
-            <appender-ref ref="WARN_FILE"/>
-            <appender-ref ref="ERROR_FILE"/>
+            <appender-ref ref="ASYNC-DEBUG"/>
+            <appender-ref ref="ASYNC-INFO"/>
+            <appender-ref ref="ASYNC-WARN"/>
+            <appender-ref ref="ASYNC-ERROR"/>
         </root>
     </springProfile>
 
@@ -193,10 +225,10 @@
     <springProfile name="pro">
         <root level="info">
             <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="DEBUG_FILE"/>
-            <appender-ref ref="INFO_FILE"/>
-            <appender-ref ref="ERROR_FILE"/>
-            <appender-ref ref="WARN_FILE"/>
+            <appender-ref ref="ASYNC-DEBUG"/>
+            <appender-ref ref="ASYNC-INFO"/>
+            <appender-ref ref="ASYNC-WARN"/>
+            <appender-ref ref="ASYNC-ERROR"/>
         </root>
     </springProfile>
 

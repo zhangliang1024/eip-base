@@ -1,6 +1,5 @@
 package com.eip.ability.log;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -13,7 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @version V1.0.0
  */
 @SpringBootApplication
-@MapperScan("com.eip.ability.log")
+//@MapperScan("com.eip.ability.log")
 public class LogWebApplication {
 
     public static void main(String[] args) {

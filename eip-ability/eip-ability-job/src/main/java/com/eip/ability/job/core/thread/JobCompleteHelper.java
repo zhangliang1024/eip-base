@@ -51,7 +51,7 @@ public class JobCompleteHelper {
 					@Override
 					public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
 						r.run();
-						logger.warn(">>>>>>>>>>> xxl-job, callback too fast, match threadpool rejected handler(run now).");
+						logger.warn(">>>>>>>>>>> xxl-job, callback too fast, match threadpool rejected advice(run now).");
 					}
 				});
 

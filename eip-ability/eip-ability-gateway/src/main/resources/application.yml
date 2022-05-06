@@ -1,51 +1,45 @@
 server:
-  port: ${SERVER_PORT:8002}
-
-eureka:
-  instance:
-    ip-address: ${SERVER_IP_ADDRESS:127.0.0.1}
-    instance-id: ${SERVER_IP_ADDRESS:127.0.0.1}:${server.port}
-    lease-renewal-interval-in-seconds: 5
-    lease-expiration-duration-in-seconds: 10
-    prefer-ip-address: true
-  client:
-    registry-fetch-interval-seconds: 8
-    serviceUrl:
-      defaultZone: ${EUREKA_SERVER_URI:http://127.0.0.1:8001/eureka/}
+  port: 3001
 
 spring:
+  main:
+    allow-bean-definition-overriding: true
   application:
-    name: gateway-server
+    name: oauth2-cloud-gateway
   cloud:
     gateway:
-      discovery:
-        locator:
-          # 开启从注册中心动态创建路由的功能，利用微服务名进行路由
-          enabled: true
-          # 忽略大小写匹配，默认为 false， 当 eureka 自动大写 serviceId 时很有用。 所以 MYSERIVCE，会匹配 /myservice/**
-          lower-case-service-id: true
-#      seems spring cloud gateway does not support a global context path like /api
-#      defaultFilters:
-#        - StripPrefix=2
-#      routes:
-#        - id: authentication-id
-#          uri: lb://authentication-server
-#          predicates:
-#            - Path=/api/auth/**
-#          filters:
-#            - StripPrefix=2
+      ## 路由
+      routes:
+      ## id只要唯一即可，名称任意
+      - id: oauth2-cloud-auth-server
+        uri: http://localhost:3002
+        predicates:
+        ## Path Route Predicate Factory断言
+        - Path=/oauth/**
+      - id: oauth2-cloud-order
+        uri: http://localhost:9002
+        predicates:
+        ## Path Route Predicate Factory断言
+        - Path=/resources/**
+        filters:
+          - StripPrefix=1
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: always
+  redis:
+    host: 192.168.100.54
+    port: 6379
+    database: 1
+    password: 123456
+    timeout: 15000
+    jedis:
+      pool:
+        max-active: 600
+        max-idle: 300
+        max-wait: 15000
+        min-idle: 10
 
-logging:
-  level:
-    com.netflix: WARN
-    org.springframework.web: WARN
-    com.jingyou.springcloud: INFO
+eip:
+  gateway:
+    sys:
+      ignoreUrls:
+      - /oauth/token
+      - /oauth/authorize

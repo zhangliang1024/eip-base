@@ -48,7 +48,7 @@ public class JobRegistryHelper {
 					@Override
 					public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
 						r.run();
-						logger.warn(">>>>>>>>>>> xxl-job, registry or remove too fast, match threadpool rejected handler(run now).");
+						logger.warn(">>>>>>>>>>> xxl-job, registry or remove too fast, match threadpool rejected advice(run now).");
 					}
 				});
 

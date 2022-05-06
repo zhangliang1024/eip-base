@@ -1,0 +1,5 @@
+###
+POST http://localhost:9001/oauth/token?username=admin&password=123&client_id=myjszl&client_secret=123&grant_type=password
+
+
+###

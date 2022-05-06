@@ -1365,7 +1365,7 @@
 
             this.updateView();
 
-            //This is to cancel the blur event handler if the mouse was in one of the inputs
+            //This is to cancel the blur event advice if the mouse was in one of the inputs
             e.stopPropagation();
 
         },

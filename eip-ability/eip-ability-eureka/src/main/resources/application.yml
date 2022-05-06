@@ -15,8 +15,12 @@ eureka:
     lease-expiration-duration-in-seconds: 10 #服务失效时间，默认90秒。客户端不配置，默认走server端配置
     health-check-url-path: /actuator/health #配置actuator的检查路径，默认也是：/actuator/health
     prefer-ip-address: true
+    # 自定义元数据可以使用
+    #metadata-map:
+      #key: value
+
   server:
-    enable-self-preservation: false
+    enable-self-preservation: false #禁用自我保护模式
     eviction-interval-timer-in-ms: 8000 #续期时间，即扫描失效服务的间隔时间(缺省为：60*1000ms)
     response-cache-update-interval-ms: 5000 #readOnlyCache缓存更新时间
   client:
@@ -25,6 +29,8 @@ eureka:
     registry-fetch-interval-seconds: 5 #从Eureka Server服务端获取注册信息的间隔时间，单位：秒
     service-url:
       defaultZone: ${EUEEKA_SERVER_URL:http://localhost:9001/eureka/}
+    healthcheck:
+      enabled: true #应用程序会将自己Spring Boot Actuator的/heath端点的健康状态传播到Eureka Server
 
 #服务信息
 info:

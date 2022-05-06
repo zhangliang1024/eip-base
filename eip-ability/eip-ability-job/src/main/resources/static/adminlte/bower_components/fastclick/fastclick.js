@@ -158,8 +158,8 @@
 			};
 		}
 
-		// If a handler is already declared in the element's onclick attribute, it will be fired before
-		// FastClick's onClick handler. Fix this by pulling out the user-defined handler function and
+		// If a advice is already declared in the element's onclick attribute, it will be fired before
+		// FastClick's onClick advice. Fix this by pulling out the user-defined advice function and
 		// adding it as listener.
 		if (typeof layer.onclick === 'function') {
 

@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: apollo-decypt
+
+#项目信息中的AppId
+app:
+  id: apollo-decypt
+apollo:
+  meta: http://192.168.100.54:9080
+  bootstrap:
+    namespaces: application
+    enabled: true
+    eagerLoad:
+      enabled: true
+
+
+jasypt:
+  encryptor:
+    # 指定加密密钥，生产环境请放到启动参数里面
+    password: ${JASYPT_PASSWORD:yinjihaunkey}
+
+#test:
+#  input: ENC(cH5hcjWTDomE44riMs8d06ncNfuLG8oxbSDYD5y3D9E=)
+
+#eip:
+#  test:
+#    name: zhangsan
+#    age: 20
+
+#logging:
+#  level:
+#    root: warn
+#    com.eip.business.demo.controller: trace

@@ -12,8 +12,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * @author 张良 E-mail:zhangliang01@jingyougroup.com
  * @version V1.0.0
  */
-@SpringBootApplication
-@EnableDiscoveryClient
+@SpringBootApplication(scanBasePackages = {"com.eip.ability.gateway","com.eip.common.auth.gateway"})
+//@EnableDiscoveryClient
 public class GatewayApplication {
 
 

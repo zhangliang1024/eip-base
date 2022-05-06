@@ -1166,8 +1166,8 @@
   }
 
   // The DOM events that CodeMirror handles can be overridden by
-  // registering a (non-DOM) handler on the editor for the event name,
-  // and preventDefault-ing the event in that handler.
+  // registering a (non-DOM) advice on the editor for the event name,
+  // and preventDefault-ing the event in that advice.
   function signalDOMEvent(cm, e, override) {
     if (typeof e == "string")
       { e = {type: e, preventDefault: function() { this.defaultPrevented = true; }}; }
@@ -2132,7 +2132,7 @@
   var orphanDelayedCallbacks = null;
 
   // Often, we want to signal events at a point where we are in the
-  // middle of some work, but don't want the handler to start calling
+  // middle of some work, but don't want the advice to start calling
   // other methods on the editor, which might be in an inconsistent
   // state or simply not expect any other events to happen.
   // signalLater looks whether there are any handlers, and schedules
@@ -6557,7 +6557,7 @@
   }
 
   // These must be handled carefully, because naively registering a
-  // handler for each editor will cause the editors to never be
+  // advice for each editor will cause the editors to never be
   // garbage collected.
 
   function forEachCodeMirror(f) {
@@ -7056,13 +7056,13 @@
     return start
   }
 
-  // Run a handler that was bound to a key.
+  // Run a advice that was bound to a key.
   function doHandleBinding(cm, bound, dropShift) {
     if (typeof bound == "string") {
       bound = commands[bound];
       if (!bound) { return false }
     }
-    // Ensure previous input has been read, so that the handler sees a
+    // Ensure previous input has been read, so that the advice sees a
     // consistent view of the document
     cm.display.input.ensurePolled();
     var prevShift = cm.display.shift, done = false;
@@ -7351,7 +7351,7 @@
       moved = moved || Math.abs(event.clientX - e2.clientX) + Math.abs(event.clientY - e2.clientY) >= 10;
     };
     var dragStart = function () { return moved = true; };
-    // Let the drag handler handle this.
+    // Let the drag advice handle this.
     if (webkit) { display.scroller.draggable = true; }
     cm.state.draggingText = dragEnd;
     dragEnd.copy = !behavior.moveOnDrag;
@@ -9496,7 +9496,7 @@
         te.value = extval;
         input.prevInput = selected ? "" : "\u200b";
         te.selectionStart = 1; te.selectionEnd = extval.length;
-        // Re-set this, in case some other handler touched the
+        // Re-set this, in case some other advice touched the
         // selection in the meantime.
         display.selForContextMenu = cm.doc.sel;
       }

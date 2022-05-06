@@ -72,7 +72,7 @@ $(function() {
     // pull first page
     pullLog();
 
-    // handler already callback, end
+    // advice already callback, end
     if (handleCode > 0) {
         logRunStop('<br><span style="color: green;">[Load Log Finish]</span>');
         return;

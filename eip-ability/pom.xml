@@ -15,22 +15,27 @@
     <modules>
         <module>eip-ability-eureka</module>
         <module>eip-ability-gateway</module>
+        <module>eip-ability-auth</module>
+        <module>eip-ability-sentinel</module>
+        <module>eip-ability-seata</module>
+        <module>eip-ability-job</module>
+        <module>eip-ability-log</module>
     </modules>
 
 
     <dependencies>
-        <dependency>
-            <groupId>com.eip.cloud</groupId>
-            <artifactId>eip-common-banner</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.eip.cloud</groupId>
-            <artifactId>eip-common-logback</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.eip.cloud</groupId>
-            <artifactId>eip-config</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.eip.cloud</groupId>-->
+            <!--<artifactId>eip-common-banner</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>com.eip.cloud</groupId>-->
+            <!--<artifactId>eip-common-logback</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>com.eip.cloud</groupId>-->
+            <!--<artifactId>eip-config</artifactId>-->
+        <!--</dependency>-->
     </dependencies>
 
     <build>

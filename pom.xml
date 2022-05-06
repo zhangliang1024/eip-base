@@ -12,15 +12,20 @@
         <module>eip-business</module>
         <module>eip-monitor</module>
         <module>eip-ability</module>
+        <module>eip-sample</module>
     </modules>
     <packaging>pom</packaging>
 
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+        <maven-source-plugin.version>3.8.1</maven-source-plugin.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>1.8</java.version>
+        <maven.test.skip>true</maven.test.skip>
+
+
         <spring-boot-dependencies.version>2.3.2.RELEASE</spring-boot-dependencies.version>
         <spring-cloud-dependencies.version>Hoxton.SR9</spring-cloud-dependencies.version>
         <spring-cloud-alibaba-dependencies.version>2.2.6.RELEASE</spring-cloud-alibaba-dependencies.version>
@@ -35,6 +40,14 @@
         <swagger.knife4j.version>3.0.3</swagger.knife4j.version>
 
         <json.sanitizer.version>1.1</json.sanitizer.version>
+        <apollo.version>1.9.2</apollo.version>
+        <jasypt.version>2.0.0</jasypt.version>
+        <captcha.version>2.2.1</captcha.version>
+        <!-- AJ-Captcha滑动验证码 -->
+        <captcha.slide.version>1.3.0</captcha.slide.version>
+        <!-- Easy-Captcha图形验证码 -->
+        <easy.captcha.version>1.6.2</easy.captcha.version>
+        <commons.version>2.2</commons.version>
 
         <redission.starter.version>3.13.6</redission.starter.version>
         <redission.version>3.5.4</redission.version>
@@ -46,7 +59,12 @@
         <joda.time.version>2.9.5</joda.time.version>
         <commons.io.version>1.3.2</commons.io.version>
         <dingtalk-sdk.version>1.0.1</dingtalk-sdk.version>
-        <hutool-core.version>5.4.7</hutool-core.version>
+        <hutool-core.version>5.7.19</hutool-core.version>
+
+        <!--xxl-job-->
+        <mybatis-spring-boot-starter.version>2.1.4</mybatis-spring-boot-starter.version>
+        <netty-all.version>4.1.63.Final</netty-all.version>
+        <groovy.version>3.0.8</groovy.version>
 
     </properties>
 
@@ -78,11 +96,6 @@
                 <scope>import</scope>
             </dependency>
 
-            <dependency>
-                <groupId>com.ctrip.framework.apollo</groupId>
-                <artifactId>apollo-client</artifactId>
-                <version>${apollo.config.version}</version>
-            </dependency>
 
             <!-- mysql start -->
             <dependency>
@@ -101,6 +114,12 @@
                 <version>${mybatis-plus.version}</version>
             </dependency>
 
+            <!--验证码相关-->
+            <dependency>
+                <groupId>com.pig4cloud.plugin</groupId>
+                <artifactId>captcha-spring-boot-starter</artifactId>
+                <version>${captcha.version}</version>
+            </dependency>
 
             <!-- 日志相关 -->
             <dependency>
@@ -108,7 +127,34 @@
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>com.ctrip.framework.apollo</groupId>
+                <artifactId>apollo-client</artifactId>
+                <version>${apollo.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ctrip.framework.apollo</groupId>
+                <artifactId>apollo-core</artifactId>
+                <version>${apollo.version}</version>
+            </dependency>
+            <!--图片验证码-->
+            <dependency>
+                <groupId>com.github.ulisesbocchio</groupId>
+                <artifactId>jasypt-spring-boot-starter</artifactId>
+                <version>${jasypt.version}</version>
+            </dependency>
+            <!-- captcha 滑动验证码-->
+            <!--<dependency>-->
+                <!--<groupId>com.anji-plus</groupId>-->
+                <!--<artifactId>spring-boot-starter-captcha</artifactId>-->
+                <!--<version>${captcha.slide.version}</version>-->
+            <!--</dependency>-->
+            <!-- easy-captcha 图形验证码-->
+            <dependency>
+                <groupId>com.github.whvcse</groupId>
+                <artifactId>easy-captcha</artifactId>
+                <version>${easy.captcha.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>com.eip.cloud</groupId>
@@ -118,6 +164,11 @@
             <dependency>
                 <groupId>com.eip.cloud</groupId>
                 <artifactId>eip-common-core</artifactId>
+                <version>${eip.base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.eip.cloud</groupId>
+                <artifactId>eip-common-web</artifactId>
                 <version>${eip.base.version}</version>
             </dependency>
             <dependency>
@@ -147,14 +198,71 @@
             </dependency>
             <dependency>
                 <groupId>com.eip.cloud</groupId>
-                <artifactId>eip-common-log4j</artifactId>
+                <artifactId>eip-common-log-log4j</artifactId>
                 <version>${eip.base.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.eip.cloud</groupId>
-                <artifactId>eip-common-logback</artifactId>
+                <artifactId>eip-common-log-core</artifactId>
                 <version>${eip.base.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.eip.cloud</groupId>
+                <artifactId>eip-common-log-logback</artifactId>
+                <version>${eip.base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.eip.cloud</groupId>
+                <artifactId>eip-common-apollo</artifactId>
+                <version>${eip.base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.eip.cloud</groupId>
+                <artifactId>eip-common-feign</artifactId>
+                <version>${eip.base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.eip.cloud</groupId>
+                <artifactId>eip-common-auth-com</artifactId>
+                <version>${eip.base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.eip.cloud</groupId>
+                <artifactId>eip-common-auth-gateway</artifactId>
+                <version>${eip.base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.eip.cloud</groupId>
+                <artifactId>eip-common-auth-server</artifactId>
+                <version>${eip.base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.eip.cloud</groupId>
+                <artifactId>eip-common-auth-client</artifactId>
+                <version>${eip.base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.eip.cloud</groupId>
+                <artifactId>eip-common-mysql</artifactId>
+                <version>${eip.base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.eip.cloud</groupId>
+                <artifactId>eip-common-job-core</artifactId>
+                <version>${eip.base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.eip.cloud</groupId>
+                <artifactId>eip-common-job-client</artifactId>
+                <version>${eip.base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.eip.cloud</groupId>
+                <artifactId>eip-common-sms-mail</artifactId>
+                <version>${eip.base.version}</version>
+            </dependency>
+
+
 
 
             <dependency>
@@ -230,7 +338,29 @@
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool-core.version}</version>
             </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons.version}</version>
+            </dependency>
 
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis-spring-boot-starter.version}</version>
+            </dependency>
+            <!-- embed server: netty + gson -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-all</artifactId>
+                <version>${netty-all.version}</version>
+            </dependency>
+            <!-- groovy-all -->
+            <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy</artifactId>
+                <version>${groovy.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -272,12 +402,13 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>${maven-source-plugin.version}</version>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                    <encoding>UTF-8</encoding>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <encoding>${maven.compiler.encoding}</encoding>
                     <showWarnings>true</showWarnings>
+                    <skip>${maven.test.skip}</skip>
                 </configuration>
             </plugin>
         </plugins>
@@ -294,6 +425,13 @@
 
         <!-- 配置环境占位符 -->
         <resources>
+            <!--mapper.xml放入java包结构中，需加配置-->
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
             <!-- 替换勾选的环境 -->
             <resource>
                 <filtering>true</filtering>

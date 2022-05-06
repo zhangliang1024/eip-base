@@ -1,0 +1,42 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: sentinel-server
+  cloud:
+    sentinel:
+      #取消Sentinel控制台懒加载
+      eager: true
+      transport:
+        dashboard: localhost:8080
+      datasource:
+        flow:
+          nacos:
+            server-addr: 127.0.0.1:8848
+            dataId: ${spring.application.name}-flow-rules.json
+            groupId: SENTINEL_GROUP
+            rule-type: flow
+        degrade:
+          nacos:
+            server-addr: 127.0.0.1:8848
+            dataId: ${spring.application.name}-degrade-rules.json
+            groupId: SENTINEL_GROUP
+            rule-type: degrade
+        system:
+          nacos:
+            server-addr: 127.0.0.1:8848
+            dataId: ${spring.application.name}-system-rules.json
+            groupId: SENTINEL_GROUP
+            rule-type: system
+        authority:
+          nacos:
+            server-addr: 127.0.0.1:8848
+            dataId: ${spring.application.name}-authority-rules.json
+            groupId: SENTINEL_GROUP
+            rule-type: authority
+        param-flow:
+          nacos:
+            server-addr: 127.0.0.1:8848
+            dataId: ${spring.application.name}-param-flow-rules.json
+            groupId: SENTINEL_GROUP
+            rule-type: param-flow
