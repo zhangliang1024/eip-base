@@ -1,8 +1,8 @@
 package com.eip.common.encry.advice;
 
-import com.eip.common.encry.util.Base64Util;
-import com.eip.common.encry.util.RSAUtil;
+import com.eip.common.core.utils.encrypt.RSAUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.util.StringUtils;
@@ -36,7 +36,7 @@ public class DecryptHttpInputMessage implements HttpInputMessage {
             if (!StringUtils.isEmpty(content)) {
                 String[] contents = content.split("\\|");
                 for (String value : contents) {
-                    value = new String(RSAUtil.decrypt(Base64Util.decode(value), privateKey), charset);
+                    value = new String(RSAUtils.decrypt(Base64.decodeBase64(value), privateKey), charset);
                     json.append(value);
                 }
             }

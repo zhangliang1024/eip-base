@@ -18,12 +18,12 @@ public @interface XxlJob {
     String value();
 
     /**
-     * init handler, invoked when JobThread init
+     * init advice, invoked when JobThread init
      */
     String init() default "";
 
     /**
-     * destroy handler, invoked when JobThread destroy
+     * destroy advice, invoked when JobThread destroy
      */
     String destroy() default "";
 

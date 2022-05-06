@@ -10,6 +10,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>eip-common-sms</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>eip-common-sms-mail</module>
+        <module>eip-common-sms-phone</module>
+    </modules>
 
 
     <dependencies>

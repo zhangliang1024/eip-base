@@ -21,7 +21,7 @@ import java.util.concurrent.*;
 
 
 /**
- * handler thread
+ * advice thread
  *
  * @author xuxueli 2016-1-16 19:52:47
  */
@@ -208,7 +208,7 @@ public class JobThread extends Thread {
                 XxlJobHelper.log("<br>----------- JobThread Exception:" + errorMsg + "<br>----------- xxl-job job execute end(error) -----------");
             } finally {
                 if (triggerParam != null) {
-                    // callback handler info
+                    // callback advice info
                     if (!toStop) {
                         // commonm
                         TriggerCallbackThread.pushCallBack(new HandleCallbackParam(

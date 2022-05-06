@@ -15,7 +15,7 @@ public class DynamicThreadPoolExecutor extends ThreadPoolExecutor {
      */
     private String threadPoolName;
     /**
-     * The default rejected execution handler
+     * The default rejected execution advice
      */
     private static final RejectedExecutionHandler defaultHandler = new AbortPolicy();
 

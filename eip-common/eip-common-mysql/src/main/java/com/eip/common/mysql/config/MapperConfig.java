@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@MapperScan(basePackages = "com.eip.base.mapper")
+@MapperScan(basePackages = "com.eip.**.mapper")
 @EnableTransactionManagement
 public class MapperConfig {
 

@@ -56,7 +56,7 @@ public class XxlJobSimpleExecutor extends XxlJobExecutor {
             return;
         }
 
-        // init job handler from method
+        // init job advice from method
         for (Object bean : xxlJobBeanList) {
             // method
             Method[] methods = bean.getClass().getDeclaredMethods();

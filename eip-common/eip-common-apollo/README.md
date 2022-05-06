@@ -177,6 +177,7 @@ jasypt与apollo出现冲突所致，jasypt-spring-boot-starter版本仅支持到
 ---
 - 代码示例
 * [apollo-use-cases](https://github.com/sunnyvinson/apollo-use-cases)
+* [配置中心-最佳实践](https://cloud.tencent.com/document/product/1364/58879)
 
 
 

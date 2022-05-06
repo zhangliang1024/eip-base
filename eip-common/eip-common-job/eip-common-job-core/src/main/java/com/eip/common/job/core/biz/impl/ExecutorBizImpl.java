@@ -59,18 +59,18 @@ public class ExecutorBizImpl implements ExecutorBiz {
 
             // valid old jobThread
             if (jobThread != null && jobHandler != newJobHandler) {
-                // change handler, need kill old thread
+                // change advice, need kill old thread
                 removeOldReason = "change jobhandler or glue type, and terminate the old job thread.";
 
                 jobThread = null;
                 jobHandler = null;
             }
 
-            // valid handler
+            // valid advice
             if (jobHandler == null) {
                 jobHandler = newJobHandler;
                 if (jobHandler == null) {
-                    return new ReturnT<String>(ReturnT.FAIL_CODE, "job handler [" + triggerParam.getExecutorHandler() + "] not found.");
+                    return new ReturnT<String>(ReturnT.FAIL_CODE, "job advice [" + triggerParam.getExecutorHandler() + "] not found.");
                 }
             }
 
@@ -80,14 +80,14 @@ public class ExecutorBizImpl implements ExecutorBiz {
             if (jobThread != null &&
                     !(jobThread.getHandler() instanceof GlueJobHandler
                             && ((GlueJobHandler) jobThread.getHandler()).getGlueUpdatetime() == triggerParam.getGlueUpdatetime())) {
-                // change handler or gluesource updated, need kill old thread
+                // change advice or gluesource updated, need kill old thread
                 removeOldReason = "change job source or glue type, and terminate the old job thread.";
 
                 jobThread = null;
                 jobHandler = null;
             }
 
-            // valid handler
+            // valid advice
             if (jobHandler == null) {
                 try {
                     IJobHandler originJobHandler = GlueFactory.getInstance().loadNewInstance(triggerParam.getGlueSource());
@@ -110,7 +110,7 @@ public class ExecutorBizImpl implements ExecutorBiz {
                 jobHandler = null;
             }
 
-            // valid handler
+            // valid advice
             if (jobHandler == null) {
                 jobHandler = new ScriptJobHandler(triggerParam.getJobId(), triggerParam.getGlueUpdatetime(), triggerParam.getGlueSource(), GlueTypeEnum.match(triggerParam.getGlueType()));
             }

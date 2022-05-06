@@ -16,7 +16,6 @@ import java.lang.annotation.*;
 @Documented
 @Target({ElementType.FIELD,ElementType.METHOD})
 @Retention(value = RetentionPolicy.RUNTIME)
-
 public @interface CustomVaild {
 
 

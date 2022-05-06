@@ -1,6 +1,6 @@
 package com.eip.common.idempotent.aop;
 
-import com.eip.common.core.core.protocol.response.BaseResult;
+import com.eip.common.core.core.protocol.response.ApiResult;
 import com.eip.common.idempotent.annotation.AutoIdempotent;
 import com.eip.common.idempotent.service.TokenService;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -41,7 +41,7 @@ public class AutoIdempotentAspectHandler {
         if(tokenService.checkToken(request)){
             return joinPoint.proceed();
         }
-        return new BaseResult();
+        return ApiResult.ok();
     }
 
     private Method getMethod(ProceedingJoinPoint joinPoint) {

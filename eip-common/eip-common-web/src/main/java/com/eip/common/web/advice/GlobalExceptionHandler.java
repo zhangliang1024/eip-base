@@ -4,13 +4,12 @@ import com.eip.common.core.core.annotation.ExceptionCode;
 import com.eip.common.core.core.assertion.enums.ArgumentResponseEnum;
 import com.eip.common.core.core.assertion.enums.BaseResponseEnum;
 import com.eip.common.core.core.assertion.enums.ServletResponseEnum;
-import com.eip.common.core.core.protocol.response.ApiResult;
 import com.eip.common.core.core.exception.BaseRuntimeException;
 import com.eip.common.core.core.exception.BusinessRuntimeException;
 import com.eip.common.core.core.exception.i18n.I18nMessageSource;
+import com.eip.common.core.core.protocol.response.ApiResult;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,13 +41,13 @@ import java.lang.reflect.Field;
 /**
  * 全局异常处理
  */
+@Slf4j
 @ResponseBody
 @ControllerAdvice
 @ConditionalOnWebApplication
 @ConditionalOnMissingBean(GlobalExceptionHandler.class)
 public class GlobalExceptionHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
     /**
      * 生产环境
      */
@@ -62,8 +61,6 @@ public class GlobalExceptionHandler {
 
     /**
      * 获取国际化消息
-     * @param e 异常
-     * @return
      */
     public String getI18nMessage(BaseRuntimeException e) {
         String code = "response." + e.getResponseEnum().toString();
@@ -76,26 +73,21 @@ public class GlobalExceptionHandler {
 
     /**
      * 捕获业务异常
-     * @param e
-     * @return
      */
     @ExceptionHandler(value = BusinessRuntimeException.class)
     public ApiResult handleBusinessException(BaseRuntimeException e) {
-        log.error(e.getMessage(), e);
-        return new ApiResult(e.getResponseEnum().getCode(), getI18nMessage(e));
+        log.error("[Global] Business Exception : {}", e.getMessage(), e);
+        return ApiResult.error(e.getResponseEnum().getCode(), getI18nMessage(e));
     }
 
     @ExceptionHandler(value = BaseRuntimeException.class)
     public ApiResult handleBaseException(BaseRuntimeException e) {
-        log.error(e.getMessage(), e);
-
-        return new ApiResult(e.getResponseEnum().getCode(), getI18nMessage(e));
+        log.error("[Global] Base Exception : {}", e.getMessage(), e);
+        return ApiResult.error(e.getResponseEnum().getCode(), getI18nMessage(e));
     }
 
     /**
      * 未到达Controller层的相关异常
-     * @param e 异常
-     * @return 异常结果
      */
     @ExceptionHandler({
             NoHandlerFoundException.class,
@@ -113,99 +105,84 @@ public class GlobalExceptionHandler {
             AsyncRequestTimeoutException.class
     })
     public ApiResult handleServletException(Exception e) {
-        log.error(e.getMessage(), e);
+        log.error("[Global] Handle exception : {}", e.getMessage(), e);
         String code = BaseResponseEnum.SERVER_ERROR.getCode();
         try {
             ServletResponseEnum servletExceptionEnum = ServletResponseEnum.valueOf(e.getClass().getSimpleName());
             code = servletExceptionEnum.getCode();
         } catch (IllegalArgumentException e1) {
-            log.error("class [{}] not defined in enums {}", e.getClass().getName(), ServletResponseEnum.class.getName());
+            log.error("[Global] Illegal Exception : class [{}] not defined in enums {}", e.getClass().getName(), ServletResponseEnum.class.getName());
         }
         if (ENV_PROD.equals(profile)) {
             // 为生产环境时, 不适合把具体的异常信息展示给用户, 比如404.
             code = BaseResponseEnum.SERVER_ERROR.getCode();
             BaseRuntimeException baseRuntimeException = new BaseRuntimeException(BaseResponseEnum.SERVER_ERROR);
             String message = getI18nMessage(baseRuntimeException);
-            return new ApiResult(code, message);
+            return ApiResult.error(code, message);
         }
-        return new ApiResult(code, e.getMessage());
+        return ApiResult.error(code, e.getMessage());
     }
 
     /**
      * 参数绑定异常
-     * @param e 异常
-     * @return 异常结果
      */
     @ExceptionHandler(value = BindException.class)
     public ApiResult handleBindException(BindException e) {
-        log.error("参数绑定异常：{}", e);
+        log.error("[Global] Parameter binding exception : {}", e.getMessage(), e);
         return wrapperBindingResult(e.getBindingResult());
     }
 
     /**
      * 参数校验(Valid)异常，将校验失败的所有异常组合成一条错误信息
-     * TODO: 自定义参数异常信息在这里处理
      */
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ApiResult handleValidException(MethodArgumentNotValidException e) throws NoSuchFieldException {
-
         // 从异常对象中拿到错误信息
         String defaultErrorMsg = e.getBindingResult().getAllErrors().get(0).getDefaultMessage();
-
-        // 参数的Class对象，等下好通过字段名称获取Field对象
         Class<?> parameterType = e.getParameter().getParameterType();
-        // 拿到错误的字段名称
         String fieldName = e.getBindingResult().getFieldError().getField();
         Field field = parameterType.getDeclaredField(fieldName);
-        // 获取Field对象上的自定义注解
         ExceptionCode annotation = field.getAnnotation(ExceptionCode.class);
-
         // 有注解的话就返回注解的响应信息
         if (annotation != null) {
             String errorMsg = annotation.message();
-            if(StringUtils.isBlank(errorMsg)){
+            if (StringUtils.isBlank(errorMsg)) {
                 errorMsg = defaultErrorMsg;
             }
-            return new ApiResult(annotation.value(),errorMsg);
+            return ApiResult.error(annotation.value(), errorMsg);
         }
-
-
-        log.error("参数绑定校验异常：{}", e);
+        log.error("[Global] Parameter binding exception : {}", e);
         return wrapperBindingResult(e.getBindingResult());
     }
 
 
-
-    /**
-     * 包装绑定异常结果
-     */
     private ApiResult wrapperBindingResult(BindingResult bindingResult) {
         StringBuilder msg = new StringBuilder();
         for (ObjectError error : bindingResult.getAllErrors()) {
             msg.append(", ");
             if (error instanceof FieldError) {
-                msg.append(((FieldError)error).getField()).append(": ");
+                msg.append(((FieldError) error).getField()).append(": ");
             }
             msg.append(error.getDefaultMessage() == null ? "" : error.getDefaultMessage());
         }
-        return new ApiResult(ArgumentResponseEnum.VALID_ERROR.getCode(), msg.substring(2));
+        return ApiResult.error(ArgumentResponseEnum.VALID_ERROR.getCode(), msg.substring(2));
     }
 
 
     /**
-     * 未定义异常
+     * 捕获任意异常
      */
     @ExceptionHandler(value = Exception.class)
     public ApiResult handleException(Exception e) {
-        log.error(e.getMessage(), e);
+        log.error("[Global] Exception : {}", e.getMessage(), e);
         if (ENV_PROD.equals(profile)) {
             // 当为生产环境, 不适合把具体的异常信息展示给用户, 比如数据库异常信息.
             String code = BaseResponseEnum.SERVER_ERROR.getCode();
             BaseRuntimeException baseRuntimeException = new BaseRuntimeException(BaseResponseEnum.SERVER_ERROR);
             String message = getI18nMessage(baseRuntimeException);
-            return new ApiResult(code, message);
+            return ApiResult.error(code, message);
         }
-        return new ApiResult(BaseResponseEnum.SERVER_ERROR.getCode(), e.getMessage());
+        return ApiResult.error(BaseResponseEnum.SERVER_ERROR.getCode(), e.getMessage());
     }
 
 }

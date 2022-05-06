@@ -1,12 +1,10 @@
 package com.eip.common.mysql.config;
 
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@MapperScan("com.eip.base.*")
 public class MybatisPlusConfig {
 
     /**

@@ -18,8 +18,6 @@
     </properties>
 
     <modules>
-        <module>eip-common-log4j</module>
-        <module>eip-common-logback</module>
         <module>eip-common-thread</module>
         <module>eip-common-lock</module>
         <module>eip-common-cache</module>
@@ -42,6 +40,14 @@
         <module>eip-common-uid</module>
         <module>eip-common-trace</module>
         <module>eip-common-metrics</module>
+        <module>eip-common-apollo</module>
+        <module>eip-common-nacos</module>
+        <module>eip-common-feign</module>
+        <module>eip-common-gateway</module>
+        <module>eip-common-captcha</module>
+        <module>eip-common-log</module>
+        <module>eip-common-delay-rocketmq</module>
+        <module>eip-common-apidoc-gateway</module>
     </modules>
 
 

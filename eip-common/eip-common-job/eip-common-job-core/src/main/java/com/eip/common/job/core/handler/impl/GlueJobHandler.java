@@ -4,7 +4,7 @@ import com.eip.common.job.core.context.XxlJobHelper;
 import com.eip.common.job.core.handler.IJobHandler;
 
 /**
- * glue job handler
+ * glue job advice
  *
  * @author xuxueli 2016-5-19 21:05:45
  */

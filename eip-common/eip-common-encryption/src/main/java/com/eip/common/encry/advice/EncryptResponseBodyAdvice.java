@@ -3,9 +3,9 @@ package com.eip.common.encry.advice;
 import com.eip.common.core.utils.JacksonUtil;
 import com.eip.common.encry.annotation.Encrypt;
 import com.eip.common.encry.config.SecretKeyConfig;
-import com.eip.common.encry.util.Base64Util;
-import com.eip.common.encry.util.RSAUtil;
+import com.eip.common.core.utils.encrypt.RSAUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -56,8 +56,8 @@ public class EncryptResponseBodyAdvice implements ResponseBodyAdvice<Object> {
                     throw new NullPointerException("Please configure rsa.encrypt.privatekeyc parameter!");
                 }
                 byte[] data = content.getBytes();
-                byte[] encodedData = RSAUtil.encrypt(data, publicKey);
-                String result = Base64Util.encode(encodedData);
+                byte[] encodedData = RSAUtils.encrypt(data, publicKey);
+                String result = new String(Base64.encodeBase64(encodedData));
                 if (config.isShowLog()) {
                     log.info("Pre-encrypted data：{}，After encryption：{}", content, result);
                 }

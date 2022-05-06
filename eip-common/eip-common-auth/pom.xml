@@ -11,21 +11,17 @@
 
     <artifactId>eip-common-auth</artifactId>
 
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>eip-common-auth-server</module>
+        <module>eip-common-auth-gateway</module>
+        <module>eip-common-auth-com</module>
+        <module>eip-common-auth-client</module>
+    </modules>
+
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <!--spring security的依赖-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-        <!--OAuth2的依赖-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-oauth2</artifactId>
-        </dependency>
+
     </dependencies>
 </project>

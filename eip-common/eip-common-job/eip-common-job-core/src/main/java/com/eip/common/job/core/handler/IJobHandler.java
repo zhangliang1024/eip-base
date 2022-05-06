@@ -1,7 +1,7 @@
 package com.eip.common.job.core.handler;
 
 /**
- * job handler
+ * job advice
  *
  * @author xuxueli 2015-12-19 19:06:38
  */
@@ -9,7 +9,7 @@ public abstract class IJobHandler {
 
 
     /**
-     * execute handler, invoked when executor receives a scheduling request
+     * execute advice, invoked when executor receives a scheduling request
      *
      * @throws Exception
      */
@@ -20,7 +20,7 @@ public abstract class IJobHandler {
 	public abstract ReturnT<String> execute(String param) throws Exception;*/
 
     /**
-     * init handler, invoked when JobThread init
+     * init advice, invoked when JobThread init
      */
     public void init() throws Exception {
         // do something
@@ -28,7 +28,7 @@ public abstract class IJobHandler {
 
 
     /**
-     * destroy handler, invoked when JobThread destroy
+     * destroy advice, invoked when JobThread destroy
      */
     public void destroy() throws Exception {
         // do something
