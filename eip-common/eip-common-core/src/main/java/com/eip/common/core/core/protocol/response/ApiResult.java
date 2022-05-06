@@ -42,32 +42,32 @@ public class ApiResult<T> implements Serializable {
     @ApiModelProperty(value = "响应数据")
     public T data;
 
-    public ApiResult(String code, String message) {
+    private ApiResult(String code, String message) {
         this.code = code;
         this.message = message;
         this.logTraceId = MDC.get(GlobalConstans.GLOBAL_TRACE_ID);
     }
 
-    public ApiResult() {
+    private ApiResult() {
         //默认创建成功的响应
         this(BaseResponseEnum.SUCCESS);
     }
 
-    public ApiResult(IResponseEnum responseEnum) {
+    private ApiResult(IResponseEnum responseEnum) {
         this(responseEnum.getCode(), responseEnum.getMessage());
     }
 
-    public ApiResult(T data) {
+    private ApiResult(T data) {
         this(BaseResponseEnum.SUCCESS);
         this.data = data;
     }
 
-    public ApiResult(String message, T data) {
+    private ApiResult(String message, T data) {
         this.message = message;
         this.data = data;
     }
 
-    public ApiResult(Throwable e) {
+    private ApiResult(Throwable e) {
         this.code = BaseResponseEnum.SERVER_ERROR.getCode();
         this.message = e.getMessage();
     }

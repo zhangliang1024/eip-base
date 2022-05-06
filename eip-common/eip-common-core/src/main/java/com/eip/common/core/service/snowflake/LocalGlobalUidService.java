@@ -286,11 +286,15 @@ public class LocalGlobalUidService {
                 byte[] mac = network.getHardwareAddress();
                 if (null != mac) {
                     id = ((0x000000FF & (long) mac[mac.length - 1]) | (0x0000FF00 & (((long) mac[mac.length - 2]) << 8))) >> 6;
-                    id = id % (maxDatacenterId + 1);
+                    maxDatacenterId = maxDatacenterId + 1;
+                    if (maxDatacenterId <= 0) {
+                        throw new NullPointerException();
+                    }
+                    id = id % maxDatacenterId;
                 }
             }
         } catch (Exception e) {
-            System.err.println(" getDatacenterId: " + e.getMessage());
+            log.error("[Uid] Get DatacenterId Exception : {} ", e.getMessage());
         }
         return id;
     }
@@ -309,7 +313,11 @@ public class LocalGlobalUidService {
             mpid.append(name.split(AT)[0]);
         }
         //MAC + PID 的 hashcode 获取16个低位
-        return (mpid.toString().hashCode() & 0xffff) % (maxWorkerId + 1);
+        maxWorkerId = maxWorkerId + 1;
+        if (maxWorkerId <= 0) {
+            throw new NullPointerException();
+        }
+        return (mpid.toString().hashCode() & 0xffff) % maxWorkerId;
     }
 
     public static void main(String[] args) {

@@ -116,6 +116,11 @@ public class Business{
 
 --- 
 ## 数据脱密
+- 配置文件数据脱密
+- 接口返回值数据脱密
+- 日志文件数据脱密
+
+### 接口返回: 整合`JackSon`在序列化阶段进行脱密
 > {
 >      "name":"L****",
 >      "idNum":"1234************89",
@@ -124,3 +129,4 @@ public class Business{
 >      "password":"a******we"
 > }
 * [Spring Boot 自定义注解之脱敏注解](https://juejin.cn/post/7022455226984726535)
+* [Springboot 日志、配置文件、接口数据如何脱敏](https://juejin.cn/post/7004641512596176910)
