@@ -45,7 +45,7 @@ public class GlobalErrorExceptionHandler implements ErrorWebExceptionHandler {
             DataBufferFactory bufferFactory = response.bufferFactory();
             try {
                 //todo 返回响应结果，根据业务需求，自己定制
-                ApiResult result = new ApiResult(BaseResponseEnum.SERVER_ERROR);
+                ApiResult result = ApiResult.error(BaseResponseEnum.SERVER_ERROR);
                 return bufferFactory.wrap(JSONUtil.toJsonStr(result).getBytes(StandardCharsets.UTF_8));
             } catch (Exception e) {
                 log.error("Error writing response", ex);

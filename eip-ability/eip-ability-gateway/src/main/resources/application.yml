@@ -8,6 +8,15 @@ spring:
     name: oauth2-cloud-gateway
   cloud:
     gateway:
+      enabled: true
+      # 当service实例不存在时默认返回503，显示配置返回404
+      loadbalancer:
+        use404: true
+      # 效果：/serviceId/path1/args ==> /path1/arg
+      discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
       ## 路由
       routes:
       ## id只要唯一即可，名称任意

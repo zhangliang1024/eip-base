@@ -21,9 +21,15 @@
             <!--<groupId>org.springframework.cloud</groupId>-->
             <!--<artifactId>spring-cloud-starter-gateway</artifactId>-->
         <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>com.eip.cloud</groupId>-->
+            <!--<artifactId>eip-common-auth-gateway</artifactId>-->
+        <!--</dependency>-->
+
         <dependency>
             <groupId>com.eip.cloud</groupId>
-            <artifactId>eip-common-auth-gateway</artifactId>
+            <artifactId>eip-common-apidoc-gateway</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
