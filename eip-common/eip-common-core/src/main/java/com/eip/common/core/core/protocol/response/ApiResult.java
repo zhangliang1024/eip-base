@@ -84,6 +84,10 @@ public class ApiResult<T> implements Serializable {
         return new ApiResult(BaseResponseEnum.SERVER_ERROR);
     }
 
+    public static ApiResult error(BaseResponseEnum responseEnum) {
+        return new ApiResult(responseEnum);
+    }
+
     public static ApiResult error(String message) {
         return ApiResult.builder()
                 .code(BaseResponseEnum.SERVER_ERROR.getCode())
