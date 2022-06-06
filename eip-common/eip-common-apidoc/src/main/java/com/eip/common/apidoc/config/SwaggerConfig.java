@@ -5,23 +5,25 @@ import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.oas.annotations.EnableOpenApi;
-import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * @类描述：
@@ -34,6 +36,7 @@ import java.util.*;
 @EnableKnife4j
 @Import(BeanValidatorPluginsConfiguration.class)
 @EnableConfigurationProperties(ApidocInfo.class)
+@ConditionalOnProperty(name = "eip.api.doc.swagger.enabled", matchIfMissing = true)
 public class SwaggerConfig {
 
     @Autowired
@@ -46,6 +49,14 @@ public class SwaggerConfig {
                 .groupName(apidocInfo.getGroupName())
                 .apiInfo(apiInfo()) //
                 .select() //选择哪些接口作为swaager的doc发布
+                    /**
+                     * RequestHandlerSelectors,配置要扫描接口的方式
+                     * basePackage指定要扫描的包
+                     * any()扫描所有，项目中的所有接口都会被扫描到
+                     * none()不扫描
+                     * withClassAnnotation()扫描类上的注解
+                     * withMethodAnnotation()扫描方法上的注解
+                     */
                     .apis(RequestHandlerSelectors.basePackage(apidocInfo.getBasePackage()))//扫描包
                     .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))//扫描在API注解的contorller
                     .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))//扫描带ApiOperation注解的方法
@@ -72,12 +83,18 @@ public class SwaggerConfig {
     }
 
 
+    /**
+     * 安全模式，这里指定token通过Authorization头请求头传递
+     */
     private List<SecurityScheme > securitySchemes() {
         List<SecurityScheme > apiKeyList= new ArrayList();
         apiKeyList.add(new ApiKey("Authorization", "Authorization", "header"));
         return apiKeyList;
     }
 
+    /**
+     * 配置默认的全局鉴权策略的开关，通过正则表达式进行匹配；默认匹配所有URL
+     */
     private List<SecurityContext> securityContexts() {
         List<SecurityContext> securityContexts=new ArrayList<>();
         securityContexts.add(
@@ -88,6 +105,9 @@ public class SwaggerConfig {
         return securityContexts;
     }
 
+    /**
+     * 默认的全局鉴权策略
+     */
     List<SecurityReference> defaultAuth() {
         AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
@@ -95,17 +115,6 @@ public class SwaggerConfig {
         List<SecurityReference> securityReferences=new ArrayList<>();
         securityReferences.add(new SecurityReference("Authorization", authorizationScopes));
         return securityReferences;
-    }
-    /**
-     * JWT token
-     * @return
-     */
-    private List<Parameter> setHeaderToken() {
-        ParameterBuilder tokenPar = new ParameterBuilder();
-        List<Parameter> pars = new ArrayList<>();
-        tokenPar.name("").description("token").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
-        pars.add(tokenPar.build());
-        return pars;
     }
 
 }
