@@ -1,11 +1,10 @@
 package com.eip.common.encry.advice;
 
 import com.eip.common.core.utils.JacksonUtil;
+import com.eip.common.core.utils.hutool.HutoolRSAUtils;
 import com.eip.common.encry.annotation.Encrypt;
 import com.eip.common.encry.config.SecretKeyConfig;
-import com.eip.common.core.utils.encrypt.RSAUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -49,15 +48,13 @@ public class EncryptResponseBodyAdvice implements ResponseBodyAdvice<Object> {
             return body;
         }
         if (encrypt && !config.isDebug()) {
-            String publicKey = config.getPublicKey();
+            String privateKey = config.getPrivateKey();
             try {
                 String content = JacksonUtil.objectToStr(body);
-                if (!StringUtils.hasText(publicKey)) {
+                if (!StringUtils.hasText(privateKey)) {
                     throw new NullPointerException("Please configure rsa.encrypt.privatekeyc parameter!");
                 }
-                byte[] data = content.getBytes();
-                byte[] encodedData = RSAUtils.encrypt(data, publicKey);
-                String result = new String(Base64.encodeBase64(encodedData));
+                String result = HutoolRSAUtils.encryptByPrivate(content, privateKey);
                 if (config.isShowLog()) {
                     log.info("Pre-encrypted data：{}，After encryption：{}", content, result);
                 }

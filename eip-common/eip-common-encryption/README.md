@@ -64,3 +64,13 @@ pzy:
 
 [rsa-encrypt-body-spring-boot](https://github.com/ishuibo/rsa-encrypt-body-spring-boot)
 
+
+
+### 四、对称加密&非对称加密
+
+- 对称加密
+> 加密和解密都 使用同一秘钥算法
+
+- 非对称加密
+> 加密和解密 使用不同的秘钥
+

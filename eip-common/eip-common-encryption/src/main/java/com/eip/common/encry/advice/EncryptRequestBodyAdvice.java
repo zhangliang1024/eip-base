@@ -14,7 +14,7 @@ import java.lang.reflect.Type;
 
 @Slf4j
 @ControllerAdvice
-public class EncryptRequestBodyAdvice  implements RequestBodyAdvice {
+public class EncryptRequestBodyAdvice implements RequestBodyAdvice {
 
 
     private boolean encrypt;
@@ -35,10 +35,10 @@ public class EncryptRequestBodyAdvice  implements RequestBodyAdvice {
     }
 
     @Override
-    public HttpInputMessage beforeBodyRead(HttpInputMessage inputMessage, MethodParameter parameter, Type targetType, Class<? extends HttpMessageConverter<?>> converterType){
+    public HttpInputMessage beforeBodyRead(HttpInputMessage inputMessage, MethodParameter parameter, Type targetType, Class<? extends HttpMessageConverter<?>> converterType) {
         if (encrypt && !config.isDebug()) {
             try {
-                return new DecryptHttpInputMessage(inputMessage, config.getPrivateKey(), config.getCharset(),config.isShowLog());
+                return new DecryptHttpInputMessage(inputMessage, config.getPrivateKey(), config.isShowLog());
             } catch (Exception e) {
                 log.error("Decryption failed", e);
             }
