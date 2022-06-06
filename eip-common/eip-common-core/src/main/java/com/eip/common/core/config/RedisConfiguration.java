@@ -21,24 +21,24 @@ import java.util.Arrays;
  * Function:
  * Date: 2022年01月18 16:22:29
  * -> RedisConfig通用配置SpringBoot、Redis整合的RedisUtil : https://www.jianshu.com/p/1a378fb2b5f7
+ * -> Springboot使用RedisTemplate Cluster集群正确姿势: https://blog.csdn.net/chaitoudaren/article/details/10629565
  *
  * @author 张良 E-mail:zhangliang01@jingyougroup.com
  * @version V1.0.0
  */
 @Configuration
-public class RedisConfig {
+public class RedisConfiguration {
 
     @Bean
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
-        template.setConnectionFactory(redisConnectionFactory);
+        template.setConnectionFactory(factory);
 
-        //JSON Serializer config
+        // 使用Jackson2JsonRedisSerialize 替换默认的jdkSerializeable序列化
         Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
         ObjectMapper mapper = new ObjectMapper();
         mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         mapper.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
-
         jackson2JsonRedisSerializer.setObjectMapper(mapper);
 
         StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();

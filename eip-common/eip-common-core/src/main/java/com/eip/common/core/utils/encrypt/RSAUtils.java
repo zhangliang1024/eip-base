@@ -15,7 +15,9 @@ import java.util.Map;
 
 /**
  * RSA Util
- **/
+ *  RSA前端加密后端解密：https://blog.csdn.net/ewl0116/article/details/121337263
+ *  前后端RSA加解密：https://blog.csdn.net/weixin_50117915/article/details/122565449
+ */
 public class RSAUtils {
 
     /**
