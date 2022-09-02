@@ -48,6 +48,7 @@
         <module>eip-common-log</module>
         <module>eip-common-delay-rocketmq</module>
         <module>eip-common-apidoc-gateway</module>
+        <module>eip-common-gateway-custom</module>
     </modules>
 
 

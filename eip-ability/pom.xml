@@ -20,6 +20,7 @@
         <module>eip-ability-seata</module>
         <module>eip-ability-job</module>
         <module>eip-ability-log</module>
+        <module>eip-ability-auth-custom</module>
     </modules>
 
 
