@@ -5,6 +5,10 @@ import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.servlet.DispatcherServlet;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
@@ -26,6 +30,21 @@ public class FeignRequestInterceptor implements RequestInterceptor {
     @Autowired
     private FeignProperties feignProperties;
 
+    @Value("${spring.application.name}")
+    private String applicationName;
+
+    /**
+     * 让DispatcherServlet向子线程传递RequestContext
+     */
+    @Bean
+    public ServletRegistrationBean<DispatcherServlet> dispatcherRegistration(DispatcherServlet servlet) {
+        servlet.setThreadContextInheritable(true);
+        return new ServletRegistrationBean<>(servlet, "/**");
+    }
+
+    /**
+     * 覆写拦截器，在feign发送请求前取出原来的header并转发
+     */
     @Override
     public void apply(RequestTemplate requestTemplate) {
         List<String> sendParamNames = feignProperties.getSendParamNames();
@@ -50,5 +69,8 @@ public class FeignRequestInterceptor implements RequestInterceptor {
                 requestTemplate.query(paramEntry.getKey(),paramEntry.getValue());
             }
         }
+
+        // 将请求服务名 设置到请求头中
+        requestTemplate.header("serviceName",applicationName);
     }
 }

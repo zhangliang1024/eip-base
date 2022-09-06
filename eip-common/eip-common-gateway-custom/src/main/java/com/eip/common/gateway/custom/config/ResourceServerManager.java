@@ -2,6 +2,8 @@ package com.eip.common.gateway.custom.config;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.convert.Convert;
+import com.eip.common.core.constants.GlobalConstans;
+import com.eip.common.core.constants.SecurityConstants;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +17,6 @@ import org.springframework.security.authorization.ReactiveAuthorizationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.server.authorization.AuthorizationContext;
-import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 import reactor.core.publisher.Mono;
@@ -33,7 +34,6 @@ import java.util.Map;
  * @version V1.0.0
  */
 @Slf4j
-@Component
 @RequiredArgsConstructor
 @ConfigurationProperties(prefix = "security")
 public class ResourceServerManager implements ReactiveAuthorizationManager<AuthorizationContext> {
@@ -64,13 +64,13 @@ public class ResourceServerManager implements ReactiveAuthorizationManager<Autho
 
         // 如果token为空或着不合法，则进行拦截
         String resultPath = method + ":" + path; //RESTFUL 接口权限设计
-        String token = request.getHeaders().getFirst("Authorization");
-        if (StringUtils.isBlank(token) || !StringUtils.startsWithIgnoreCase(token, "Bearer ")) {
+        String token = request.getHeaders().getFirst(SecurityConstants.AUTHORIZATION_KEY);
+        if (StringUtils.isBlank(token) || !StringUtils.startsWithIgnoreCase(token, SecurityConstants.JWT_PREFIX)) {
             return Mono.just(new AuthorizationDecision(false));
         }
 
         // 从Redis中获取资源权限
-        Map<String, Object> urlPermRolesRules = this.redisTemplate.opsForHash().entries("all_urls_key");
+        Map<String, Object> urlPermRolesRules = this.redisTemplate.opsForHash().entries(GlobalConstans.URL_PERM_ROLES_KEY);
         // 拥有访问权限的角色
         List<String> authorizeRoles = new ArrayList<>();
         // 是否需要鉴权，默认未设置拦截规则不需要 鉴权
@@ -99,7 +99,7 @@ public class ResourceServerManager implements ReactiveAuthorizationManager<Autho
                 .flatMapIterable(Authentication::getAuthorities)
                 .map(GrantedAuthority::getAuthority)
                 .any(authority -> {
-                    String roleCode = authority.substring("SecurityConstants.AUTHORITY_PREFIX".length());
+                    String roleCode = authority.substring(SecurityConstants.AUTHORITY_PREFIX.length());
                     boolean hasAuthorized = CollectionUtil.isNotEmpty(authorizeRoles) && authorizeRoles.contains(roleCode);
                     return hasAuthorized;
                 })

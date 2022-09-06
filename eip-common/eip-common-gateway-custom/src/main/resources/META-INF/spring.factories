@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    com.eip.common.gateway.custom.filter.SecurityGlobalFilter,\
+    com.eip.common.gateway.custom.config.ResourceServerManager,\
+    com.eip.common.gateway.custom.config.ResourceServerConfig

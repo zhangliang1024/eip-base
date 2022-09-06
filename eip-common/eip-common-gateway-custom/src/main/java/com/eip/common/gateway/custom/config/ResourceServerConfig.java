@@ -1,8 +1,10 @@
 package com.eip.common.gateway.custom.config;
 
+import com.eip.common.core.constants.SecurityConstants;
+import com.eip.common.core.core.assertion.enums.AuthResponseEnum;
+import com.eip.common.gateway.custom.utils.ResponseUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
@@ -10,7 +12,6 @@ import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
-import org.springframework.security.oauth2.server.resource.authentication.ReactiveJwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.ReactiveJwtAuthenticationConverterAdapter;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.ServerAuthenticationEntryPoint;
@@ -25,7 +26,6 @@ import reactor.core.publisher.Mono;
  * @author 张良 E-mail:zhangliang01@jingyougroup.com
  * @version V1.0.0
  */
-@Configuration
 @AllArgsConstructor
 @EnableWebFluxSecurity
 public class ResourceServerConfig {
@@ -48,10 +48,10 @@ public class ResourceServerConfig {
     }
 
     @Bean
-    public Converter<Jwt,? extends Mono<? extends AbstractAuthenticationToken>> jwtAuthenticationConverter() {
+    public Converter<Jwt, ? extends Mono<? extends AbstractAuthenticationToken>> jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-        jwtGrantedAuthoritiesConverter.setAuthorityPrefix("Bearer");
-        jwtGrantedAuthoritiesConverter.setAuthoritiesClaimName("Authorzation");
+        jwtGrantedAuthoritiesConverter.setAuthorityPrefix(SecurityConstants.AUTHORITY_PREFIX);
+        jwtGrantedAuthoritiesConverter.setAuthoritiesClaimName(SecurityConstants.JWT_AUTHORITIES_KEY);
 
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
@@ -67,7 +67,7 @@ public class ResourceServerConfig {
     public ServerAccessDeniedHandler accessDeniedHandler() {
         return (exchange, denied) -> {
             Mono<Void> mono = Mono.defer(() -> Mono.just(exchange.getResponse()))
-                    .flatMap(response -> ResponseUtils.writeErrorInfo(response, "500"));
+                    .flatMap(response -> ResponseUtils.writeErrorInfo(response, AuthResponseEnum.ACCESS_UNAUTHORIZED));
             return mono;
         };
     }
@@ -79,7 +79,7 @@ public class ResourceServerConfig {
     public ServerAuthenticationEntryPoint authenticationEntryPoint() {
         return (exchange, e) -> {
             Mono<Void> mono = Mono.defer(() -> Mono.just(exchange.getResponse()))
-                    .flatMap(response -> ResponseUtils.writeErrorInfo(response, "500"));
+                    .flatMap(response -> ResponseUtils.writeErrorInfo(response, AuthResponseEnum.TOKEN_INVALID_OR_EXPIRED));
             return mono;
         };
     }

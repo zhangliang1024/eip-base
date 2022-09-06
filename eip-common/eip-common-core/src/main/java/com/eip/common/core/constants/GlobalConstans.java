@@ -28,4 +28,10 @@ public interface GlobalConstans {
      * 接口请求hearder增加token
      */
     String AUTH_TOKEN = "Auth-Token";
+
+    /**
+     *
+     */
+    String URL_PERM_ROLES_KEY = "system:perm_roles_rule:url";
+
 }

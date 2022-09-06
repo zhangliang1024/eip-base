@@ -1,6 +1,7 @@
 package com.eip.common.gateway.custom.filter;
 
 import cn.hutool.core.util.StrUtil;
+import com.eip.common.core.constants.SecurityConstants;
 import com.nimbusds.jose.JWSObject;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -38,16 +39,16 @@ public class SecurityGlobalFilter implements GlobalFilter, Ordered {
         ServerHttpResponse response = exchange.getResponse();
 
         // 不是正确的JWT不做解析处理
-        String token = request.getHeaders().getFirst("Authorization");
-        if (StringUtils.isBlank(token) || !StringUtils.startsWithIgnoreCase(token, "Bearer ")) {
+        String token = request.getHeaders().getFirst(SecurityConstants.AUTHORIZATION_KEY);
+        if (StringUtils.isBlank(token) || !StringUtils.startsWithIgnoreCase(token, SecurityConstants.JWT_PREFIX)) {
             return chain.filter(exchange);
         }
 
         // 解析JWT获取jti，以jti为key判断redis的黑名单列表是否存在，存在则拦截
-        token = StringUtils.replaceIgnoreCase(token,"Bearer", Strings.EMPTY);
+        token = StringUtils.replaceIgnoreCase(token,SecurityConstants.JWT_PREFIX, Strings.EMPTY);
         String payload = StrUtil.toString(JWSObject.parse(token).getPayload());
         exchange.getRequest().mutate()
-                .header("token", URLEncoder.encode(payload,"UTF-8"))
+                .header(SecurityConstants.JWT_PAYLOAD_KEY, URLEncoder.encode(payload,"UTF-8"))
                 .build();
         exchange.mutate().request(request).build();
 
