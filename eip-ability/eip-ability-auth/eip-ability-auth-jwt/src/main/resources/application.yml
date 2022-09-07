@@ -1,7 +1,0 @@
-server:
-  port: 9001
-
-#认证中心
-spring:
-  application:
-    name: authorization-server

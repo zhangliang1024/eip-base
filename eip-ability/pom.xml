@@ -15,7 +15,6 @@
     <modules>
         <module>eip-ability-eureka</module>
         <module>eip-ability-gateway</module>
-        <module>eip-ability-auth</module>
         <module>eip-ability-sentinel</module>
         <module>eip-ability-seata</module>
         <module>eip-ability-job</module>
