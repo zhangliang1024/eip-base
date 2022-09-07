@@ -23,7 +23,7 @@ import java.util.Collection;
 @NoArgsConstructor
 public class SecurityUser implements UserDetails {
 
-    private String userId;
+    private Long userId;
 
     //用户名
     private String username;

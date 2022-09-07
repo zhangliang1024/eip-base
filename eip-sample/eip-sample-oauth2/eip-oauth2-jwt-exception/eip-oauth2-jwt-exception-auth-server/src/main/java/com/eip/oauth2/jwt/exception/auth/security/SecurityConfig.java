@@ -1,4 +1,4 @@
-package com.eip.oauth2.jwt.exception.auth.config;
+package com.eip.oauth2.jwt.exception.auth.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

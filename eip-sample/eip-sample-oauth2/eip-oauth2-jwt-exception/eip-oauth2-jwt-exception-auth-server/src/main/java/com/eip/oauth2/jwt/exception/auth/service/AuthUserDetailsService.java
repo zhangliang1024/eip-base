@@ -2,7 +2,6 @@ package com.eip.oauth2.jwt.exception.auth.service;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.eip.oauth2.jwt.exception.auth.model.SecurityUser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -30,13 +28,13 @@ public class AuthUserDetailsService implements UserDetailsService {
 
     static {
         SecurityUser admin = SecurityUser.builder()
-                .userId("100")
+                .userId(100L)
                 .username("admin")
                 .password(new BCryptPasswordEncoder().encode("123"))
                 .authorities(AuthorityUtils.createAuthorityList("ROLE_user","ROLE_admin"))
                 .build();
         SecurityUser user = SecurityUser.builder()
-                .userId("200")
+                .userId(200L)
                 .username("user")
                 .password(new BCryptPasswordEncoder().encode("123"))
                 .authorities(AuthorityUtils.createAuthorityList("ROLE_user"))

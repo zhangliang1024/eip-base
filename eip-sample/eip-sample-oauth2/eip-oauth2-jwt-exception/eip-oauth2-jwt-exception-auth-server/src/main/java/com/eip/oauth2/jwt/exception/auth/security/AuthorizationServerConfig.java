@@ -1,4 +1,4 @@
-package com.eip.oauth2.jwt.exception.auth.config;
+package com.eip.oauth2.jwt.exception.auth.security;
 
 import com.eip.oauth2.jwt.exception.auth.exception.AuthServerWebResponseExceptionTranslator;
 import com.eip.oauth2.jwt.exception.auth.filter.AuthServerClientCredentialsTokenEndpointFilter;
@@ -36,14 +36,17 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Autowired
     private AuthenticationEntryPoint authenticationEntryPoint;
+
     /**
      * 令牌端点安全约束配置，如：/oauth/token对哪些开放
      * 主要对一些端点的权限进行配置
+     *
+     * 配置资源服务器向认证服务器请求验证token的规则，过来验证token有效性的请求，必须是经过身份验证的
      */
     @Override
-    public void configure(AuthorizationServerSecurityConfigurer security){
+    public void configure(AuthorizationServerSecurityConfigurer security) {
         // 自定义 用于处理客户端id和密码错误的异常
-        AuthServerClientCredentialsTokenEndpointFilter endpointFilter = new AuthServerClientCredentialsTokenEndpointFilter(security,authenticationEntryPoint);
+        AuthServerClientCredentialsTokenEndpointFilter endpointFilter = new AuthServerClientCredentialsTokenEndpointFilter(security, authenticationEntryPoint);
         endpointFilter.afterPropertiesSet();
         security.addTokenEndpointAuthenticationFilter(endpointFilter);
 
@@ -52,7 +55,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .tokenKeyAccess("permitAll()")
                 //开启 oauth/check_token验证端口认证权限访问
                 .checkTokenAccess("permitAll()");
-                //表示支持 client_id和client_secret 做登录认证
+                //一定不要添加allowFormAuthenticationForClients，否则自定义的AuthServerClientCredentialsTokenEndpointFilter不生效
+                //表示支持客户端 以表单方式发送 验证token的请求 必须携带client_id和client_secret 做登录认证
                 //.allowFormAuthenticationForClients();
     }
 

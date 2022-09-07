@@ -46,11 +46,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()//所有url都需要校验
                 .and()
                 .formLogin()//允许表单登录
-                .loginProcessingUrl("/login")
-                .permitAll()
+                .loginProcessingUrl("/login").permitAll()
                 .and()
-                .csrf()
-                .disable();
+                .csrf().disable();
     }
 
 
