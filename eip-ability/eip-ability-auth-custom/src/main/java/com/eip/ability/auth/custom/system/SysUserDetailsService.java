@@ -14,7 +14,7 @@ import java.util.Collection;
 
 /**
  * ClassName: SysUserDetailsService
- * Function:
+ * Function: 实现通过用户名获取用户信息的逻辑
  * Date: 2022年09月05 09:34:06
  *
  * @author 张良 E-mail:zhangliang01@jingyougroup.com

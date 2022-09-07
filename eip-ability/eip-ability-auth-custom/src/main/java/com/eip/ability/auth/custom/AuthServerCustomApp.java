@@ -12,9 +12,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @version V1.0.0
  */
 @SpringBootApplication
-public class AuthCustomApp {
+public class AuthServerCustomApp {
 
     public static void main(String[] args) {
-        SpringApplication.run(AuthCustomApp.class, args);
+        SpringApplication.run(AuthServerCustomApp.class, args);
     }
 }

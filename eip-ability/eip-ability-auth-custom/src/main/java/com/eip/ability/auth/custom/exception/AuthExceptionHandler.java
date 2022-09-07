@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.common.exceptions.InvalidClientException;
 import org.springframework.security.oauth2.common.exceptions.InvalidGrantException;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
+import org.springframework.security.oauth2.common.exceptions.UnsupportedGrantTypeException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -25,10 +26,10 @@ public class AuthExceptionHandler {
      * @param e
      * @return
      */
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<String> handleUsernameNotFoundException(UsernameNotFoundException e) {
-        return new ResponseEntity("用户不存在", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity("用户不存在", HttpStatus.UNAUTHORIZED);
     }
 
     /**
@@ -37,10 +38,10 @@ public class AuthExceptionHandler {
      * @param e
      * @return
      */
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(InvalidGrantException.class)
     public ResponseEntity<String> handleInvalidGrantException(InvalidGrantException e) {
-        return new ResponseEntity("用户名和密码异常", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity("用户名和密码异常", HttpStatus.UNAUTHORIZED);
     }
 
     /**
@@ -53,6 +54,17 @@ public class AuthExceptionHandler {
     @ExceptionHandler(InvalidClientException.class)
     public ResponseEntity<String> handleInvalidGrantException(InvalidClientException e) {
         return new ResponseEntity("用户名和密码异常", HttpStatus.BAD_REQUEST);
+    }
+    /**
+     * 用户名和密码异常
+     *
+     * @param e
+     * @return
+     */
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(UnsupportedGrantTypeException.class)
+    public ResponseEntity<String> handleInvalidGrantException(UnsupportedGrantTypeException e) {
+        return new ResponseEntity("不支持的认证模式", HttpStatus.BAD_REQUEST);
     }
 
 

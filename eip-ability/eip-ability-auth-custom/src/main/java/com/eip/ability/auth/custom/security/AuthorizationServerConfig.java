@@ -1,4 +1,4 @@
-package com.eip.ability.auth.custom.config;
+package com.eip.ability.auth.custom.security;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.eip.ability.auth.custom.client.ClientDetailsServiceImpl;
@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -16,6 +17,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.provider.CompositeTokenGranter;
 import org.springframework.security.oauth2.provider.TokenGranter;
+import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
@@ -30,7 +32,8 @@ import java.util.List;
 
 /**
  * ClassName: AuthorizationServerConfig
- * Function: 授权相关配置
+ * Function:
+ * 授权相关配置
  * 1.设置oauth客户端获取信息来源 clientDetailsService
  * 2.设置默认的token存储方式
  * 3.添加token增强器（在token中添加用户信息）
@@ -48,6 +51,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private AuthenticationManager authenticationManager;
     @Autowired
     private ClientDetailsServiceImpl clientDetailsService;
+    @Autowired
+    private SysUserAuthenticationConverter sysUserAuthenticationConverter;
 
 
     /**
@@ -77,14 +82,24 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
         CompositeTokenGranter compositeTokenGranter = new CompositeTokenGranter(granterList);
         endpoints
-                .authenticationManager(authenticationManager)
+                //.authorizationCodeServices(authorizationCodeServices())  //授权码模式所需要的authorizationCodeServices
+                .authenticationManager(authenticationManager)   //密码模式需要的authenticationManager
                 .accessTokenConverter(jwtAccessTokenConverter())
                 .tokenEnhancer(tokenEnhancerChain)
                 .tokenGranter(compositeTokenGranter)
+                // reuseRefreshTokens设置为false时，每次通过refresh_token获得access_token时，也会刷新refresh_token；也就是说，会返回全新的access_token与refresh_token。
+                //默认值是true，只返回新的access_token，refresh_token不变。
                 .reuseRefreshTokens(true)
-                .tokenServices(tokenServices(endpoints))
+                .tokenServices(tokenServices(endpoints))    //令牌管理服务，无论哪种模式都需要
+                .allowedTokenEndpointRequestMethods(HttpMethod.POST)  //只允许POST提交访问令牌 uri: /oauth/token
+        /*
+         * 默认获取token的路径是/oauth/token，通过pathMapping方法，可改变默认路径
+         * pathMapping用来配置端点URL链接，有两个参数，都将以 "/" 字符为开始的字符串
+         * defaultPath：这个端点URL的默认链接
+         * customPath：你要进行替代的URL链接
+         */
+        //.pathMapping("/oauth/token", "/oauth/token")
         ;
-
     }
 
     public DefaultTokenServices tokenServices(AuthorizationServerEndpointsConfigurer endpoints) {
@@ -95,10 +110,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         tokenEnhancerChain.setTokenEnhancers(tokenEnhancers);
 
         DefaultTokenServices tokenServices = new DefaultTokenServices();
-        tokenServices.setTokenStore(endpoints.getTokenStore());
-        tokenServices.setSupportRefreshToken(true);
-        tokenServices.setClientDetailsService(clientDetailsService);
-        tokenServices.setTokenEnhancer(tokenEnhancerChain);
+        tokenServices.setTokenStore(endpoints.getTokenStore());  //令牌服务
+        tokenServices.setSupportRefreshToken(true);  //支持令牌的刷新
+        tokenServices.setClientDetailsService(clientDetailsService);    //客户端 配置策略
+        tokenServices.setTokenEnhancer(tokenEnhancerChain);   //设置令牌增强，使用JwtAccessTokenConverter进行转换
+        tokenServices.setAccessTokenValiditySeconds(60 * 60 * 2); //access_token过期时间
+        tokenServices.setRefreshTokenValiditySeconds(60 * 60 * 2); //refresh_token过期时间
+
         return tokenServices;
     }
 
@@ -129,6 +147,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+        // 设置用户转化器
+        ((DefaultAccessTokenConverter) converter.getAccessTokenConverter()).setUserTokenConverter(sysUserAuthenticationConverter);
         converter.setKeyPair(keyPair());
         return converter;
     }
