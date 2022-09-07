@@ -1,0 +1,6 @@
+server:
+  port: 9002
+#资源服务
+spring:
+  application:
+    name: auth-jwt-exception-res
