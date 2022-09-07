@@ -13,6 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.server.authorization.AuthorizationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
+import org.springframework.util.PathMatcher;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -34,13 +35,15 @@ import java.util.Map;
 @Component
 public class AuthAccessManager implements ReactiveAuthorizationManager<AuthorizationContext> {
 
+    //匹配URL
+    final PathMatcher matcher = new AntPathMatcher();
+
     @Autowired
     private RedisTemplate redisTemplate;
 
     @Override
     public Mono<AuthorizationDecision> check(Mono<Authentication> mono, AuthorizationContext authorizationContext) {
-        //匹配URL
-        AntPathMatcher matcher = new AntPathMatcher();
+
         //获取请求路径和方法
         URI uri = authorizationContext.getExchange().getRequest().getURI();
         String method = authorizationContext.getExchange().getRequest().getMethodValue();

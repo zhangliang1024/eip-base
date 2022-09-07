@@ -33,7 +33,7 @@ public class RequestAccessDeniedHandler implements ServerAccessDeniedHandler {
         ServerHttpResponse response = exchange.getResponse();
         response.setStatusCode(HttpStatus.OK);
         response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-        String body= JSONUtil.toJsonStr(new ApiResult(AuthResponseEnum.NO_PERMISSION));
+        String body= JSONUtil.toJsonStr(ApiResult.error(AuthResponseEnum.NO_PERMISSION));
         DataBuffer buffer =  response.bufferFactory().wrap(body.getBytes(Charset.forName("UTF-8")));
         return response.writeWith(Mono.just(buffer));
     }

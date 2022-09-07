@@ -25,7 +25,7 @@ public class RequestAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request,
                        HttpServletResponse response,
                        AccessDeniedException accessDeniedException) throws IOException {
-        ResponseUtil.response(response, new ApiResult<>(AuthResponseEnum.NO_PERMISSION));
+        ResponseUtil.response(response, ApiResult.error(AuthResponseEnum.NO_PERMISSION));
     }
 
 

@@ -32,9 +32,8 @@ public class AuthController {
         LoginUser loginVal = AuthUserUtil.getCurrentUser();
         log.info("令牌唯一ID：{},过期时间：{}", loginVal.getJwtId(), loginVal.getExpireIn());
         //这个jti放入redis中，并且过期时间设置为token的过期时间
-        redisTemplate.opsForValue().set(AuthConstants.JTI_KEY_PREFIX + loginVal.getJwtId(), "", loginVal.getExpireIn(),
-                TimeUnit.SECONDS);
-        return new ApiResult("200", "注销成功");
+        redisTemplate.opsForValue().set(AuthConstants.JTI_KEY_PREFIX + loginVal.getJwtId(), "", loginVal.getExpireIn(),TimeUnit.SECONDS);
+        return ApiResult.ok("注销成功");
     }
 
 }

@@ -53,14 +53,14 @@ public class AuthSecurityConfig {
 
     @Bean
     SecurityWebFilterChain webFluxSecurityFilterChain(ServerHttpSecurity http) throws Exception {
-        //认证过滤器放入认证管理器，利用认证管理器进行校验
+        /**认证过滤器放入认证管理器，利用认证管理器进行令牌校验**/
         AuthenticationWebFilter authenticationWebFilter = new AuthenticationWebFilter(authenticationManager);
         authenticationWebFilter.setServerAuthenticationConverter(new ServerBearerTokenAuthenticationConverter());
 
         http.httpBasic().disable()
                 .csrf().disable()
                 .authorizeExchange()
-                //白名单直接放行
+                /**白名单直接放行**/
                 .pathMatchers(ArrayUtil.toArray(sysConfig.getIgnoreUrls(), String.class)).permitAll()
                 .anyExchange().access(accessManager) //其它的请求必须鉴权，使用鉴权管理器
                 .and().exceptionHandling() //处理异常情况：认证失败和权限不足
@@ -69,7 +69,7 @@ public class AuthSecurityConfig {
                 .and()
                 //跨域处理
                 .addFilterAt(corsFilter, SecurityWebFiltersOrder.CORS)
-                //token认证过滤器，用于校验token和认证
+                /**token认证过滤器，用于校验token和认证**/
                 .addFilterAt(authenticationWebFilter, SecurityWebFiltersOrder.AUTHENTICATION);
 
         return http.build();

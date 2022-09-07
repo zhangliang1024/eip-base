@@ -40,7 +40,7 @@ public class AuthServerWebResponseExceptionTranslator implements WebResponseExce
         }else if(e instanceof InvalidGrantException){
             resultEnum = AuthResponseEnum.USERNAME_OR_PASSWORD_ERROR;
         }
-        return new ApiResult(resultEnum);
+        return ApiResult.error(resultEnum);
     }
 
 

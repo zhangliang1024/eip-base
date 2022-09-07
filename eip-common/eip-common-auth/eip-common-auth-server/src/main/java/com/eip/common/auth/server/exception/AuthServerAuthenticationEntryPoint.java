@@ -30,7 +30,7 @@ public class AuthServerAuthenticationEntryPoint implements AuthenticationEntryPo
      */
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
-        ResponseUtil.response(response,new ApiResult(AuthResponseEnum.CLIENT_AUTHENTICATION_FAILED));
+        ResponseUtil.response(response,ApiResult.error(AuthResponseEnum.CLIENT_AUTHENTICATION_FAILED));
     }
 
 

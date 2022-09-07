@@ -29,7 +29,7 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 @Order(-2)
 @Component
-public class AuthErrorExceptionHandler implements ErrorWebExceptionHandler {
+public class GlobalErrorExceptionHandler implements ErrorWebExceptionHandler {
 
     @Override
     public Mono<Void> handle(ServerWebExchange exchange, Throwable ex) {
@@ -37,7 +37,7 @@ public class AuthErrorExceptionHandler implements ErrorWebExceptionHandler {
         if (response.isCommitted()) {
             return Mono.error(ex);
         }
-        ApiResult result = new ApiResult(AuthResponseEnum.UNAUTHORIZED);
+        ApiResult result = ApiResult.error(AuthResponseEnum.UNAUTHORIZED);
         // JOSN格式返回
         response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
         if (ex instanceof ResponseStatusException) {
@@ -46,7 +46,7 @@ public class AuthErrorExceptionHandler implements ErrorWebExceptionHandler {
 
         //处理TOKEN失效的异常
         if (ex instanceof InvalidTokenException) {
-            result = new ApiResult(AuthResponseEnum.INVALID_TOKEN);
+            result = ApiResult.error(AuthResponseEnum.INVALID_TOKEN);
         }
 
         ApiResult finalResult = result;

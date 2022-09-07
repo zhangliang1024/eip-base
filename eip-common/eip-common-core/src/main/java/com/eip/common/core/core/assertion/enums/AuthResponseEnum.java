@@ -19,6 +19,15 @@ public enum AuthResponseEnum implements AuthExceptionAssert {
     TOKEN_INVALID_OR_EXPIRED("A00214", "token非法或失效"),
     TOKEN_ACCESS_FORBIDDEN("A00215", "token禁止访问"),
 
+
+    UNSUPPORTED_GRANT_TYPE("1003", "不支持的认证模式"),
+
+    NO_PERMISSION("403", "无权限访问！"),
+
+    UNAUTHORIZED("401", "系统错误"),
+
+    INVALID_TOKEN("401", "无效的token");
+
     ;
 
 

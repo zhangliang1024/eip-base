@@ -28,7 +28,7 @@ public class AccessTokenConfig {
      * 令牌的存储策略
      */
     @Bean
-    public TokenStore tokenStore(){
+    public TokenStore tokenStore() {
         //使用JWT生成令牌
         return new JwtTokenStore(jwtAccessTokenConverter());
     }
@@ -39,7 +39,7 @@ public class AccessTokenConfig {
      * TODO 后期可使用非对称加密
      */
     @Bean
-    public JwtAccessTokenConverter jwtAccessTokenConverter(){
+    public JwtAccessTokenConverter jwtAccessTokenConverter() {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
         //设置秘钥
         converter.setSigningKey(AuthConstants.SIGN_KEY);
@@ -50,7 +50,7 @@ public class AccessTokenConfig {
      * JWT令牌增强，继承JwtAccessTokenConverter
      * 将业务所需额外信息放入令牌中，这样下游微服务就能拆解令牌获取
      */
-    public static class JwtAccessTokenEnhancer extends JwtAccessTokenConverter{
+    public static class JwtAccessTokenEnhancer extends JwtAccessTokenConverter {
 
         /**
          * 重写enhance方法，在其中扩展
@@ -58,11 +58,11 @@ public class AccessTokenConfig {
         @Override
         public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
             //获取userDetailService中查询到用户信息
-            SecurityUser user=(SecurityUser)authentication.getUserAuthentication().getPrincipal();
+            SecurityUser user = (SecurityUser) authentication.getUserAuthentication().getPrincipal();
             //将额外的信息放入到LinkedHashMap中
-            LinkedHashMap<String,Object> extendInformation=new LinkedHashMap<>();
+            LinkedHashMap<String, Object> extendInformation = new LinkedHashMap<>();
             //设置用户的userId
-            extendInformation.put(AuthConstants.USER_ID,user.getUserId());
+            extendInformation.put(AuthConstants.USER_ID, user.getUserId());
             //添加到additionalInformation
             ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(extendInformation);
             return super.enhance(accessToken, authentication);
