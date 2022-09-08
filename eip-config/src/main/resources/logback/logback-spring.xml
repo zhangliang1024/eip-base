@@ -22,10 +22,8 @@
     <!-- 彩色日志 -->
     <!-- 彩色日志依赖的渲染类 -->
     <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
-    <conversionRule conversionWord="wex"
-                    converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
-    <conversionRule conversionWord="wEx"
-                    converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
 
     <!-- 彩色日志格式 -->
     <property name="CONSOLE_LOG_PATTERN"
@@ -54,8 +52,7 @@
         <file>${LOG_PATH}/${LOG_NAME}_debug.log</file>
         <!--日志文件输出格式-->
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [${SERVER_NAME} ${SERVER_IP}] [%thread] %-5level %logger{50} - %msg%n
-            </pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [${SERVER_NAME} ${SERVER_IP}] [%thread] %-5level %logger{50} - %msg%n</pattern>
             <charset>UTF-8</charset> <!-- 设置字符集 -->
         </encoder>
         <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
@@ -82,8 +79,7 @@
         <file>${LOG_PATH}/${LOG_NAME}_info.log</file>
         <!--日志文件输出格式-->
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [${SERVER_NAME} ${SERVER_IP}] [%thread] %-5level %logger{50} - %msg%n
-            </pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [${SERVER_NAME} ${SERVER_IP}] [%thread] %-5level %logger{50} - %msg%n</pattern>
             <charset>UTF-8</charset>
         </encoder>
         <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
@@ -110,8 +106,7 @@
         <file>${LOG_PATH}/${LOG_NAME}_warn.log</file>
         <!--日志文件输出格式-->
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [${SERVER_NAME} ${SERVER_IP}] [%thread] %-5level %logger{50} - %msg%n
-            </pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [${SERVER_NAME} ${SERVER_IP}] [%thread] %-5level %logger{50} - %msg%n</pattern>
             <charset>UTF-8</charset> <!-- 此处设置字符集 -->
         </encoder>
         <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
@@ -138,8 +133,7 @@
         <file>${LOG_PATH}/${LOG_NAME}_error.log</file>
         <!--日志文件输出格式-->
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [${SERVER_NAME} ${SERVER_IP}] [%thread] %-5level %logger{50} - %msg%n
-            </pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [${SERVER_NAME} ${SERVER_IP}] [%thread] %-5level %logger{50} - %msg%n</pattern>
             <charset>UTF-8</charset> <!-- 此处设置字符集 -->
         </encoder>
         <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
@@ -158,6 +152,57 @@
             <onMismatch>DENY</onMismatch>
         </filter>
     </appender>
+
+    <!-- 输出Json格式日志 Logstash收集 -->
+    <appender name="LOGSTASH-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/${LOG_NAME}_logstash.json</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/logstash/${LOG_NAME}-logstash-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>15</maxHistory>
+        </rollingPolicy>
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp>
+                    <timeZone>UTC</timeZone>
+                </timestamp>
+                <pattern>
+                    <pattern>
+                        {
+                        "level": "%level",
+                        "service": "${SERVER_NAME:-}",
+                        "trace": "%X{X-B3-TraceId:-}",
+                        "span": "%X{X-B3-SpanId:-}",
+                        "parent": "%X{X-B3-ParentSpanId:-}",
+                        "exportable": "%X{X-Span-Export:-}",
+                        "pid": "${PID:-}",
+                        "thread": "%thread",
+                        "class": "%logger{40}",
+                        "rest": "%message"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>
+    </appender>
+
+    <appender name="MYBATIS-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/${LOG_NAME}_sql.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/sql/${LOG_NAME}-sql-%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <maxHistory>15</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36}-%msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.paascloud.provider.mapper" level="DEBUG">
+        <appender-ref ref="MYBATIS-FILE"/>
+    </logger>
+
 
     <!-- 异步输出 -->
     <appender name="ASYNC-DEBUG" class="ch.qos.logback.classic.AsyncAppender">
@@ -182,6 +227,11 @@
         <discardingThreshold>0</discardingThreshold>
         <queueSize>256</queueSize>
         <appender-ref ref="ERROR-FILE"/>
+    </appender>
+    <appender name="ASYNC-LOGSTASH" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>256</queueSize>
+        <appender-ref ref="LOGSTASH-FILE"/>
     </appender>
 
     <!--
@@ -218,6 +268,7 @@
             <appender-ref ref="ASYNC-INFO"/>
             <appender-ref ref="ASYNC-WARN"/>
             <appender-ref ref="ASYNC-ERROR"/>
+            <appender-ref ref="ASYNC-LOGSTASH"/>
         </root>
     </springProfile>
 
@@ -229,6 +280,7 @@
             <appender-ref ref="ASYNC-INFO"/>
             <appender-ref ref="ASYNC-WARN"/>
             <appender-ref ref="ASYNC-ERROR"/>
+            <appender-ref ref="ASYNC-LOGSTASH"/>
         </root>
     </springProfile>
 
