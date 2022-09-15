@@ -6,6 +6,10 @@ spring:
     name: eureka-server
   profiles:
     active: @my-profile@
+  security:
+    user:
+      name: admin
+      password: admin
 
 eureka:
   instance:
@@ -28,7 +32,7 @@ eureka:
     register-with-eureka: true #是否将自身实例注册到Eureka Server
     registry-fetch-interval-seconds: 5 #从Eureka Server服务端获取注册信息的间隔时间，单位：秒
     service-url:
-      defaultZone: ${EUEEKA_SERVER_URL:http://localhost:9001/eureka/}
+      defaultZone: ${EUEEKA_SERVER_URL:http://admin:admin@localhost:9001/eureka/}
     healthcheck:
       enabled: true #应用程序会将自己Spring Boot Actuator的/heath端点的健康状态传播到Eureka Server
 
