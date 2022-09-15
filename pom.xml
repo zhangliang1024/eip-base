@@ -29,6 +29,7 @@
         <spring-boot-dependencies.version>2.7.0</spring-boot-dependencies.version>
         <spring-cloud-dependencies.version>2021.0.3</spring-cloud-dependencies.version>
         <spring-cloud-alibaba-dependencies.version>2021.0.1.0</spring-cloud-alibaba-dependencies.version>
+        <spring-cloud-starter-oauth2>2.2.5.RELEASE</spring-cloud-starter-oauth2>
         <apollo.config.version>1.7.0</apollo.config.version>
 
         <druid-starter.version>1.1.21</druid-starter.version>
@@ -96,6 +97,14 @@
                 <scope>import</scope>
             </dependency>
 
+            <!--
+                原文链接：https://blog.csdn.net/weixin_62421895/article/details/125783888
+            -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-oauth2</artifactId>
+                <version>${spring-cloud-starter-oauth2}</version>
+            </dependency>
 
             <!-- mysql start -->
             <dependency>

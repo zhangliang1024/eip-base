@@ -17,11 +17,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-        <!--OAuth2的依赖-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-oauth2</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>com.eip.cloud</groupId>
             <artifactId>eip-common-auth-client</artifactId>

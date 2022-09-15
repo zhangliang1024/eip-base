@@ -29,7 +29,7 @@
         </dependency>
         <dependency>
             <groupId>com.eip.cloud</groupId>
-            <artifactId>eip-common-sms</artifactId>
+            <artifactId>eip-common-sms-mail</artifactId>
         </dependency>
     </dependencies>
 

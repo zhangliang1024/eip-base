@@ -11,8 +11,8 @@ import com.eip.common.alert.ding.template.DingAlertTemplate;
 import com.eip.common.alert.enums.AlertTypeEnum;
 import com.eip.common.alert.wxchat.domain.WxChatMarkdown;
 import com.eip.common.alert.wxchat.template.WxChatAlertTemplate;
-import com.eip.common.sms.mail.domain.MailRequest;
-import com.eip.common.sms.mail.service.MailSendService;
+import com.eip.common.sms.email.mail.domain.MailRequest;
+import com.eip.common.sms.email.mail.service.MailSendService;
 import com.google.common.base.Joiner;
 import de.codecentric.boot.admin.server.domain.entities.Instance;
 import de.codecentric.boot.admin.server.domain.entities.InstanceRepository;
@@ -27,7 +27,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
