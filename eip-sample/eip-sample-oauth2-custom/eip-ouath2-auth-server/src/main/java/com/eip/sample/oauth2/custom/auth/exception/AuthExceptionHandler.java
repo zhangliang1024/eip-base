@@ -1,4 +1,4 @@
-package com.eip.ability.auth.custom.exception;
+package com.eip.sample.oauth2.custom.auth.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;

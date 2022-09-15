@@ -1,4 +1,4 @@
-package com.eip.ability.auth.custom.enums;
+package com.eip.sample.oauth2.custom.auth.enums;
 
 import lombok.Getter;
 

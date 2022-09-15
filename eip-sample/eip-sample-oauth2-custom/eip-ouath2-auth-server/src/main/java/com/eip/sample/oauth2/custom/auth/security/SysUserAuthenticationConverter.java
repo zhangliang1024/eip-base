@@ -1,6 +1,6 @@
-package com.eip.ability.auth.custom.security;
+package com.eip.sample.oauth2.custom.auth.security;
 
-import com.eip.ability.auth.custom.system.SysUserDetails;
+import com.eip.sample.oauth2.custom.auth.system.SysUserDetails;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

@@ -1,6 +1,6 @@
-package com.eip.ability.auth.custom.client;
+package com.eip.sample.oauth2.custom.auth.client;
 
-import com.eip.ability.auth.custom.enums.PasswordEncoderTypeEnum;
+import com.eip.sample.oauth2.custom.auth.enums.PasswordEncoderTypeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;

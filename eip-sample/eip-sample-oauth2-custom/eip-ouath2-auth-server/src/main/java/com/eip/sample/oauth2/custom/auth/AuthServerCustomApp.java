@@ -1,4 +1,4 @@
-package com.eip.ability.auth.custom;
+package com.eip.sample.oauth2.custom.auth;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

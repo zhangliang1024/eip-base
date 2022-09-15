@@ -1,9 +1,13 @@
-package com.eip.ability.auth.custom.security;
+package com.eip.sample.oauth2.custom.auth.security;
 
+import com.eip.sample.oauth2.custom.auth.mobile.ISysUserService;
+import com.eip.sample.oauth2.custom.auth.mobile.MobileCodeAuthenticationProvider;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -34,6 +38,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsService userDetailsService;
+    @Autowired
+    private ISysUserService sysUserService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -57,10 +63,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * 添加自定义认证器
      */
+    @SneakyThrows
     @Override
     protected void configure(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(daoAuthenticationProvider());
-
+        // 手机验证码认证模式
+        //auth.authenticationProvider(provider())
+        //        .userDetailsService(userDetailsService)
+        //        .passwordEncoder(passwordEncoder());
     }
 
     /**
@@ -85,4 +95,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
+
+    /**
+     * 自定义手机验证码认证提供者
+     */
+    //@Bean
+    public MobileCodeAuthenticationProvider provider() {
+        MobileCodeAuthenticationProvider provider = new MobileCodeAuthenticationProvider();
+        provider.setStringRedisTemplate(new StringRedisTemplate());
+        provider.setHideUserNotFoundExceptions(false);
+        provider.setUserDetailsService(sysUserService);
+        return provider;
+    }
 }

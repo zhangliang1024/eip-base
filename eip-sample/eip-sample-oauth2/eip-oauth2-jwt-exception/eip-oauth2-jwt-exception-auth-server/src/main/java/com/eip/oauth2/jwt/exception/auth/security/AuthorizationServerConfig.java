@@ -22,6 +22,8 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * ClassName: AuthorizationServerConfig
  * Function: 认证中心相关配置
@@ -135,9 +137,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         //令牌服务
         services.setTokenStore(tokenStore);
         //access_token过期时间
-        services.setAccessTokenValiditySeconds(60 * 60 * 2);
+        services.setAccessTokenValiditySeconds((int) TimeUnit.HOURS.toSeconds(2));
         //refresh_token过期时间
-        services.setRefreshTokenValiditySeconds(60 * 60 * 2);
+        services.setRefreshTokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30));
         //设置令牌增强，使用JwtAccessTokenConverter进行转换
         services.setTokenEnhancer(jwtAccessTokenConverter);
         return services;

@@ -1,8 +1,8 @@
-package com.eip.ability.auth.custom.security;
+package com.eip.sample.oauth2.custom.auth.security;
 
 import cn.hutool.core.collection.CollectionUtil;
-import com.eip.ability.auth.custom.client.ClientDetailsServiceImpl;
-import com.eip.ability.auth.custom.system.SysUserDetails;
+import com.eip.sample.oauth2.custom.auth.client.ClientDetailsServiceImpl;
+import com.eip.sample.oauth2.custom.auth.system.SysUserDetails;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

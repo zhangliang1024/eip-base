@@ -1,6 +1,7 @@
-package com.eip.ability.auth.custom.system;
+package com.eip.sample.oauth2.custom.auth.system;
 
-import com.eip.ability.auth.custom.enums.PasswordEncoderTypeEnum;
+import com.eip.sample.oauth2.custom.auth.enums.PasswordEncoderTypeEnum;
+import com.eip.sample.oauth2.custom.auth.mobile.ISysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,7 +23,7 @@ import java.util.Collection;
  */
 @Slf4j
 @Service("userDetailsService")
-public class SysUserDetailsService implements UserDetailsService {
+public class SysUserDetailsService implements UserDetailsService, ISysUserService {
 
 
     @Override
@@ -48,5 +49,18 @@ public class SysUserDetailsService implements UserDetailsService {
                 .enabled(true)
                 .authorities(authorities)
                 .password(PasswordEncoderTypeEnum.BCRYPT.getPrefix() + new BCryptPasswordEncoder().encode("1234567")).build();
+    }
+
+    @Override
+    public SysUserDetails loadUserByMobile(long phone) {
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("admin"));
+        return SysUserDetails.builder()
+                .userId(1L)
+                .username(String.valueOf(phone))
+                .enabled(true)
+                .authorities(authorities)
+                .password(PasswordEncoderTypeEnum.BCRYPT.getPrefix() + new BCryptPasswordEncoder().encode("1234567")).build();
+
     }
 }

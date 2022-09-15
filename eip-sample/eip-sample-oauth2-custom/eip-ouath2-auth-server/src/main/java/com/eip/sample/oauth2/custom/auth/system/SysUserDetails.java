@@ -1,4 +1,4 @@
-package com.eip.ability.auth.custom.system;
+package com.eip.sample.oauth2.custom.auth.system;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

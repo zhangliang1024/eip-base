@@ -1,4 +1,4 @@
-package com.eip.ability.auth.custom.web;
+package com.eip.sample.oauth2.custom.auth.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
