@@ -147,7 +147,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        // 设置用户转化器
+        // 用户身份验证转换器 给Token中加入额外的扩展数据
         ((DefaultAccessTokenConverter) converter.getAccessTokenConverter()).setUserTokenConverter(sysUserAuthenticationConverter);
         converter.setKeyPair(keyPair());
         return converter;
