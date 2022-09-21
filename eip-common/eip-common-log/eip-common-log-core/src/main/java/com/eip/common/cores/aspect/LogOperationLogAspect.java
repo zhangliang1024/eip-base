@@ -1,12 +1,12 @@
-package com.eip.common.core.aspect;
+package com.eip.common.cores.aspect;
 
-import com.eip.common.core.context.LogRecordContext;
-import com.eip.common.core.annotation.LogOperation;
 import com.eip.common.core.function.LogFunctionRegistrar;
 import com.eip.common.core.model.LogOperationDTO;
 import com.eip.common.core.service.LogService;
 import com.eip.common.core.service.NativeLogListener;
 import com.eip.common.core.utils.JacksonUtil;
+import com.eip.common.cores.annotation.LogOperation;
+import com.eip.common.log.core.context.LogRecordContext;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -50,7 +50,7 @@ public class LogOperationLogAspect {
 
     private final DefaultParameterNameDiscoverer discoverer = new DefaultParameterNameDiscoverer();
 
-    @Around("@annotation(com.eip.common.core.annotation.LogOperation)")
+    @Around("@annotation(com.eip.common.cores.annotation.LogOperation)")
     public Object doAround(ProceedingJoinPoint point) throws Throwable{
         Object result;
         StopWatch watch = new StopWatch();

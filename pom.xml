@@ -33,11 +33,13 @@
         <apollo.config.version>1.7.0</apollo.config.version>
 
         <druid-starter.version>1.1.21</druid-starter.version>
-        <mybatis-plus.version>3.4.0</mybatis-plus.version>
+        <mybatis-plus.version>3.5.2</mybatis-plus.version>
 
         <slf4j.version>1.7.32</slf4j.version>
         <eip.base.version>0.0.1-SNAPSHOT</eip.base.version>
         <swagger.knife4j.version>3.0.3</swagger.knife4j.version>
+        <springdoc-openapi-ui.version>1.6.11</springdoc-openapi-ui.version>
+        <knife4j-springdoc-ui.version>3.0.3</knife4j-springdoc-ui.version>
 
         <json.sanitizer.version>1.1</json.sanitizer.version>
         <apollo.version>1.9.2</apollo.version>
@@ -286,6 +288,17 @@
                 <artifactId>knife4j-spring-boot-starter</artifactId>
                 <version>${swagger.knife4j.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-ui</artifactId>
+                <version>${springdoc-openapi-ui.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-springdoc-ui</artifactId>
+                <version>${knife4j-springdoc-ui.version}</version>
+            </dependency>
+
             <!--json转换防止xss攻击-->
             <dependency>
                 <groupId>com.mikesamuel</groupId>

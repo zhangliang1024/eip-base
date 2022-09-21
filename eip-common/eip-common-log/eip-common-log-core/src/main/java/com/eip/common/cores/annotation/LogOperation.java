@@ -1,8 +1,8 @@
-package com.eip.common.core.annotation;
+package com.eip.common.cores.annotation;
 
-import com.eip.common.core.enums.LogEventTypeEnum;
-import com.eip.common.core.enums.LogLevelEnum;
-import com.eip.common.core.enums.LogOperateTypeEnum;
+import com.eip.common.cores.enums.LogEventTypeEnum;
+import com.eip.common.log.core.enums.LogLevelEnum;
+import com.eip.common.log.core.enums.LogOperateTypeEnum;
 
 import java.lang.annotation.*;
 

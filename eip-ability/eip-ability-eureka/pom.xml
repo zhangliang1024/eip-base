@@ -32,4 +32,23 @@
         </dependency>
     </dependencies>
 
+    <!--<build>-->
+        <!--&lt;!&ndash;设置对应生成的xml文件路径??&ndash;&gt;-->
+        <!--<resources>-->
+            <!--<resource>-->
+                <!--<directory>src/main/java</directory>-->
+                <!--<includes>-->
+                    <!--<include>**/*.xml</include>-->
+                <!--</includes>-->
+            <!--</resource>-->
+            <!--&lt;!&ndash;设置自己目录下的配置文件&ndash;&gt;-->
+            <!--<resource>-->
+                <!--&lt;!&ndash;下方resources的文件夹名字要和自己项目的文件夹名确认一致才行 很多人就是忽略了名字不一致 &ndash;&gt;-->
+                <!--<directory>src/main/resources</directory>-->
+                <!--<includes>-->
+                    <!--<include>**/*</include>-->
+                <!--</includes>-->
+            <!--</resource>-->
+        <!--</resources>-->
+    <!--</build>-->
 </project>

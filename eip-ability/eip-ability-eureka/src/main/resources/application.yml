@@ -1,9 +1,9 @@
 server:
-  port: 9001
+  port: 9000
 
 spring:
   application:
-    name: eureka-server
+    name: eip-eureka
   profiles:
     active: @my-profile@
   security:
@@ -29,10 +29,10 @@ eureka:
     response-cache-update-interval-ms: 5000 #readOnlyCache缓存更新时间
   client:
     fetch-registry: true # 是否从Eureka Server获取注册信息，默认true。单点可以设置为false，集群设置为true。
-    register-with-eureka: true #是否将自身实例注册到Eureka Server
+    register-with-eureka: false #是否将自身实例注册到Eureka Server
     registry-fetch-interval-seconds: 5 #从Eureka Server服务端获取注册信息的间隔时间，单位：秒
     service-url:
-      defaultZone: ${EUEEKA_SERVER_URL:http://admin:admin@localhost:9001/eureka/}
+      defaultZone: ${EUEEKA_SERVER_URL:http://admin:admin@localhost:9000/eureka/}
     healthcheck:
       enabled: true #应用程序会将自己Spring Boot Actuator的/heath端点的健康状态传播到Eureka Server
 
@@ -43,8 +43,8 @@ info:
     version: ${application.version}
     description: ${application.title}
 
-logging:
-  file:
-    name: ${spring.application.name}
-    path: logs
+#logging:
+#  file:
+#    name: ${spring.application.name}
+#    path: logs
 

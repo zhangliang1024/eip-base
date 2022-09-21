@@ -1,4 +1,4 @@
-package com.eip.common.core.context;
+package com.eip.common.cores.context;
 
 import org.springframework.core.NamedThreadLocal;
 import org.springframework.expression.spel.support.StandardEvaluationContext;

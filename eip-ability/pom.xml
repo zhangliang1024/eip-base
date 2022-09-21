@@ -19,6 +19,8 @@
         <module>eip-ability-seata</module>
         <module>eip-ability-job</module>
         <module>eip-ability-log</module>
+        <module>eip-ability-auth-oauth2</module>
+        <module>eip-ability-admin</module>
     </modules>
 
 
@@ -35,6 +37,18 @@
             <!--<groupId>com.eip.cloud</groupId>-->
             <!--<artifactId>eip-config</artifactId>-->
         <!--</dependency>-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

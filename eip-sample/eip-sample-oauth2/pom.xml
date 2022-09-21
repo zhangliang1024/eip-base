@@ -25,6 +25,12 @@
         <dependency>
             <groupId>com.eip.cloud</groupId>
             <artifactId>eip-common-core</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.eip.cloud</groupId>
+                    <artifactId>eip-common-apidoc</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!--OAuth2的依赖-->
         <dependency>

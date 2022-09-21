@@ -1,0 +1,95 @@
+# 不校验验证码终端
+ignore:
+  clients:
+  - test
+  swagger-providers:
+  - wemirr-platform-gateway
+server:
+  port: 9000
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: wemirr-platform-gateway
+  config:
+    import:
+    - optional:nacos:${spring.application.name}.properties
+  cloud:
+    nacos:
+      server-addr: 140.246.154.99:8848
+      discovery:
+        metadata:
+          group: ${spring.application.name}
+          version: 1.0
+      config:
+        server-addr: 140.246.154.99:8848
+        refresh-enabled: true
+    gateway:
+      # 动态路由
+      dynamic-route:
+        type: redis
+        enabled: true
+      enabled: true
+      discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
+      routes:
+      - id: wemirr-platform-authority
+        uri: lb://wemirr-platform-authority
+        predicates:
+        - Path=/authority/**
+        filters:
+        - name: RequestRateLimiter
+          args:
+            redis-rate-limiter.replenishRate: 100   # 允许用户每秒处理多少个请求
+            redis-rate-limiter.burstCapacity: 100   # 令牌桶的容量，允许在一秒钟内完成的最大请求数
+            # 使用 IP 限流策略（使用 SpEL 按名称引用 bean）
+            key-resolver: "#{@ipKeyResolver}"
+        - StripPrefix=1
+        - name: Retry
+          args:
+            retries: 1
+            statuses: BAD_GATEWAY
+            backoff:
+              firstBackoff: 200ms
+              maxBackoff: 500ms
+              factor: 1
+              basedOnPreviousValue: false
+              exceptions: TimeoutException
+      - id: wemirr-platform-authority-websocket
+        uri: lb:ws://wemirr-platform-authority
+        predicates:
+        - Path=/authority/**
+        filters:
+        - StripPrefix=1
+      - id: wemirr-platform-tools
+        uri: lb://wemirr-platform-tools
+        predicates:
+        - Path=/tools/**
+        filters:
+        - StripPrefix=1
+      - id: wemirr-platform-monitor
+        uri: lb://wemirr-platform-monitor
+        predicates:
+        - Path=/monitor/**
+        filters:
+        - StripPrefix=1
+      - id: wemirr-platform-demo
+        uri: lb://wemirr-platform-demo
+        predicates:
+        - Path=/demo/**
+        filters:
+        - StripPrefix=1
+      loadbalancer:
+        use404: true
+      httpclient:
+        response-timeout: 300s
+        pool:
+          type: elastic
+          max-idle-time: 30s
+          max-connections: 1000
+          acquire-timeout: 180000
+    discovery:
+      reactive:
+        enabled: false

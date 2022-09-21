@@ -28,10 +28,10 @@ public class SwaggerHeaderFilter extends AbstractGatewayFilterFactory {
         return (exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
             String path = request.getURI().getPath();
-            if (!StringUtils.endsWithIgnoreCase(path, swaggerGatewayProperties.getSwaggerApiDocs())) {
+            if (!StringUtils.endsWithIgnoreCase(path, swaggerGatewayProperties.getApiDocs())) {
                 return chain.filter(exchange);
             }
-            String basePath = path.substring(0, path.lastIndexOf(swaggerGatewayProperties.getSwaggerApiDocs()));
+            String basePath = path.substring(0, path.lastIndexOf(swaggerGatewayProperties.getApiDocs()));
             ServerHttpRequest newRequest = request.mutate().header(swaggerGatewayProperties.getHeaderName(), basePath).build();
             ServerWebExchange newExchange = exchange.mutate().request(newRequest).build();
             return chain.filter(newExchange);

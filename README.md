@@ -12,8 +12,8 @@ springcloud开发脚手架
 
 | 架构组件 | 端口 | 备注 |
 | ------- | ---- | ---- |
-| xxl-job  | 9006 |  |
-| xxl-job  | 9006 |  |
-| xxl-job  | 9006 |  |
-| xxl-job  | 9006 |  |
-| xxl-job  | 9006 |  |
+| eip-eureka  | 9000 |  |
+| eip-gateway  | 9001 |  |
+| eip-auth  | 9002 |  |
+| eip-admin  | 9003 |  |
+| eip-job  | 9004 |  |

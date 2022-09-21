@@ -1,4 +1,4 @@
-package com.eip.common.core.enums;
+package com.eip.common.cores.enums;
 
 /**
  * ClassName: LogEventTypeEnum

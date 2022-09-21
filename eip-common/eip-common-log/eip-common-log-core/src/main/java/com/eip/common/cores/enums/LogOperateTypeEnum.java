@@ -1,4 +1,4 @@
-package com.eip.common.core.enums;
+package com.eip.common.cores.enums;
 
 /**
  * ClassName: LogOperateTypeEnum
@@ -8,7 +8,7 @@ package com.eip.common.core.enums;
  * @author 张良 E-mail:zhangliang01@jingyougroup.com
  * @version V1.0.0
  */
-public enum LogOperateTypeEnum implements LogOperateType {
+public enum LogOperateTypeEnum  {
 
     ADD("ADD"),
 
