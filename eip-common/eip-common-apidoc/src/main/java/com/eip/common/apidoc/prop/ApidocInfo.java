@@ -3,6 +3,9 @@ package com.eip.common.apidoc.prop;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @类描述：
  * @创建人：zhiang
@@ -10,14 +13,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @version：V1.0
  */
 @Data
-@ConfigurationProperties(prefix = "eip.api.doc.swagger")
+@ConfigurationProperties(prefix = "springdoc.eip-docs")
 public class ApidocInfo {
-
-
-    /**
-     * 是否启用swagger
-     */
-    private boolean enabled = false;
 
     /**
      * 组名
@@ -25,9 +22,9 @@ public class ApidocInfo {
     private String groupName = "default";
 
     /**
-     * host地址
+     * 暴露接口地址路径，最终由配置文件中为结果
      */
-    private String host;
+    private List<String> pathsToMatch = Arrays.asList("/**");
 
     /**
      * 项目标题
@@ -52,26 +49,14 @@ public class ApidocInfo {
     /**
      * 许可证url
      */
-    private String licenseUrl  = "https://www.apache.org/licenses/LICENSE-2.0.html";
+    private String licenseUrl = "https://www.apache.org/licenses/LICENSE-2.0.html";
 
     /**
      * 维护者
      */
     private Contact contact = new Contact();
 
-    /**
-     * 包扫描
-     */
-    private String basePackage = "com.eip.base.business";
+    private ExternalDocs externalDocs = new ExternalDocs();
 
-    /**
-     * 需要处理的基础URL规则，默认：/**
-     */
-    private String basePath;
-
-    /**
-     * 需要排除的URL规则，默认：空
-     */
-    private String excludePath;
 
 }

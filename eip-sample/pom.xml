@@ -16,6 +16,7 @@
         <module>eip-sample-log</module>
         <module>eip-sample-oauth2</module>
         <module>eip-sample-oauth2-custom</module>
+        <module>eip-sample-springdoc</module>
     </modules>
 
 

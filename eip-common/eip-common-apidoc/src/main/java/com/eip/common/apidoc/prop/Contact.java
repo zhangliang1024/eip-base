@@ -14,17 +14,17 @@ public class Contact {
     /**
      * 维护者
      */
-    private String name = "default";
+    private String name = "ZhLiang";
 
     /**
      * 邮箱
      */
-    private String email = "springboot@126.com";
+    private String email = "zhangliang1024_job@126.com";
 
     /**
      * 维护者地址
      */
-    private String url;
+    private String url = "https://github.com/zhangliang1024/eip-base";
 
 
 }

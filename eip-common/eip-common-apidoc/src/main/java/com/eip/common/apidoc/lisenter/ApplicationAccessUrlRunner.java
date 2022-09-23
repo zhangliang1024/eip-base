@@ -1,17 +1,15 @@
 package com.eip.common.apidoc.lisenter;
 
-import com.github.xiaoymin.knife4j.core.util.StrUtil;
+import cn.hutool.core.util.StrUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Component;
 
 import java.net.InetAddress;
 
 @Slf4j
-@Component
 @AllArgsConstructor
 public class ApplicationAccessUrlRunner implements ApplicationRunner {
 
@@ -26,14 +24,15 @@ public class ApplicationAccessUrlRunner implements ApplicationRunner {
         String applicationName = StrUtil.isBlank(env.getProperty("spring.application.name")) ? DEFAULT_NAME : env.getProperty("spring.application.name");
         String port = StrUtil.isBlank(env.getProperty("server.port")) ? DEFAULT_PORT : env.getProperty("server.port");
         log.info("\n----------------------------------------------------------\n\t" +
-                        "Application '{}' is running! Access URLs:\n\t" +
-                        "Local: \t\thttp://localhost:{}/doc.html\n\t" +
+                        "Application [{}] is running! Access URLs:\n\t" +
                         "External: \thttp://{}:{}\n\t" +
-                        "Doc: \thttp://{}:{}/doc.html\n" +
+                        "Swagger: \thttp://{}:{}/swagger-ui/index.html\n\t" +
+                        "Doc: \t\thttp://{}:{}/doc.html\n" +
                         "----------------------------------------------------------",
-
-                applicationName, port,
+                applicationName,
                 InetAddress.getLocalHost().getHostAddress(), port,
-                InetAddress.getLocalHost().getHostAddress(), port);
+                InetAddress.getLocalHost().getHostAddress(), port,
+                InetAddress.getLocalHost().getHostAddress(), port
+        );
     }
 }

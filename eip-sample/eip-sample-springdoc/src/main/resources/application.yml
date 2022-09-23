@@ -1,0 +1,12 @@
+springdoc:
+#  swagger-ui:
+#    enabled: true #开启Swagger UI界面
+#    path: /swagger-api/ #修改Swagger UI路径 http://localhost:8080/swagger-api/swagger-ui/index.html
+#    disable-swagger-default-url: true
+#  api-docs:
+#    enabled: true #开启api-docs
+#    path: /v3/api-docs #修改api-docs路径
+#  packages-to-scan: com.eip.sample.springdoc.web #配置需要生成接口文档的包扫描
+#  paths-to-match: /system/**,/captcha/**,/login/** #配置需要生成接口文档的接口路径
+  eip-docs:
+    group-name: eip-sample

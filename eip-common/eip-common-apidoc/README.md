@@ -84,3 +84,109 @@ knife4j:
 [整合swagger、knife4j](https://www.cnblogs.com/mjtabu/p/14187853.html)
 [Knife4j](https://gitee.com/xiaoym/knife4j)
 [knife4j](https://doc.xiaominfo.com/knife4j/)
+
+
+---
+
+# `SpringBoot`整合`SpringDoc+Knife4j`
+> 问题：`Springboot`升级2.6版本后，使用`Swagger3`启动会报错：`Failed to start bean ‘documentationPluginsBootstrapper’; nested exception is java.lang.NullPointerException`
+
+### 一、依赖
+> - `pom.xml`
+```xml
+<dependency>
+    <groupId>org.springdoc</groupId>
+    <artifactId>springdoc-openapi-ui</artifactId>
+    <version>1.6.11</version>
+</dependency>
+<!--引入Knife4j的官方ui包,OpenAPI3建议使用springdoc-openapi项目-->
+<dependency>
+    <groupId>com.github.xiaoymin</groupId>
+    <artifactId>knife4j-springdoc-ui</artifactId>
+    <version>3.0.3</version>    
+</dependency>
+```
+
+### 二、配置
+> - `application.yml`
+```yaml
+springdoc:
+  swagger-ui:
+    enabled: true #开启Swagger UI界面
+#    path: /swagger-api/ #修改Swagger UI路径 http://localhost:8080/swagger-api/swagger-ui/index.html
+#    disable-swagger-default-url: true
+  api-docs:
+    enabled: true #开启api-docs
+    path: /v3/api-docs #修改api-docs路径
+  packages-to-scan: com.eip.sample.springdoc.web #配置需要生成接口文档的包扫描
+  paths-to-match: /system/**,/captcha/**,/login/** #配置需要生成接口文档的接口路径，哪些路径生效由这里的配置最终决定
+  eip-docs:
+    group-name: eip-sample
+```
+
+### 三、配置类
+```java
+@RequiredArgsConstructor
+@EnableConfigurationProperties(ApidocInfo.class)
+@ConditionalOnProperty(name = "springdoc.swagger-ui.enabled", havingValue = "true", matchIfMissing = true)
+public class SpringDocConfig {
+
+    private final ApidocInfo apidocInfo;
+
+    @Bean
+    public OpenAPI springShopOpenApi() {
+        return new OpenAPI()
+                .info(apiInfo())
+                .externalDocs(externalDocs())
+                .addSecurityItem(securityItem())
+                .components(components());
+    }
+    //...
+}
+```
+
+### 四、结合`SpirngSecurity`使用
+> 项目集成`SpringSecurity`，需要配置`SpirngDoc`白名单路径
+```java
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {                                              
+
+    @Override
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.csrf()// 由于使用的是JWT，我们这里不需要csrf
+                .disable()
+                .sessionManagement()// 基于token，所以不需要session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.GET, // Swagger的资源路径需要允许访问
+                        "/",   
+                        "/swagger-ui.html",
+                        "/swagger-ui/",
+                        "/*.html",
+                        "/favicon.ico",
+                        "/**/*.html",
+                        "/**/*.css",
+                        "/**/*.js",
+                        "/swagger-resources/**",
+                        "/v3/api-docs/**"
+                )
+                .permitAll()
+                .antMatchers("/admin/login")// 对登录注册要允许匿名访问
+                .permitAll()
+                .antMatchers(HttpMethod.OPTIONS)//跨域请求会先进行一次options请求
+                .permitAll()
+                .anyRequest()// 除上面外的所有请求全部需要鉴权认证
+                .authenticated();
+        
+    }
+}
+```
+
+
+### 参考文档
+[SpringBoot集成SpringDoc](https://blog.csdn.net/tenyears940326/article/details/126467823)
+[SpringBoot的API文档生成工具SpringDoc使用详解](https://www.jb51.net/article/252272.htm)
+[神器 SpringDoc 横空出世，最适合 SpringBoot 的API文档工具来了](https://blog.csdn.net/zhenghongcs/article/details/123812583)
+[升级Springboot2.6后使用Swagger3报错](https://blog.csdn.net/qq_40977118/article/details/124387411)
