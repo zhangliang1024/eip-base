@@ -108,7 +108,7 @@ knife4j:
 ```
 
 ### 二、配置
-> - `application.yml`
+> - 配置示例一
 ```yaml
 springdoc:
   swagger-ui:
@@ -122,6 +122,34 @@ springdoc:
   paths-to-match: /system/**,/captcha/**,/login/** #配置需要生成接口文档的接口路径，哪些路径生效由这里的配置最终决定
   eip-docs:
     group-name: eip-sample
+```
+> - 配置示例二
+```yaml
+server:
+  port: 8080
+
+springdoc:
+  api-docs:
+    #是否开启文档功能
+    enabled: true
+    #swagger后端请求地址
+    path: /api-docs
+  swagger-ui:
+    #自定义swagger前端请求路径，输入http：127.0.0.1:8080/test会自动重定向到swagger页面
+    path: /test
+  #包扫描路径
+  packages-to-scan: com.hello.controller,com.hello.dto
+  #这里定义了两个分组，可定义多个，也可以不定义
+  group-configs:
+      #分组名
+    - group: admin
+      #按路径匹配
+      pathsToMatch: /admin/**
+      #分组名
+    - group: user
+      #按包路径匹配
+      packagesToScan: com.hello.api.user
+
 ```
 
 ### 三、配置类
@@ -145,7 +173,100 @@ public class SpringDocConfig {
 }
 ```
 
-### 四、结合`SpirngSecurity`使用
+### 四、注解使用
+- 接口定义
+```java
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "AdminControllerApi", description = "管理员相关接口")
+public interface AdminControllerApi {
+
+    @Operation(summary = "管理员添加用户",
+            description = "根据姓名添加用户并返回",
+            parameters = {
+                    @Parameter(name = "name", description = "姓名")
+            },
+            responses = {
+                    @ApiResponse(description = "返回添加的用户", content = @Content(mediaType = "application/json", schema = @Schema(anyOf = {CommonResult.class, User.class}))),
+                    @ApiResponse(responseCode = "400", description = "返回400时候错误的原因")
+            }
+    )
+    CommonResult<User> addUser(String name);
+
+    @Operation(summary = "管理员删除用户", description = "根据姓名删除用户")
+    @ApiResponse(description = "返回添加的用户", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class)))
+    CommonResult<User> delUser(@Parameter(description = "姓名") String name);
+
+
+    @Operation(summary = "管理员更新用户", description = "管理员根据姓名更新用户")
+    @ApiResponse(description = "返回更新的用户", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class)))
+    CommonResult<User> updateUser(@Parameter(schema = @Schema(implementation = User.class), required = true, description = "用户类") User user);
+}
+
+```
+```java
+package com.hello.api.user;
+
+import com.hello.dto.User;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "UserControllerApi", description = "用户的增删改查")
+public interface UserControllerApi {
+
+    @Operation(summary = "添加用户",
+            description = "根据姓名添加用户并返回",
+            parameters = {
+                    @Parameter(name = "name", description = "姓名")
+            },
+            responses = {
+                    @ApiResponse(description = "返回添加的用户",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = User.class))),
+                    @ApiResponse(responseCode = "400", description = "返回400时候错误的原因")}
+    )
+    User addUser(String name);
+
+    @Operation(summary = "删除用户",
+            description = "根据姓名删除用户",
+            parameters = {
+                    @Parameter(name = "name", description = "姓名")
+            })
+    void delUser(String name);
+}
+
+```
+
+- 实体类
+```java
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Schema(name="User",description ="用户信息" )
+@Data
+@AllArgsConstructor
+public class User {
+    @Schema(name = "name",description = "姓名")
+    private String name;
+    @Schema(name = "age",description = "年龄")
+    private int age;
+}
+
+```
+
+
+### 五、结合`SpirngSecurity`使用
 > 项目集成`SpringSecurity`，需要配置`SpirngDoc`白名单路径
 ```java
 @Configuration
@@ -190,3 +311,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 [SpringBoot的API文档生成工具SpringDoc使用详解](https://www.jb51.net/article/252272.htm)
 [神器 SpringDoc 横空出世，最适合 SpringBoot 的API文档工具来了](https://blog.csdn.net/zhenghongcs/article/details/123812583)
 [升级Springboot2.6后使用Swagger3报错](https://blog.csdn.net/qq_40977118/article/details/124387411)
+[Springboot整合Swagger3全注解配置](https://blog.csdn.net/weixin_44768189/article/details/115055784)

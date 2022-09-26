@@ -1,9 +1,8 @@
 package com.eip.base.business.web.controller.api;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -15,31 +14,33 @@ import org.springframework.web.bind.annotation.*;
  * @version：V1.0
  */
 @RestController
-@Api(tags = "用户管理相关接口")
+@Tag(name = "用户管理相关接口")
 @RequestMapping("/user")
 public class UserController {
 
     @PostMapping("/")
-    @ApiOperation("添加用户的接口")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "username", value = "用户名", defaultValue = "李四"),
-            @ApiImplicitParam(name = "address", value = "用户地址", defaultValue = "深圳", required = true)
-    }
+    @Operation(summary = "添加用户的接口",
+            parameters = {
+                    @Parameter(name = "username", description = "用户名", example = "李四"),
+                    @Parameter(name = "address", description = "用户地址", example = "深圳", required = true)
+            }
     )
     public User addUser(String username, @RequestParam(required = true) String address) {
         return new User();
     }
 
     @GetMapping("/")
-    @ApiOperation("根据id查询用户的接口")
-    @ApiImplicitParam(name = "id", value = "用户id", defaultValue = "99", required = true)
+    @Operation(summary = "根据id查询用户的接口",
+            parameters = {@Parameter(name = "id", description = "用户id", example = "99", required = true)}
+    )
     public User getUserById(@PathVariable Integer id) {
         User user = new User();
         user.setId(id);
         return user;
     }
+
     @PutMapping("/{id}")
-    @ApiOperation("根据id更新用户的接口")
+    @Operation(summary = "根据id更新用户的接口")
     public User updateUserById(@RequestBody User user) {
         return user;
     }

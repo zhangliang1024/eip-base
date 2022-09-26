@@ -1,7 +1,6 @@
 package com.eip.base.business.web.controller.api;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * @项目名称：springboot
@@ -11,14 +10,14 @@ import io.swagger.annotations.ApiModelProperty;
  * @创建时间：2020/5/5 16:08
  * @version：V1.0
  */
-@ApiModel
+@Schema
 public class User {
 
-    @ApiModelProperty(value = "用户id")
+    @Schema(name = "用户id")
     private Integer id;
-    @ApiModelProperty(value = "用户名")
+    @Schema(name = "用户名")
     private String username;
-    @ApiModelProperty(value = "用户地址")
+    @Schema(name = "用户地址")
     private String address;
 
     public Integer getId() {

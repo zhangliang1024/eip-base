@@ -4,8 +4,7 @@ import com.eip.common.core.constants.GlobalConstans;
 import com.eip.common.core.core.assertion.IResponseEnum;
 import com.eip.common.core.core.assertion.enums.BaseResponseEnum;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,20 +25,20 @@ import java.io.Serializable;
 @ToString
 @Accessors(chain = true)
 @AllArgsConstructor
-@ApiModel("返回结果")
+@Schema(defaultValue = "返回结果")
 public class ApiResult<T> implements Serializable {
 
-    @ApiModelProperty(value = "状态码", notes = "默认200是成功")
+    @Schema(defaultValue = "状态码", description = "默认200是成功")
     protected String code;
 
-    @ApiModelProperty(value = "响应信息", notes = "来说明响应情况")
+    @Schema(defaultValue = "响应信息", description = "来说明响应情况")
     protected String message;
 
-    @ApiModelProperty(value = "全局logTraceId", notes = "全局递传logTraceId")
+    @Schema(defaultValue = "全局logTraceId", description = "全局递传logTraceId")
     private String logTraceId;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @ApiModelProperty(value = "响应数据")
+    @Schema(defaultValue = "响应数据")
     public T data;
 
     private ApiResult(String code, String message) {

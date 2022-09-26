@@ -7,6 +7,7 @@ import com.eip.ability.admin.domain.entity.baseinfo.Role;
 import com.eip.ability.admin.domain.entity.baseinfo.User;
 import com.eip.ability.admin.domain.vo.DictResp;
 import com.eip.ability.admin.oauth2.IgnoreAuthorize;
+import com.eip.ability.admin.oauth2.entity.UserInfoDetails;
 import com.eip.ability.admin.service.DataScopeService;
 import com.eip.ability.admin.service.RoleService;
 import com.eip.ability.admin.service.UserService;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -68,5 +70,9 @@ public class AuthorityController {
         return Result.success(dataScopeService.getDataScopeById(7L));
     }
 
-
+    @IgnoreAuthorize
+    @PostMapping("loadUserByUsername")
+    public Result<UserInfoDetails> loadUserByUsername(String username, String tenantCode){
+        return userService.loadUserByUsername(username,tenantCode);
+    }
 }
