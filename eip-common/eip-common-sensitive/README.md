@@ -3,6 +3,8 @@
 
 ### 数据脱敏
 > 指对某些敏感信息通过脱敏规则进行数据的变形，实行敏感数据的可靠保护。
+> - 支持自定义处理脱密逻辑
+> - `@IgnoreSensitive`注解可作用于类和方法上，支持灵活启用和忽略脱密
 
 
 ### 样例演示
@@ -93,6 +95,12 @@ public class User {
 public class SensitiveController {
 
 
+    @GetMapping("sensitive")
+    public ApiResult sensitive() {
+        return ApiResult.ok(User.mock("张三三","1234456"));
+    }
+    
+    @IgnoreSensitive
     @GetMapping("sensitive")
     public ApiResult sensitive() {
         return ApiResult.ok(User.mock("张三三","1234456"));
