@@ -1,0 +1,6 @@
+server:
+  port: 6005
+spring:
+  application:
+    name: eip-sample-sensitive-simple
+

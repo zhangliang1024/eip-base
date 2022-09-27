@@ -3,22 +3,22 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>eip-base</artifactId>
+        <artifactId>eip-sample</artifactId>
         <groupId>com.eip.cloud</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>eip-sample</artifactId>
+    <artifactId>eip-sample-sensitive</artifactId>
     <packaging>pom</packaging>
 
     <modules>
-        <module>eip-sample-log</module>
-        <module>eip-sample-oauth2</module>
-        <module>eip-sample-oauth2-custom</module>
-        <module>eip-sample-springdoc</module>
-        <module>eip-sample-sensitive</module>
+        <module>eip-sample-sensitive-simple</module>
+        <module>eip-sample-sensitive-starter</module>
     </modules>
 
+    <dependencies>
+
+    </dependencies>
 
 </project>

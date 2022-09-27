@@ -73,8 +73,7 @@ public class SensitiveSerialize extends JsonSerializer<String> implements Contex
                     sensitive = beanProperty.getContextAnnotation(Sensitive.class);
                 }
                 if (sensitive != null) {
-                    return new SensitiveSerialize(sensitive.type(), sensitive.prefixNoMaskLen(),
-                            sensitive.suffixNoMaskLen(), sensitive.symbol());
+                    return new SensitiveSerialize(sensitive.type(), sensitive.prefixNoMaskLen(),sensitive.suffixNoMaskLen(), sensitive.symbol());
                 }
             }
             return serializerProvider.findValueSerializer(beanProperty.getType(), beanProperty);

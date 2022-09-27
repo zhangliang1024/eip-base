@@ -1,38 +1,22 @@
 package com.eip.cloud.eip.common.sensitive.handler;
 
-import com.eip.cloud.eip.common.sensitive.annotation.Sensitive;
-import com.eip.cloud.eip.common.sensitive.format.Desensitize;
-import lombok.Data;
+/**
+ * ClassName: SensitiveHandler
+ * Function: 数据脱密处理
+ * Date: 2022年09月27 13:52:23
+ *
+ * @author 张良 E-mail:zhangliang01@jingyougroup.com
+ * @version V1.0.0
+ */
+public interface SensitiveHandler {
 
-import java.lang.reflect.Field;
+    /**
+     * 默认数据脱密处理
+     */
+    String handler(SensitiveWrapper sensitiveWrapper);
 
-@Data
-public class SensitiveHandler implements SecurityHandler<Sensitive> {
-
-    private Desensitize desensitize;
-
-    @Override
-    public boolean support(Field field) {
-        Sensitive annotation = field.getAnnotation(Sensitive.class);
-        return annotation != null && annotation.required();
-    }
-
-    @Override
-    public Sensitive acquire(Field field) {
-        Sensitive annotation = null;
-        if (field != null) {
-            annotation = field.getAnnotation(Sensitive.class);
-        }
-        return annotation;
-    }
-
-    @Override
-    public String handleEncrypt(String source, Sensitive annotation) {
-        return desensitize.format(source, annotation);
-    }
-
-    @Override
-    public String handleDecrypt(String source, Sensitive annotation) {
-        return source;
-    }
+    /**
+     * 自定义数据脱密处理
+     */
+    String customHandler(SensitiveWrapper sensitiveWrapper);
 }

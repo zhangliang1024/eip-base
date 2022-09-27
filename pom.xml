@@ -29,12 +29,12 @@
         <!--<spring-boot-dependencies.version>2.7.0</spring-boot-dependencies.version>-->
         <!--<spring-cloud-dependencies.version>2021.0.3</spring-cloud-dependencies.version>-->
         <!--<spring-cloud-alibaba-dependencies.version>2021.0.1.0</spring-cloud-alibaba-dependencies.version>-->
+        <!--<spring-cloud-starter-oauth2>2.2.5.RELEASE</spring-cloud-starter-oauth2>-->
 
         <spring-boot-dependencies.version>2.3.2.RELEASE</spring-boot-dependencies.version>
         <spring-cloud-dependencies.version>Hoxton.SR9</spring-cloud-dependencies.version>
         <spring-cloud-alibaba-dependencies.version>2.2.6.RELEASE</spring-cloud-alibaba-dependencies.version>
 
-        <spring-cloud-starter-oauth2>2.2.5.RELEASE</spring-cloud-starter-oauth2>
         <apollo.config.version>1.7.0</apollo.config.version>
 
         <druid-starter.version>1.1.21</druid-starter.version>
@@ -107,11 +107,11 @@
             <!--
                 原文链接：https://blog.csdn.net/weixin_62421895/article/details/125783888
             -->
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-oauth2</artifactId>
-                <version>${spring-cloud-starter-oauth2}</version>
-            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>org.springframework.cloud</groupId>-->
+                <!--<artifactId>spring-cloud-starter-oauth2</artifactId>-->
+                <!--<version>${spring-cloud-starter-oauth2}</version>-->
+            <!--</dependency>-->
 
             <!-- mysql start -->
             <dependency>
@@ -275,6 +275,11 @@
             <dependency>
                 <groupId>com.eip.cloud</groupId>
                 <artifactId>eip-common-sms-mail</artifactId>
+                <version>${eip.base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.eip.cloud</groupId>
+                <artifactId>eip-common-sensitive</artifactId>
                 <version>${eip.base.version}</version>
             </dependency>
 
@@ -472,6 +477,8 @@
                 <includes>
                     <include>META-INF/**</include>
                     <include>**/*.xml</include>
+                    <include>**/*.key</include>
+                    <include>**/*.jks</include>
                     <include>**/banner.txt</include>
                     <include>bootstrap.yml</include>
                     <include>bootstrap-${my-profile}.yml</include>
