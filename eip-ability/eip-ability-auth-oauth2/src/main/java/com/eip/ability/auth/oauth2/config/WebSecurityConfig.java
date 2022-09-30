@@ -1,6 +1,6 @@
 package com.eip.ability.auth.oauth2.config;
 
-import com.eip.ability.auth.oauth2.service.impl.UserDetailServiceImpl;
+import com.eip.ability.auth.oauth2.service.UserDetailServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,29 +25,31 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
-     * http安全配置
+     * http 安全配置，哪些接口需要校验
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .antMatchers("/feign").permitAll()
                 .anyRequest().authenticated()
-                .and().httpBasic()
-                .and().cors()
-                .and().csrf().disable();
-
+                .and()
+                .httpBasic()
+                .and()
+                .csrf().disable();
     }
 
     /**
-     * 认证处理
+     * 用户认证 和 密码比对
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService()) //获取用户信息
-                .passwordEncoder(passwordEncoder()); //密码比对
+        auth.userDetailsService(userDetailsService());
     }
 
+
     /**
-     * 认证器 密码模式需要
+     * 注入认证管理器 AuthenticationManager在密码授权模式下会用到，这里提前注入。
+     * 若不是密码模式，可以不注入
      */
     @Bean
     @Override
@@ -55,15 +57,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    @Override
+
     @Bean
-    public UserDetailsService userDetailsService(){
+    public UserDetailsService userDetailsService() {
         return new UserDetailServiceImpl();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 
 }

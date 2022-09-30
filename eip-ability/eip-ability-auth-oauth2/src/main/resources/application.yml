@@ -1,17 +1,29 @@
 server:
-  port: 9002
+  port: 9001
 
 spring:
   application:
     name: eip-auth
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://140.246.154.99:3306/eip-base?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
+    url: jdbc:mysql://140.246.154.99:3306/wemirr-platform?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
-
-
+  redis:
+    database: 2
+    host: 140.246.154.99
+    password: 123456
+    port: 6379
+  cloud:
+    nacos:
+      server-addr: 140.246.154.99:8848
+      discovery:
+        metadata:
+          group: ${spring.application.name}
+          version: 1.0
+  main:
+    allow-bean-definition-overriding: true
 
 
 eureka:
@@ -37,3 +49,46 @@ info:
     name: ${application.title}
     version: ${application.version}
     description: ${application.title}
+
+security:
+  oauth2:
+    jwt:
+      privateKey: |
+        -----BEGIN RSA PRIVATE KEY-----
+        MIIEpAIBAAKCAQEAqI/1ah3MdXUeSxKSlYqalvk9Kdns8K8cqKDaJ5qz0RCJw+CA
+        T032iaGL1PuK/hIbNaarLBzB0SZPxp5v1UE/ERnLfYiq+yFlTfp3FniWKEjdWby1
+        vvvWJYtYNb+zuk07gVLOzONAX/ZdOaZVtwUm/+lEU5wcHk6GnSvM/q8KYJJ/2VXG
+        kuXw7sQDok1deVuDsN7DBbXhfahYAdWupC22fy5RRPm8ea8oOxif/eZxzkgWicco
+        BgFExdiOZMTXg3y8LxDl2c23FRXYegT8ZmxANyjvuVDIchTmkqbMoa6SkRVL8B3W
+        esEpB35Ag8g6h71CMT6S2mUMgFBlU7JgSIM5SQIDAQABAoIBAHfafI6qh4GQ+Cw7
+        FX09I3Rr3eCPMtlkOcVxMgztBCSIVNyxGarJ7Z2o/ys+fHLxXuWED7v66pkTW7AH
+        Yc9JaFV5eOZWsfSEp2qNx/VzYplcTf+LndMhcAAcF2mIWHwEhGYNAjxO7awOGfVu
+        3w2WnUdjjpDAtIGcJj1FMqp4vbEx8kn/4ogeBZp2+tnHATQiU976ML0jxjcEAKMW
+        7unefDN1wmaVf8r0Glvef1YVjtZCVPVBkYs2GVsSvi44wka0Nkj/4mdk5QtOcb6s
+        XMKjqU1kUeCslSB2T7xHaknU+Xwo/skRWkMaOWO4ZQDrqunRu5QvfQQtnE25O37e
+        lguYu4ECgYEA0LBUKh6pEgFcWFutf3igWElGoH0OjwEaKdptvMYmGtC/YGViwhvn
+        t9JhUu44pUDt9tKJ6h8poB7xr6aQa05dEAbrN7paYTn/KsxBSOIj/vh8InNKCLFo
+        V9MU45qMikF8f57LSvIF5o4NVJstKQGWa45XPMdxTzNg3+9RUgiHJRkCgYEAzsbP
+        sVGsitly3nICRSVcLaT4JkXvfwk0EcGv+lha9TZR266w6V3LzgshyK1FbM8ukDTm
+        Fe5Q0zzHpeqjU4yhPxnCIIFXPQBVQxyZT0M2eN44E35pNTZ3liJS0r5/4n9HhPiM
+        n1eBZFwVhOlPjDkC6yZzD7Z6olXxO+AHyhEei7ECgYEAnhFxLpYaqbCuKZ8HQ04y
+        5axa+qS+qkLDdoAkLqBHrHgA/RrOOwi38tw/K3mVHlaX6CSAof0IomfN2KXpLd4l
+        T0ZuU7+rRYmQZPJhYLspWK8OF2oL4Zm+1wbjA6LEYNRJYMD+ar33CjL+ld8TzcOO
+        E9m06iyG/t6DuhqjFeevtcECgYAqWRFEMYPy0+HwqMzKOIKOXpDr1brc+5eMY2yV
+        Cu9l9QACy94zjSAmTKVYohPr2uqgYhUVPL+U44fH9SwJ+m0zrSTS32psddsAaaUE
+        VLGdQ3WcmHEXktYfC1yHCLjMPGD7XKQAJj27vhgyJk5CW5K7ch5yg17OTGehaZpu
+        yd7FoQKBgQCPvldGHOyCUl4NqW/r7NQI2h5DEAGyFZNqttcse0zLjScVeksFKgeX
+        dMIXZT84tMWHnfbDV3zH3PKw8OKruICbaF273ayl3ntmlAqfqmmQtbiKH880hJV4
+        SWeSmF+YNsmblmxSVYGNjvb+gYyesKLseYJE1YfEEedrFo87KaV6Kg==
+        -----END RSA PRIVATE KEY-----
+
+      publicKey: |
+        -----BEGIN PUBLIC KEY-----
+        MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqI/1ah3MdXUeSxKSlYqa
+        lvk9Kdns8K8cqKDaJ5qz0RCJw+CAT032iaGL1PuK/hIbNaarLBzB0SZPxp5v1UE/
+        ERnLfYiq+yFlTfp3FniWKEjdWby1vvvWJYtYNb+zuk07gVLOzONAX/ZdOaZVtwUm
+        /+lEU5wcHk6GnSvM/q8KYJJ/2VXGkuXw7sQDok1deVuDsN7DBbXhfahYAdWupC22
+        fy5RRPm8ea8oOxif/eZxzkgWiccoBgFExdiOZMTXg3y8LxDl2c23FRXYegT8ZmxA
+        NyjvuVDIchTmkqbMoa6SkRVL8B3WesEpB35Ag8g6h71CMT6S2mUMgFBlU7JgSIM5
+        SQIDAQAB
+        -----END PUBLIC KEY-----

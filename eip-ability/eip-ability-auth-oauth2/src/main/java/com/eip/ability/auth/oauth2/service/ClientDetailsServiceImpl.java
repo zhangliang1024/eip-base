@@ -1,55 +1,49 @@
-package com.eip.ability.admin.configuration.provider;
+package com.eip.ability.auth.oauth2.service;
 
 import cn.hutool.core.util.StrUtil;
-import com.eip.ability.admin.domain.entity.baseinfo.OAuthClientDetails;
-import com.eip.ability.admin.mapper.OAuthClientDetailsMapper;
-import com.eip.ability.admin.oauth2.exception.Auth2Exception;
+import com.eip.ability.auth.oauth2.domain.OAuthClientDetails;
+import com.eip.ability.auth.oauth2.mapper.ClientDetailsMapper;
 import com.google.common.collect.Sets;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.annotation.Primary;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.ClientRegistrationException;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * 自定义 redis 缓存实现的 ClientDetailsService
+ * ClassName: ClientDetailsServiceImpl
+ * Function: 从数据库读取clientDetails相关配置
+ * 1.有InMemoryClientDetailsService 和 JdbcClientDetailsService 两种方式选择
+ * <p>
+ * Date: 2022年09月22 15:27:29
  *
- * @author Levin
+ * @author 张良 E-mail:zhangliang01@jingyougroup.com
+ * @version V1.0.0
  */
 @Service
-@Primary
 @RequiredArgsConstructor
-public class CacheClientDetailsServiceImpl implements ClientDetailsService {
+public class ClientDetailsServiceImpl implements ClientDetailsService {
 
-    @Resource
-    private PasswordEncoder passwordEncoder;
-    @Resource
-    private OAuthClientDetailsMapper oAuthClientDetailsMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final ClientDetailsMapper clientDetailsMapper;
 
-    @SneakyThrows
     @Override
-    @Cacheable(value = "clients", key = "#clientId", unless = "#result == null")
-    public ClientDetails loadClientByClientId(String clientId) {
-        final OAuthClientDetails details = this.oAuthClientDetailsMapper.selectById(clientId);
-        if (Objects.isNull(details)) {
-            throw new Auth2Exception("client_id 或 client_secret 错误", HttpStatus.BAD_REQUEST.value());
-        }
-        if (!details.getStatus()) {
-            throw new Auth2Exception("client_id 已被禁用", HttpStatus.BAD_REQUEST.value());
-        }
+    public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
+        final OAuthClientDetails details = this.clientDetailsMapper.selectById(clientId);
+        //if (Objects.isNull(details)) {
+        //    throw new Auth2Exception("client_id 或 client_secret 错误", HttpStatus.BAD_REQUEST.value());
+        //}
+        //if (!details.getStatus()) {
+        //    throw new Auth2Exception("client_id 已被禁用", HttpStatus.BAD_REQUEST.value());
+        //}
         BaseClientDetails clientDetails = new BaseClientDetails();
         clientDetails.setClientId(details.getClientId());
         clientDetails.setClientSecret(passwordEncoder.encode(details.getClientSecret()));
@@ -79,5 +73,4 @@ public class CacheClientDetailsServiceImpl implements ClientDetailsService {
         }
         return clientDetails;
     }
-
 }
