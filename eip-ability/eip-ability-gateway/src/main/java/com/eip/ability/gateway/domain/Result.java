@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -44,28 +45,34 @@ public class Result<T> implements Serializable {
     @JsonIgnore
     private Boolean defExec = false;
 
+    @Parameter(description = "是否成功")
     private boolean successful = true;
 
     /**
      * 消息id
      */
+    @Parameter(description = "消息ID")
     private int code;
 
     /**
      * 消息内容
      */
+    @Parameter(description = "消息内容")
     private String message;
     /**
      * 时间戳：Date 类型
      */
+    @Parameter(description = "时间戳")
     private long timestamp;
     /**
      * 返回数据
      */
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Parameter(description = "返回数据")
     private T data;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Parameter(description = "拓展字段")
     private JSONObject ext;
 
 
@@ -159,12 +166,6 @@ public class Result<T> implements Serializable {
         return getResponse(code, OPERATION_SUCCESS, true, data);
     }
 
-    public static <T> Result<T> exists(String label, JSONObject ext) {
-        final int code = CommonError.DATA_EXISTS.type();
-        final String message = String.format(CommonError.DATA_EXISTS.desc(), label);
-        return new Builder<T>(code, System.currentTimeMillis(), false)
-                .message(message).ext(ext).data(null).build();
-    }
 
     public static <E> Result<E> fail(String msg, Object... args) {
         String message = (msg == null || msg.isEmpty()) ? DEF_ERROR_MESSAGE : msg;

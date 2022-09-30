@@ -1,9 +1,3 @@
-# 不校验验证码终端
-ignore:
-  clients:
-  - test
-  swagger-providers:
-  - wemirr-platform-gateway
 server:
   port: 9000
 spring:
@@ -11,9 +5,6 @@ spring:
     allow-bean-definition-overriding: true
   application:
     name: wemirr-platform-gateway
-  config:
-    import:
-    - optional:nacos:${spring.application.name}.properties
   cloud:
     nacos:
       server-addr: 140.246.154.99:8848
@@ -21,9 +12,6 @@ spring:
         metadata:
           group: ${spring.application.name}
           version: 1.0
-      config:
-        server-addr: 140.246.154.99:8848
-        refresh-enabled: true
     gateway:
       # 动态路由
       dynamic-route:
@@ -40,23 +28,7 @@ spring:
         predicates:
         - Path=/authority/**
         filters:
-        - name: RequestRateLimiter
-          args:
-            redis-rate-limiter.replenishRate: 100   # 允许用户每秒处理多少个请求
-            redis-rate-limiter.burstCapacity: 100   # 令牌桶的容量，允许在一秒钟内完成的最大请求数
-            # 使用 IP 限流策略（使用 SpEL 按名称引用 bean）
-            key-resolver: "#{@ipKeyResolver}"
         - StripPrefix=1
-        - name: Retry
-          args:
-            retries: 1
-            statuses: BAD_GATEWAY
-            backoff:
-              firstBackoff: 200ms
-              maxBackoff: 500ms
-              factor: 1
-              basedOnPreviousValue: false
-              exceptions: TimeoutException
       - id: wemirr-platform-authority-websocket
         uri: lb:ws://wemirr-platform-authority
         predicates:
@@ -75,10 +47,10 @@ spring:
         - Path=/monitor/**
         filters:
         - StripPrefix=1
-      - id: wemirr-platform-demo
-        uri: lb://wemirr-platform-demo
+      - id: eip-auth
+        uri: lb://eip-auth
         predicates:
-        - Path=/demo/**
+        - Path=/auth/**
         filters:
         - StripPrefix=1
       loadbalancer:
@@ -93,3 +65,89 @@ spring:
     discovery:
       reactive:
         enabled: false
+  redis:
+    database: 2
+    host: 140.246.154.99
+    password: 123456
+    port: 6379
+
+
+security:
+  oauth2:
+    client:
+      client-id: client
+      client-secret: client
+    authorization:
+      jwt:
+        key-alias: http://localhost:9001/oauth/token_key
+    jwt:
+      privateKey: |
+        -----BEGIN RSA PRIVATE KEY-----
+        MIIEpAIBAAKCAQEAqI/1ah3MdXUeSxKSlYqalvk9Kdns8K8cqKDaJ5qz0RCJw+CA
+        T032iaGL1PuK/hIbNaarLBzB0SZPxp5v1UE/ERnLfYiq+yFlTfp3FniWKEjdWby1
+        vvvWJYtYNb+zuk07gVLOzONAX/ZdOaZVtwUm/+lEU5wcHk6GnSvM/q8KYJJ/2VXG
+        kuXw7sQDok1deVuDsN7DBbXhfahYAdWupC22fy5RRPm8ea8oOxif/eZxzkgWicco
+        BgFExdiOZMTXg3y8LxDl2c23FRXYegT8ZmxANyjvuVDIchTmkqbMoa6SkRVL8B3W
+        esEpB35Ag8g6h71CMT6S2mUMgFBlU7JgSIM5SQIDAQABAoIBAHfafI6qh4GQ+Cw7
+        FX09I3Rr3eCPMtlkOcVxMgztBCSIVNyxGarJ7Z2o/ys+fHLxXuWED7v66pkTW7AH
+        Yc9JaFV5eOZWsfSEp2qNx/VzYplcTf+LndMhcAAcF2mIWHwEhGYNAjxO7awOGfVu
+        3w2WnUdjjpDAtIGcJj1FMqp4vbEx8kn/4ogeBZp2+tnHATQiU976ML0jxjcEAKMW
+        7unefDN1wmaVf8r0Glvef1YVjtZCVPVBkYs2GVsSvi44wka0Nkj/4mdk5QtOcb6s
+        XMKjqU1kUeCslSB2T7xHaknU+Xwo/skRWkMaOWO4ZQDrqunRu5QvfQQtnE25O37e
+        lguYu4ECgYEA0LBUKh6pEgFcWFutf3igWElGoH0OjwEaKdptvMYmGtC/YGViwhvn
+        t9JhUu44pUDt9tKJ6h8poB7xr6aQa05dEAbrN7paYTn/KsxBSOIj/vh8InNKCLFo
+        V9MU45qMikF8f57LSvIF5o4NVJstKQGWa45XPMdxTzNg3+9RUgiHJRkCgYEAzsbP
+        sVGsitly3nICRSVcLaT4JkXvfwk0EcGv+lha9TZR266w6V3LzgshyK1FbM8ukDTm
+        Fe5Q0zzHpeqjU4yhPxnCIIFXPQBVQxyZT0M2eN44E35pNTZ3liJS0r5/4n9HhPiM
+        n1eBZFwVhOlPjDkC6yZzD7Z6olXxO+AHyhEei7ECgYEAnhFxLpYaqbCuKZ8HQ04y
+        5axa+qS+qkLDdoAkLqBHrHgA/RrOOwi38tw/K3mVHlaX6CSAof0IomfN2KXpLd4l
+        T0ZuU7+rRYmQZPJhYLspWK8OF2oL4Zm+1wbjA6LEYNRJYMD+ar33CjL+ld8TzcOO
+        E9m06iyG/t6DuhqjFeevtcECgYAqWRFEMYPy0+HwqMzKOIKOXpDr1brc+5eMY2yV
+        Cu9l9QACy94zjSAmTKVYohPr2uqgYhUVPL+U44fH9SwJ+m0zrSTS32psddsAaaUE
+        VLGdQ3WcmHEXktYfC1yHCLjMPGD7XKQAJj27vhgyJk5CW5K7ch5yg17OTGehaZpu
+        yd7FoQKBgQCPvldGHOyCUl4NqW/r7NQI2h5DEAGyFZNqttcse0zLjScVeksFKgeX
+        dMIXZT84tMWHnfbDV3zH3PKw8OKruICbaF273ayl3ntmlAqfqmmQtbiKH880hJV4
+        SWeSmF+YNsmblmxSVYGNjvb+gYyesKLseYJE1YfEEedrFo87KaV6Kg==
+        -----END RSA PRIVATE KEY-----
+
+      publicKey: |
+        -----BEGIN PUBLIC KEY-----
+        MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqI/1ah3MdXUeSxKSlYqa
+        lvk9Kdns8K8cqKDaJ5qz0RCJw+CAT032iaGL1PuK/hIbNaarLBzB0SZPxp5v1UE/
+        ERnLfYiq+yFlTfp3FniWKEjdWby1vvvWJYtYNb+zuk07gVLOzONAX/ZdOaZVtwUm
+        /+lEU5wcHk6GnSvM/q8KYJJ/2VXGkuXw7sQDok1deVuDsN7DBbXhfahYAdWupC22
+        fy5RRPm8ea8oOxif/eZxzkgWiccoBgFExdiOZMTXg3y8LxDl2c23FRXYegT8ZmxA
+        NyjvuVDIchTmkqbMoa6SkRVL8B3WesEpB35Ag8g6h71CMT6S2mUMgFBlU7JgSIM5
+        SQIDAQAB
+        -----END PUBLIC KEY-----
+
+eip:
+  gateway:
+    sys:
+      ignoreUrls:
+      - /oauth/token
+      - /oauth/authorize
+      - /auth/**
+      - /actuator/**
+      - /v2/api-docs
+      - /v3/api-docs/**
+      - /swagger-ui.html
+      - /swagger-ui/**
+      - /webjars/**
+      - /oauth/**
+      - /authority/actuator/**
+      - /authority/favicon.ico
+      - /authority/swagger-ui.html
+      - /authority/swagger-ui/**
+      - /authority/swagger-resources
+      - /authority/swagger-resources/**
+      - /authority/v3/api-docs
+      - /authority/v3/api-docs/**
+      - /authority/message/**
+      - /authority/instances/**
+      - /authority/captcha
+      - /authority/users/username
+      - /authority/admin/login
+      - /authority/oauth/logout
+#      - /authority/**
+

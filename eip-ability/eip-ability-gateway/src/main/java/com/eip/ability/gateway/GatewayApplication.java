@@ -17,7 +17,6 @@ import org.springframework.core.env.Environment;
  * @version V1.0.0
  */
 @Slf4j
-//@SpringBootApplication(scanBasePackages = {"com.eip.ability.gateway","com.eip.common.auth.gateway"})
 @EnableDiscoveryClient
 @SpringBootApplication
 public class GatewayApplication {

@@ -18,22 +18,30 @@
             <artifactId>spring-cloud-starter-gateway</artifactId>
         </dependency>
         <!--<dependency>-->
-        <!--<groupId>com.eip.cloud</groupId>-->
-        <!--<artifactId>eip-common-auth-gateway</artifactId>-->
+            <!--<groupId>org.springframework.security</groupId>-->
+            <!--<artifactId>spring-security-config</artifactId>-->
         <!--</dependency>-->
         <!--<dependency>-->
-        <!--<groupId>com.eip.cloud</groupId>-->
-        <!--<artifactId>eip-common-apidoc-gateway</artifactId>-->
-        <!--<version>0.0.1-SNAPSHOT</version>-->
+            <!--<groupId>org.springframework.security</groupId>-->
+            <!--<artifactId>spring-security-oauth2-resource-server</artifactId>-->
         <!--</dependency>-->
-
         <!--<dependency>-->
-            <!--<groupId>org.springframework.cloud</groupId>-->
-            <!--<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>-->
+            <!--<groupId>org.springframework.security</groupId>-->
+            <!--<artifactId>spring-security-oauth2-client</artifactId>-->
         <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.security</groupId>-->
+            <!--<artifactId>spring-security-oauth2-jose</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>com.nimbusds</groupId>-->
+            <!--<artifactId>nimbus-jose-jwt</artifactId>-->
+            <!--<version>8.16</version>-->
+        <!--</dependency>-->
+        <!--OAuth2的依赖-->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-actuator-autoconfigure</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-oauth2</artifactId>
         </dependency>
 
         <!-- -->
@@ -82,6 +90,29 @@
             <artifactId>springdoc-openapi-webflux-ui</artifactId>
             <version>1.6.9</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-resource-server</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.eip.cloud</groupId>
+            <artifactId>eip-common-core</artifactId>
+        </dependency>
+
+        <!--引入依赖-->
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>3.10.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
+        </dependency>
+
     </dependencies>
 
 </project>
