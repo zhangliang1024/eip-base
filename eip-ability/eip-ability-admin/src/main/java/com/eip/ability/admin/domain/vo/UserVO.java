@@ -2,9 +2,12 @@ package com.eip.ability.admin.domain.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * @author Levin
@@ -67,6 +70,9 @@ public class UserVO {
      */
     @Schema(description="创建时间")
     protected LocalDateTime createdTime;
+
+    private Collection<String> permissions;
+    private Collection<String> roles;
 
 
 }

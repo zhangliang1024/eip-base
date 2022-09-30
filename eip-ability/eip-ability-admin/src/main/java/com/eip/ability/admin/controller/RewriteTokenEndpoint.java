@@ -2,13 +2,8 @@ package com.eip.ability.admin.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.eip.ability.admin.mybatis.TenantEnvironment;
 import com.eip.ability.admin.domain.Result;
-import com.eip.ability.admin.domain.dto.ChangePasswordDTO;
-import com.eip.ability.admin.exception.CheckedException;
-import com.eip.ability.admin.service.UserService;
 import com.eip.ability.admin.util.SecurityUtils;
-import com.eip.ability.admin.util.StringUtils;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,14 +12,8 @@ import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
-import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
-import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -33,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.Principal;
-import java.util.Map;
 
 /**
  * 重写响应端点。主要是为了封装响应结果
@@ -47,21 +35,22 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class RewriteTokenEndpoint {
 
-    private final TenantEnvironment tenantEnvironment;
-    private final TokenEndpoint tokenEndpoint;
-    private final UserService userService;
-    private final TokenStore tokenStore;
-
-    @ResponseBody
-    @RequestMapping(value = "/token", method = {RequestMethod.GET, RequestMethod.POST})
-    public SwaggerEnhancer<OAuth2AccessToken> postAccessToken(Principal principal, @RequestParam Map<String, String> parameters, HttpServletRequest request) throws HttpRequestMethodNotSupportedException {
-        final Result<OAuth2AccessToken> success = Result.success(tokenEndpoint.postAccessToken(principal, parameters).getBody());
-        SwaggerEnhancer<OAuth2AccessToken> r = new SwaggerEnhancer<>(success.getCode(), success.getData(), success.getMessage());
-        r.setTimestamp(System.currentTimeMillis());
-        // 说明是swagger 来的请求，那么增强实现
-        r.setAccessToken(success.getData().getValue());
-        return r;
-    }
+    //private final TenantEnvironment tenantEnvironment;
+    //private final TokenEndpoint tokenEndpoint;
+    //private final UserService userService;
+    //private final TokenStore tokenStore;
+    //
+    //@ResponseBody
+    //@RequestMapping(value = "/token", method = {RequestMethod.GET, RequestMethod.POST})
+    //public SwaggerEnhancer<OAuth2AccessToken> postAccessToken(Principal principal, @RequestParam Map<String, String> parameters, HttpServletRequest request) throws
+    // HttpRequestMethodNotSupportedException {
+    //    final Result<OAuth2AccessToken> success = Result.success(tokenEndpoint.postAccessToken(principal, parameters).getBody());
+    //    SwaggerEnhancer<OAuth2AccessToken> r = new SwaggerEnhancer<>(success.getCode(), success.getData(), success.getMessage());
+    //    r.setTimestamp(System.currentTimeMillis());
+    //    // 说明是swagger 来的请求，那么增强实现
+    //    r.setAccessToken(success.getData().getValue());
+    //    return r;
+    //}
 
 
     /**
@@ -92,15 +81,15 @@ public class RewriteTokenEndpoint {
         if (SecurityUtils.anonymous()) {
             return;
         }
-        final OAuth2AccessToken accessToken = tokenStore.getAccessToken(SecurityUtils.getAuthentication());
-        if (accessToken == null) {
-            return;
-        }
-        tokenStore.removeAccessToken(accessToken);
-        final OAuth2RefreshToken refreshToken = tokenStore.readRefreshToken(accessToken.getValue());
-        if (refreshToken != null) {
-            tokenStore.removeRefreshToken(refreshToken);
-        }
+        //final OAuth2AccessToken accessToken = tokenStore.getAccessToken(SecurityUtils.getAuthentication());
+        //if (accessToken == null) {
+        //    return;
+        //}
+        //tokenStore.removeAccessToken(accessToken);
+        //final OAuth2RefreshToken refreshToken = tokenStore.readRefreshToken(accessToken.getValue());
+        //if (refreshToken != null) {
+        //    tokenStore.removeRefreshToken(refreshToken);
+        //}
     }
 
     /**
@@ -139,14 +128,14 @@ public class RewriteTokenEndpoint {
         return principal;
     }
 
-    @ResponseBody
-    @PutMapping("/change_password")
-    @Operation(summary = "修改密码")
-    public void changePassword(@Validated @RequestBody ChangePasswordDTO dto) {
-        if (!StringUtils.equals(dto.getPassword(), dto.getConfirmPassword())) {
-            throw CheckedException.badRequest("新密码与确认密码不一致");
-        }
-        final Long userId = tenantEnvironment.userId();
-        this.userService.changePassword(userId, dto.getOriginalPassword(), dto.getPassword());
-    }
+    //@ResponseBody
+    //@PutMapping("/change_password")
+    //@Operation(summary = "修改密码")
+    //public void changePassword(@Validated @RequestBody ChangePasswordDTO dto) {
+    //    if (!StringUtils.equals(dto.getPassword(), dto.getConfirmPassword())) {
+    //        throw CheckedException.badRequest("新密码与确认密码不一致");
+    //    }
+    //    final Long userId = tenantEnvironment.userId();
+    //    this.userService.changePassword(userId, dto.getOriginalPassword(), dto.getPassword());
+    //}
 }

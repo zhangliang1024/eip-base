@@ -32,12 +32,12 @@ import java.net.InetAddress;
  */
 @Slf4j
 @EnableCaching
-@EnableResourceServer
+//@EnableResourceServer
 @EnableDiscoveryClient
 @SpringBootApplication
 @EnableFeignClients(basePackages = "com.eip")
 @MapperScan(value = "com.eip.**.mapper", annotationClass = Repository.class)
-@EnableOauth2ClientResourceServer
+//@EnableOauth2ClientResourceServer
 public class AdminAppplication {
 
     @SneakyThrows

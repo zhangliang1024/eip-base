@@ -1,5 +1,5 @@
 server:
-  port: 5002
+  port: 5003
 spring:
   mvc:
     pathmatch:
@@ -46,11 +46,11 @@ spring:
       datasource:
         master:
           driver-class-name: com.mysql.cj.jdbc.Driver
-          password: 123456
+          password: 123
           pool-name: HikariDataSourcePool
           type: com.zaxxer.hikari.HikariDataSource
-          url: jdbc:mysql://140.246.154.99:3306/wemirr-platform?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=GMT%2B8&useSSL=false&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
-          username: root
+          url: jdbc:mysql://192.168.100.54:3306/wemirr-platform?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=GMT%2B8&useSSL=false&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
+          username: jy
       hikari:
         connection-timeout: 30000
         is-auto-commit: true
@@ -92,7 +92,9 @@ management:
 security:
   oauth2:
     client:
-      client-id: authority
+      client-id: client
+      client-secret: client
+      access-token-uri: http://localhost:9001/oauth/token
       ignore:
         resource-urls:
         - /actuator/**
@@ -109,6 +111,10 @@ security:
         - /message/**
         - /instances/**
         - /captcha
+        - /users/username
+        - /login/**
+
+
 
 
 springdoc:

@@ -15,10 +15,22 @@ import java.util.List;
  */
 @Data
 @RefreshScope
-@ConfigurationProperties(prefix = "security.oauth2.client.ignore")
+@ConfigurationProperties(prefix = "security.oauth2.client")
 public class SecurityIgnoreProperties {
 
-    private List<String> webUrls = new ArrayList<>();
-    private List<String> resourceUrls = new ArrayList<>();
+
+    private String clientId;
+    private String clientSecret;
+    private String accessTokenUri;
+
+    private IgnoreUrls ignore;
+
+
+    @Data
+    public class IgnoreUrls {
+
+        private List<String> webUrls = new ArrayList<>();
+        private List<String> resourceUrls = new ArrayList<>();
+    }
 
 }

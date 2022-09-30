@@ -3,6 +3,8 @@ package com.eip.ability.admin.controller.baseinfo;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.eip.ability.admin.domain.dto.RoleApiDTO;
+import com.eip.ability.admin.domain.vo.*;
 import com.eip.ability.admin.mybatis.TenantEnvironment;
 import com.eip.ability.admin.domain.Result;
 import com.eip.ability.admin.domain.dto.RoleDTO;
@@ -12,16 +14,9 @@ import com.eip.ability.admin.domain.entity.baseinfo.Role;
 import com.eip.ability.admin.domain.entity.baseinfo.RoleOrg;
 import com.eip.ability.admin.domain.entity.baseinfo.RoleRes;
 import com.eip.ability.admin.domain.enums.DataScopeType;
-import com.eip.ability.admin.domain.vo.RoleDetailVO;
-import com.eip.ability.admin.domain.vo.RolePermissionResp;
-import com.eip.ability.admin.domain.vo.RoleResVO;
-import com.eip.ability.admin.domain.vo.UserRoleResp;
 import com.eip.ability.admin.log.SysLog;
 import com.eip.ability.admin.mybatis.wraps.Wraps;
-import com.eip.ability.admin.service.RoleOrgService;
-import com.eip.ability.admin.service.RoleResService;
-import com.eip.ability.admin.service.RoleService;
-import com.eip.ability.admin.service.UserRoleService;
+import com.eip.ability.admin.service.*;
 import com.eip.ability.admin.util.BeanUtilPlus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -53,6 +48,7 @@ public class RoleController {
     private final RoleResService roleResService;
     private final RoleOrgService roleOrgService;
     private final UserRoleService userRoleService;
+    private final IApiRoleService apiRoleService;
 
 
     @GetMapping("/query_all")
@@ -147,4 +143,17 @@ public class RoleController {
     }
 
 
+    /*-----------分配接口-----------*/
+    @Operation(summary = "角色关联的接口")
+    @GetMapping("/{roleId}/apis")
+    public Result<ApiRoleResp> apisByRoleId(@PathVariable Long roleId) {
+        return Result.success(apiRoleService.findApiByRoleId(roleId));
+    }
+
+
+    @Operation(summary = "角色分配用户")
+    @PostMapping("/{roleId}/apis")
+    public void distributionApi(@PathVariable Long roleId, @RequestBody RoleApiDTO dto) {
+        this.apiRoleService.saveApiRole(roleId, dto.getApiIdList());
+    }
 }

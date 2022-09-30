@@ -19,7 +19,7 @@ import java.util.Collection;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserInfoDetails implements UserDetails, CredentialsContainer, java.io.Serializable {
+public class UserInfoDetails implements UserDetails {
 
     private static final long serialVersionUID = 666236878598344789L;
 
@@ -42,10 +42,6 @@ public class UserInfoDetails implements UserDetails, CredentialsContainer, java.
     private Collection<GrantedAuthority> authorities;
 
 
-    @Override
-    public void eraseCredentials() {
-        this.password = null;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

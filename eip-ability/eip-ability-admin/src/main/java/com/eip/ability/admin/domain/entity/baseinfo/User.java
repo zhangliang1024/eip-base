@@ -4,12 +4,14 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.eip.ability.admin.domain.SuperEntity;
 import com.eip.ability.admin.domain.enums.Sex;
+import com.eip.ability.admin.domain.vo.UserVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDate;
 
@@ -105,5 +107,12 @@ public class User extends SuperEntity<Long> {
     private Long orgId;
     private Long stationId;
     private String positionStatus;
+
+
+    public static UserVO buildVo(User user) {
+        UserVO userVO = new UserVO();
+        BeanUtils.copyProperties(user, userVO);
+        return userVO;
+    }
 
 }

@@ -28,7 +28,7 @@ public class GlobalResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 
     private final static String REWRITE = "1";
     private final static String RESPONSE_DATA_REWRITE = "rewrite";
-    private final static List<String> IGNORE_URLS = Lists.newArrayList("/v3/api-docs","/v3/api-docs/swagger-config");
+    private final static List<String> IGNORE_URLS = Lists.newArrayList("/users/username","/v3/api-docs","/v3/api-docs/swagger-config");
 
     @SneakyThrows
     @Override

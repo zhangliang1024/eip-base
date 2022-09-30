@@ -1,7 +1,6 @@
 package com.eip.ability.admin.oauth2.client;
 
 import com.eip.ability.admin.oauth2.IgnoreAuthorize;
-import com.eip.ability.admin.oauth2.exception.CustomWebResponseExceptionTranslator;
 import com.eip.ability.admin.oauth2.properties.SecurityIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +12,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.mvc.condition.PathPatternsRequestCondition;
 import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
@@ -30,8 +28,8 @@ import java.util.Objects;
  */
 @Slf4j
 @AllArgsConstructor
-@Import({ResourceAuthExceptionEntryPoint.class, CustomWebResponseExceptionTranslator.class})
-@EnableConfigurationProperties(SecurityIgnoreProperties.class)
+@Import({ResourceAuthExceptionEntryPoint.class})
+//@EnableConfigurationProperties(SecurityIgnoreProperties.class)
 public class LoadBalancedResourceServerConfigurerAdapter extends ResourceServerConfigurerAdapter {
 
 
@@ -63,13 +61,13 @@ public class LoadBalancedResourceServerConfigurerAdapter extends ResourceServerC
                 if (Objects.nonNull(patternsCondition)) {
                     patternsCondition.getPatterns().forEach(url -> registry.antMatchers(url).permitAll());
                 }
-                final PathPatternsRequestCondition pathPatternsCondition = key.getPathPatternsCondition();
-                if (Objects.nonNull(pathPatternsCondition)) {
-                    pathPatternsCondition.getPatterns().forEach(url -> registry.antMatchers(url.getPatternString()).permitAll());
-                }
+                //final PathPatternsRequestCondition pathPatternsCondition = key.getPathPatternsCondition();
+                //if (Objects.nonNull(pathPatternsCondition)) {
+                //    pathPatternsCondition.getPatterns().forEach(url -> registry.antMatchers(url.getPatternString()).permitAll());
+                //}
             }
         }
-        List<String> ignoreUrls = securityIgnoreProperties.getResourceUrls();
+        List<String> ignoreUrls = securityIgnoreProperties.getIgnore().getResourceUrls();
         if (!CollectionUtils.isEmpty(ignoreUrls)) {
             String[] arr = ignoreUrls.toArray(new String[0]);
             registry.antMatchers(arr).permitAll();

@@ -19,32 +19,24 @@ import javax.validation.constraints.NotNull;
  * @since 2019-10-20
  */
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(callSuper = true)
 @Accessors(chain = true)
-@TableName("sys_user_role")
-@Schema(name= "UserRole", description = "角色分配")
-@Builder
-public class UserRole {
+@TableName("sys_role_api")
+@Schema(name= "RoleApi", description = "接口分配")
+public class RoleApi {
 
-    /**
-     * 角色ID
-     * #c_auth_role
-     */
     @Schema(description = "角色ID")
     @NotNull(message = "角色ID不能为空")
     @TableField("role_id")
     private Long roleId;
 
+    @Schema(description = "接口ID")
+    @NotNull(message = "接口ID不能为空")
+    @TableField("api_id")
+    private Long apiId;
 
-    /**
-     * 用户ID
-     * #c_core_accou
-     */
-    @Schema(description = "用户ID")
-    @NotNull(message = "用户ID不能为空")
-    @TableField("user_id")
-    private Long userId;
 
 }

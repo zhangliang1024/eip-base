@@ -2,12 +2,15 @@ package com.eip.ability.admin.controller.baseinfo;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.eip.ability.admin.domain.Result;
 import com.eip.ability.admin.domain.dto.UserSaveDTO;
 import com.eip.ability.admin.domain.dto.UserUpdateDTO;
 import com.eip.ability.admin.domain.entity.baseinfo.User;
 import com.eip.ability.admin.domain.enums.Sex;
+import com.eip.ability.admin.domain.vo.UserVO;
 import com.eip.ability.admin.log.SysLog;
 import com.eip.ability.admin.mybatis.wraps.Wraps;
+import com.eip.ability.admin.oauth2.entity.UserInfoDetails;
 import com.eip.ability.admin.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -77,5 +80,19 @@ public class UserController {
     @Operation(summary = "删除用户")
     public void del(@PathVariable Long id) {
         this.userService.deleteById(id);
+    }
+
+
+    @PostMapping("{id}")
+    @SysLog(value = "查询用户")
+    @Operation(summary = "查询用户")
+    public UserInfoDetails detail(@PathVariable Long id) {
+        return this.userService.getUser(id);
+    }
+
+    @PostMapping("username")
+    public Result<UserInfoDetails> loadByUsername(String username, String tenantCode){
+        UserInfoDetails result = this.userService.loadUserByUsername(username,tenantCode);
+        return Result.success(result);
     }
 }

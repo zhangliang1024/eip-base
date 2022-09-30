@@ -5,8 +5,10 @@ import com.eip.ability.admin.domain.DataScope;
 import com.eip.ability.admin.domain.dto.UserSaveDTO;
 import com.eip.ability.admin.domain.entity.baseinfo.User;
 import com.eip.ability.admin.domain.vo.UserResp;
-import com.eip.ability.admin.mybatis.wraps.query.LbqWrapper;
+import com.eip.ability.admin.domain.vo.UserVO;
 import com.eip.ability.admin.mybatis.supers.SuperService;
+import com.eip.ability.admin.mybatis.wraps.query.LbqWrapper;
+import com.eip.ability.admin.oauth2.entity.UserInfoDetails;
 
 import java.util.List;
 
@@ -61,4 +63,8 @@ public interface UserService extends SuperService<User> {
      * @param id id
      */
     void deleteById(Long id);
+
+    UserInfoDetails loadUserByUsername(String username, String tenantCode);
+
+    UserInfoDetails getUser(Long id);
 }

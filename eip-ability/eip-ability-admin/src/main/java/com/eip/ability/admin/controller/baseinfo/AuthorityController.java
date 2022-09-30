@@ -70,9 +70,9 @@ public class AuthorityController {
         return Result.success(dataScopeService.getDataScopeById(7L));
     }
 
-    @IgnoreAuthorize
-    @PostMapping("loadUserByUsername")
-    public Result<UserInfoDetails> loadUserByUsername(String username, String tenantCode){
-        return userService.loadUserByUsername(username,tenantCode);
-    }
+    //@IgnoreAuthorize
+    //@PostMapping("loadUserByUsername")
+    //public Result<UserInfoDetails> loadUserByUsername(String username, String tenantCode){
+    //    return userService.loadUserByUsername(username,tenantCode);
+    //}
 }

@@ -1,59 +1,30 @@
 package com.eip.ability.admin.configuration;
 
-import com.eip.ability.admin.configuration.provider.JdbcUserDetailsServiceImpl;
+import com.eip.ability.admin.oauth2.properties.SecurityIgnoreProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 /**
  * @author Levin
  */
 @Configuration
-@EnableWebSecurity
+//@EnableWebSecurity
+@EnableConfigurationProperties(SecurityIgnoreProperties.class)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-
-    @Bean
-    @Override
-    protected UserDetailsService userDetailsService() {
-        return new JdbcUserDetailsServiceImpl();
-    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    @Bean
-    public TokenStore tokenStore(RedisConnectionFactory redisConnectionFactory) {
-        // redis 存储 token
-        return new RedisTokenStore(redisConnectionFactory);
-    }
-
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        // 替换成自己验证规则 => 如果不替换成自己的则会走默认的 userDetailsService
-        auth.userDetailsService(userDetailsService())
-                .passwordEncoder(passwordEncoder());
-    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

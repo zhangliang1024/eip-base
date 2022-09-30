@@ -1,6 +1,7 @@
 package com.eip.ability.admin.mybatis;
 
 import com.eip.ability.admin.util.SecurityUtils;
+import com.eip.common.core.auth.AuthUserContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,17 +16,20 @@ public class TenantEnvironmentConfiguration {
         return new TenantEnvironment() {
             @Override
             public Long tenantId() {
-                return SecurityUtils.getAuthInfo().getTenantId();
+                return Long.parseLong(AuthUserContext.get().getTenantId());
+                //return SecurityUtils.getAuthInfo().getTenantId();
             }
 
             @Override
             public Long userId() {
-                return SecurityUtils.getAuthInfo().getUserId();
+                return Long.parseLong(AuthUserContext.get().getUserId());
+                //return SecurityUtils.getAuthInfo().getUserId();
             }
 
             @Override
             public String realName() {
-                return SecurityUtils.getAuthInfo().getRealName();
+                return AuthUserContext.get().getUsername();
+                //return SecurityUtils.getAuthInfo().getRealName();
             }
 
             @Override

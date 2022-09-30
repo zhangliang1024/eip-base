@@ -23,7 +23,7 @@ import java.lang.annotation.*;
         //SecurityBeanDefinitionRegistrar.class,
         //HeaderFeignConfiguration.class,
         //SecurityInnerServiceAspect.class
-        LoadBalancedResourceServerConfigurerAdapter.class
+        //LoadBalancedResourceServerConfigurerAdapter.class
 })
 public @interface EnableOauth2ClientResourceServer {
 

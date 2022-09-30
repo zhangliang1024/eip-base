@@ -12,17 +12,18 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  *
  * @author Levin
  */
-@Profile({"demo", "dev"})
+//@Profile({"demo", "dev"})
 @Configuration
 public class CustomWebMvcConfigure implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(demoProfileInterceptor()).addPathPatterns("/**");
+        //registry.addInterceptor(demoProfileInterceptor()).addPathPatterns("/**");
+        registry.addInterceptor(new TokenInterceptor()).addPathPatterns("/**");
         WebMvcConfigurer.super.addInterceptors(registry);
     }
 
-    @Bean
+    //@Bean
     public DemoProfileInterceptor demoProfileInterceptor() {
         return new DemoProfileInterceptor();
     }
