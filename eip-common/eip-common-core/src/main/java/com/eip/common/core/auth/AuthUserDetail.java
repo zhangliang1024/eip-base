@@ -25,7 +25,11 @@ public class AuthUserDetail implements Serializable {
 
     private String userId;
 
-    private String userName;
+    private String username;
+    
+    private String tenantCode; 
+    
+    private String tenantId; 
 
 
 }

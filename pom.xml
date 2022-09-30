@@ -131,11 +131,11 @@
             </dependency>
 
             <!--验证码相关-->
-            <dependency>
-                <groupId>com.pig4cloud.plugin</groupId>
-                <artifactId>captcha-spring-boot-starter</artifactId>
-                <version>${captcha.version}</version>
-            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>com.pig4cloud.plugin</groupId>-->
+                <!--<artifactId>captcha-spring-boot-starter</artifactId>-->
+                <!--<version>${captcha.version}</version>-->
+            <!--</dependency>-->
 
             <!-- 日志相关 -->
             <dependency>
@@ -280,6 +280,11 @@
             <dependency>
                 <groupId>com.eip.cloud</groupId>
                 <artifactId>eip-common-sensitive</artifactId>
+                <version>${eip.base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.eip.cloud</groupId>
+                <artifactId>eip-common-captcha</artifactId>
                 <version>${eip.base.version}</version>
             </dependency>
 

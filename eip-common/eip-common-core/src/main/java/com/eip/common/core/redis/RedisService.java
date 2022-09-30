@@ -1,4 +1,4 @@
-package com.eip.common.core.service;
+package com.eip.common.core.redis;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

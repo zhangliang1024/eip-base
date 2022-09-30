@@ -1,4 +1,4 @@
-package com.eip.common.core.config;
+package com.eip.common.core.redis;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

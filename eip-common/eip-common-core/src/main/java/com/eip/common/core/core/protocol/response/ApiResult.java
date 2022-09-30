@@ -35,6 +35,7 @@ public class ApiResult<T> implements Serializable {
     protected String message;
 
     @Schema(defaultValue = "全局logTraceId", description = "全局递传logTraceId")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String logTraceId;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
