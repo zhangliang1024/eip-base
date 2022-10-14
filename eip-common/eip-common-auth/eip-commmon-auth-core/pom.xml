@@ -3,26 +3,27 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>eip-sample</artifactId>
+        <artifactId>eip-common-auth</artifactId>
         <groupId>com.eip.cloud</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>eip-sample-log</artifactId>
-
+    <artifactId>eip-commmon-auth-core</artifactId>
 
 
     <dependencies>
         <dependency>
             <groupId>com.eip.cloud</groupId>
-            <artifactId>eip-common-log-core</artifactId>
+            <artifactId>eip-common-core</artifactId>
         </dependency>
-        <!--   应用其他依赖    -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-amqp</artifactId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-actuator-autoconfigure</artifactId>
         </dependency>
     </dependencies>
-
 </project>

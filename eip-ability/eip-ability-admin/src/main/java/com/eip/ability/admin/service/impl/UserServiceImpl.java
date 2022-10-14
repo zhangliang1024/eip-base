@@ -1,18 +1,21 @@
 package com.eip.ability.admin.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.eip.ability.admin.domain.DataScope;
 import com.eip.ability.admin.domain.dto.UserSaveDTO;
+import com.eip.ability.admin.domain.entity.baseinfo.ApiPerm;
 import com.eip.ability.admin.domain.entity.baseinfo.Role;
 import com.eip.ability.admin.domain.entity.baseinfo.User;
 import com.eip.ability.admin.domain.entity.baseinfo.UserRole;
 import com.eip.ability.admin.domain.entity.tenant.Tenant;
+import com.eip.ability.admin.domain.key.RedisPermKey;
+import com.eip.ability.admin.domain.key.RedisUserKey;
 import com.eip.ability.admin.domain.vo.UserResp;
-import com.eip.ability.admin.domain.vo.UserVO;
 import com.eip.ability.admin.exception.CheckedException;
 import com.eip.ability.admin.mapper.*;
 import com.eip.ability.admin.mybatis.supers.SuperServiceImpl;
@@ -21,12 +24,12 @@ import com.eip.ability.admin.mybatis.wraps.query.LbqWrapper;
 import com.eip.ability.admin.oauth2.entity.UserInfoDetails;
 import com.eip.ability.admin.oauth2.exception.Auth2Exception;
 import com.eip.ability.admin.service.UserService;
+import com.eip.ability.admin.util.StringUtils;
 import com.eip.common.core.redis.RedisService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -47,14 +50,16 @@ import static java.util.stream.Collectors.toList;
 @RequiredArgsConstructor
 public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implements UserService {
 
-    private static final String PHONE_REGEX = "^[1][0-9]{10}$";
     private final UserMapper userMapper;
     private final TenantMapper tenantMapper;
     private final UserRoleMapper userRoleMapper;
     private final PasswordEncoder passwordEncoder;
     private final RoleMapper roleMapper;
     private final ResourceMapper resourceMapper;
+    private final ApiPermMapper apiPermMapper;
     private final RedisService redisService;
+    private final RedisPermKey redisPermKey;
+    private final RedisUserKey redisUserKey;
 
 
     @Override
@@ -122,8 +127,8 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
             throw CheckedException.notFound("账户不存在");
         }
 
-        String userKey = getKey("user", String.valueOf(user.getId()));
-        this.redisService.set(userKey, JSONUtil.toJsonStr(user));
+        String userInfoKey = redisUserKey.getUserInfoKey(user.getId());
+        this.redisService.set(userInfoKey, JSONUtil.toJsonStr(user));
 
         final UserInfoDetails info = new UserInfoDetails();
         info.setTenantCode(tenantCode);
@@ -140,34 +145,20 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
         info.setAvatar(user.getAvatar());
         info.setPassword(user.getPassword());
 
-        setAuthorize(info);
+        setApiPerm(info);
         return info;
     }
 
     /**
-     * 设置授权信息
-     *
-     * @param user user
+     * 授权接口访问
      */
-    private void setAuthorize(UserInfoDetails user) {
-        final List<String> permissions = Optional.ofNullable(this.resourceMapper.queryPermissionByUserId(user.getUserId())).orElseGet(Lists::newArrayList);
-        String permKey = getKey("perm", String.valueOf(user.getUserId()));
-        this.redisService.set(permKey, JSONUtil.toJsonStr(permissions));
-
-        //final List<String> roles = Optional.ofNullable(this.roleMapper.findRoleByUserId(user.getUserId())).orElseGet(Lists::newArrayList)
-        //        .stream().map(Role::getCode).collect(toList());
-        //// 验证角色和登录系统
-        //Set<String> authorize = Sets.newHashSet();
-        //authorize.addAll(roles);
-        //authorize.addAll(permissions);
-        //user.setRoles(roles);
-        //user.setPermissions(permissions);
-        //user.setAuthorities(authorize.stream().filter(StringUtils::isNotBlank).map(SimpleGrantedAuthority::new).collect(Collectors.toSet()));
-    }
-
-
-    private String getKey(String prefix, String key) {
-        return prefix + ":" + key;
+    private void setApiPerm(UserInfoDetails user) {
+        final List<ApiPerm> apiPerms = this.apiPermMapper.selectApiPermByUserId(user.getUserId());
+        if (CollectionUtil.isNotEmpty(apiPerms)) {
+            List<String> permissions = apiPerms.stream().map(e -> e.getApiMethod() + StringUtils.SIGN_MAO_HAO + e.getApiPath()).collect(Collectors.toList());
+            String permKey = redisPermKey.getPermKey(user.getUserId());
+            this.redisService.set(permKey, JSONUtil.toJsonStr(permissions));
+        }
     }
 
 
@@ -191,7 +182,7 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
         info.setAvatar(user.getAvatar());
         info.setPassword(user.getPassword());
 
-        setAuthorize1(info);
+        setAuthorize(info);
         return info;
     }
 
@@ -200,11 +191,8 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
      *
      * @param user user
      */
-    private void setAuthorize1(UserInfoDetails user) {
+    private void setAuthorize(UserInfoDetails user) {
         final List<String> permissions = Optional.ofNullable(this.resourceMapper.queryPermissionByUserId(user.getUserId())).orElseGet(Lists::newArrayList);
-        String permKey = getKey("perm", String.valueOf(user.getUserId()));
-        this.redisService.set(permKey, JSONUtil.toJsonStr(permissions));
-
         final List<String> roles = Optional.ofNullable(this.roleMapper.findRoleByUserId(user.getUserId())).orElseGet(Lists::newArrayList)
                 .stream().map(Role::getCode).collect(toList());
         // 验证角色和登录系统

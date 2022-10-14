@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eip.ability.admin.mapper.ApiPermMapper">
+
+
+    <select id="selectApiPermByUserId" resultType="com.eip.ability.admin.domain.entity.baseinfo.ApiPerm">
+        SELECT
+          t1.api_name,t1.api_method,t1.api_path
+        FROM
+            sys_api_perm t1
+            JOIN sys_role_api t2 ON t1.id = t2.api_id
+            JOIN sys_user_role t3 ON t3.role_id = t2.role_id
+            JOIN sys_role t4 ON t3.role_id = t4.id
+            WHERE t3.user_id = #{userId}
+    </select>
+
+
+</mapper>

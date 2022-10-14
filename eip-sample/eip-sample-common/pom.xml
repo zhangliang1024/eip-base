@@ -9,20 +9,17 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>eip-sample-log</artifactId>
-
+    <artifactId>eip-sample-common</artifactId>
 
 
     <dependencies>
         <dependency>
             <groupId>com.eip.cloud</groupId>
-            <artifactId>eip-common-log-core</artifactId>
+            <artifactId>eip-common-captcha</artifactId>
         </dependency>
-        <!--   应用其他依赖    -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-amqp</artifactId>
+            <groupId>com.eip.cloud</groupId>
+            <artifactId>eip-common-core</artifactId>
         </dependency>
     </dependencies>
-
 </project>

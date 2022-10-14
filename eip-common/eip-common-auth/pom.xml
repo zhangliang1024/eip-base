@@ -18,6 +18,7 @@
         <module>eip-common-auth-gateway</module>
         <module>eip-common-auth-com</module>
         <module>eip-common-auth-client</module>
+        <module>eip-commmon-auth-core</module>
     </modules>
 
 

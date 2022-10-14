@@ -4,7 +4,7 @@ import cn.hutool.json.JSONUtil;
 import com.eip.common.gateway.config.GatewaySetting;
 import com.eip.common.gateway.utils.FilterUtil;
 import com.eip.common.core.core.protocol.response.ApiResult;
-import com.eip.common.core.service.RedisService;
+import com.eip.common.core.redis.RedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

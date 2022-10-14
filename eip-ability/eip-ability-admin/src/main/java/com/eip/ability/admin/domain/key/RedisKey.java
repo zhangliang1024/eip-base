@@ -1,4 +1,4 @@
-package com.eip.ability.admin.domain;
+package com.eip.ability.admin.domain.key;
 
 /**
  * ClassName: RedisKey
@@ -8,7 +8,11 @@ package com.eip.ability.admin.domain;
  * @author 张良 E-mail:zhangliang01@jingyougroup.com
  * @version V1.0.0
  */
-public class RedisKey {
+public interface RedisKey {
 
+
+     String prfix();
+
+     String appName();
 
 }

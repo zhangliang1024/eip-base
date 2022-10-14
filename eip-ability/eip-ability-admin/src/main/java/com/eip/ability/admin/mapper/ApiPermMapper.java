@@ -5,6 +5,8 @@ import com.eip.ability.admin.mybatis.annotation.TenantDS;
 import com.eip.ability.admin.mybatis.supers.SuperMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * ClassName: InterfacePermMapper
  * Function:
@@ -17,5 +19,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ApiPermMapper extends SuperMapper<ApiPerm> {
 
+    List<ApiPerm> selectApiPermByUserId(Long userId);
 
 }

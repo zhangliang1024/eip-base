@@ -1,24 +1,21 @@
 package com.eip.ability.admin.service.impl;
 
 import com.eip.ability.admin.controller.TokenInfo;
+import com.eip.ability.admin.domain.key.RedisTokenKey;
 import com.eip.ability.admin.domain.dto.LoginDTO;
 import com.eip.ability.admin.domain.vo.LoginVO;
 import com.eip.ability.admin.oauth2.properties.SecurityIgnoreProperties;
 import com.eip.ability.admin.service.ILoginService;
 import com.eip.ability.admin.service.LoginLogService;
 import com.eip.ability.admin.service.VerificationService;
-import com.eip.common.core.constants.AuthConstants;
+import com.eip.common.core.redis.RedisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-
-import javax.annotation.Resource;
 
 import static com.eip.common.core.constants.AuthConstants.*;
 
@@ -39,36 +36,38 @@ public class LoginServiceImpl implements ILoginService {
     private final SecurityIgnoreProperties properties;
     private final LoginLogService loginLogService;
     private final RestTemplate restTemplate = new RestTemplate();
-    private final RedisTemplate redisTemplate;
+    private final RedisService redisService;
+    private final RedisTokenKey redisTokenKey;
 
     @Override
     public LoginVO login(LoginDTO loginDTO) {
-        // 校验 验证码
+        // 校验验证码
         String verifyCode = loginDTO.getVerifyCode();
-        //verificationService.valid("", verifyCode);
+        this.verificationService.valid(loginDTO.getVerifyKey(), verifyCode);
 
         // 获取token
-        TokenInfo result = getToken(loginDTO);
+        TokenInfo result = this.getToken(loginDTO);
         Long userId = result.getUser_id();
         Long expireTime = result.getExpires_in();
         String accessToken = result.getAccess_token();
         String refreshToken = result.getRefresh_token();
 
-        redisTemplate.opsForValue().set(getKey("accessToken", String.valueOf(userId)), accessToken, expireTime - 3);
-        redisTemplate.opsForValue().set(getKey("refreshToken", String.valueOf(userId)), accessToken, expireTime - 3);
+        // 缓存token TODO refresh_token过期时间有问题
+        String accessKey = redisTokenKey.getAccessToken(String.valueOf(userId));
+        String refreshKey = redisTokenKey.getRefreshToken(String.valueOf(userId));
+        this.redisService.set(accessKey, accessToken, expireTime - 3);
+        this.redisService.set(refreshKey, accessToken, expireTime - 3);
 
         // 写个登录日志
-        //this.loginLogService.saveLoginLog(userId, loginDTO.getUsername(), "");
-
-        //礼记 殷商的时候 被砍之前 大声喊叫 嚎叫 昭告于天地之间 猪牛 道观 铜板 我送钱来了 礼仪性的洗洗 杀人献祭
+        this.loginLogService.saveLoginLog(userId, loginDTO.getUsername(), "");
         return LoginVO.builder().userId(userId).accessToken(accessToken).refreshToken(refreshToken).build();
     }
 
 
     public TokenInfo getToken(LoginDTO loginDTO) {
-        String accessTokenUri = properties.getAccessTokenUri();
-        String clientId = properties.getClientId();
-        String clientSecret = properties.getClientSecret();
+        String accessTokenUri = this.properties.getAccessTokenUri();
+        String clientId = this.properties.getClientId();
+        String clientSecret = this.properties.getClientSecret();
 
         String tenantCode = loginDTO.getTenantCode();
         String username = loginDTO.getUsername();
@@ -85,7 +84,7 @@ public class LoginServiceImpl implements ILoginService {
         params.add(OAUTH2_GRANT_TYPE, OAUTH2_PASSWORD_GRANT_TYPE);
         HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
 
-        ResponseEntity<TokenInfo> result = restTemplate.exchange(accessTokenUri, HttpMethod.POST, entity, TokenInfo.class);
+        ResponseEntity<TokenInfo> result = this.restTemplate.exchange(accessTokenUri, HttpMethod.POST, entity, TokenInfo.class);
         if (result.getStatusCode().value() != 200) {
             throw new RuntimeException("request token error");
         }
@@ -97,12 +96,12 @@ public class LoginServiceImpl implements ILoginService {
     @Override
     public void logout(LoginDTO loginDTO) {
         Long userId = loginDTO.getUserId();
-        redisTemplate.delete(getKey("accessToken", String.valueOf(userId)));
-        redisTemplate.delete(getKey("refreshToken", String.valueOf(userId)));
+
+        String accessKey = redisTokenKey.getAccessToken(String.valueOf(userId));
+        String refreshKey = redisTokenKey.getRefreshToken(String.valueOf(userId));
+        this.redisService.del(accessKey, String.valueOf(userId));
+        this.redisService.del(refreshKey, String.valueOf(userId));
     }
 
 
-    public String getKey(String prefix, String key) {
-        return prefix + ":" + key;
-    }
 }

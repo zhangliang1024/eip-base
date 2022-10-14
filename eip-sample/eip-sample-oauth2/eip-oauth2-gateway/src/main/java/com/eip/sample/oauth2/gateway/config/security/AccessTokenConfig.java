@@ -2,6 +2,7 @@ package com.eip.sample.oauth2.gateway.config.security;
 
 import com.eip.common.core.constants.AuthConstants;
 import com.eip.sample.oauth2.gateway.model.SecurityUser;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
@@ -24,6 +25,11 @@ import java.util.LinkedHashMap;
 @Configuration
 public class AccessTokenConfig {
 
+    @Value("${security.oauth2.jwt.privateKey}")
+    private String privateKey;
+    @Value("${security.oauth2.jwt.publicKey}")
+    private String publicKey;
+
     /**
      * 令牌的存储策略
      */
@@ -42,7 +48,10 @@ public class AccessTokenConfig {
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
         //设置秘钥
-        converter.setSigningKey(AuthConstants.SIGN_KEY);
+        //converter.setSigningKey(AuthConstants.SIGN_KEY);
+
+        converter.setSigningKey(privateKey);
+        converter.setVerifierKey(publicKey);
         return converter;
     }
 
@@ -50,20 +59,20 @@ public class AccessTokenConfig {
      * JWT令牌增强，继承JwtAccessTokenConverter
      * 将业务所需额外信息放入令牌中，这样下游微服务就能拆解令牌获取
      */
-    public static class JwtAccessTokenEnhancer extends JwtAccessTokenConverter {
-        /**重写enhance方法，在其中扩展*/
-        @Override
-        public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
-            //获取userDetailService中查询到用户信息
-            SecurityUser user = (SecurityUser) authentication.getUserAuthentication().getPrincipal();
-            //将额外的信息放入到LinkedHashMap中
-            LinkedHashMap<String, Object> extendInformation = new LinkedHashMap<>();
-            //设置用户的userId
-            extendInformation.put(AuthConstants.USER_ID, user.getUserId());
-            //添加到additionalInformation
-            ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(extendInformation);
-            return super.enhance(accessToken, authentication);
-        }
-    }
+    //public static class JwtAccessTokenEnhancer extends JwtAccessTokenConverter {
+    //    /**重写enhance方法，在其中扩展*/
+    //    @Override
+    //    public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
+    //        //获取userDetailService中查询到用户信息
+    //        SecurityUser user = (SecurityUser) authentication.getUserAuthentication().getPrincipal();
+    //        //将额外的信息放入到LinkedHashMap中
+    //        LinkedHashMap<String, Object> extendInformation = new LinkedHashMap<>();
+    //        //设置用户的userId
+    //        extendInformation.put(AuthConstants.USER_ID, user.getUserId());
+    //        //添加到additionalInformation
+    //        ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(extendInformation);
+    //        return super.enhance(accessToken, authentication);
+    //    }
+    //}
 
 }

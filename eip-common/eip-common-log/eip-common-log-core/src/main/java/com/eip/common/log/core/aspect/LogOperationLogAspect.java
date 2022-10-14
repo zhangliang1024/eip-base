@@ -174,7 +174,7 @@ public class LogOperationLogAspect {
             log.warn("[operation-log] - operater is null");
             operation.setOperator(LogConstans.DEFAULT_OPERATER);
         }else {
-            operation.setOperator(authUser.getUserName());
+            operation.setOperator(authUser.getUsername());
         }
 
         HttpServletRequest request = HttpServletContext.getRequest();

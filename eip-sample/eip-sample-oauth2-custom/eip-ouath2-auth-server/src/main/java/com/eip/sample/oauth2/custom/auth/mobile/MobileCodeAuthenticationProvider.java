@@ -72,8 +72,8 @@ public class MobileCodeAuthenticationProvider implements AuthenticationProvider,
      * 指定 该认证提供者验证Token
      */
     @Override
-    public boolean supports(Class<?> aClass) {
-        return MobileCodeAuthenticationToken.class.isAssignableFrom(aClass);
+    public boolean supports(Class<?> clazz) {
+        return MobileCodeAuthenticationToken.class.isAssignableFrom(clazz);
     }
 
     /**

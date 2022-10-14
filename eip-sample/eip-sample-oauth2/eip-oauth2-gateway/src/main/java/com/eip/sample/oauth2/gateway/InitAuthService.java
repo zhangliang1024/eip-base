@@ -26,6 +26,6 @@ public class InitAuthService {
     @PostConstruct
     public void init(){
         redisTemplate.opsForHash().put(AuthConstants.OAUTH_URLS,"GET:/res/hello", Lists.newArrayList("ROLE_admin","ROLE_user"));
-        redisTemplate.opsForHash().put(AuthConstants.OAUTH_URLS,"GET:/res/admin", Lists.newArrayList("ROLE_admin"));
+        redisTemplate.opsForHash().put(AuthConstants.OAUTH_URLS,"GET:/res/admin", Lists.newArrayList("ROLE_admin","ROLE_ADMIN"));
     }
 }

@@ -1,9 +1,12 @@
 package com.eip.ability.admin.mapper;
 
+import com.eip.ability.admin.domain.entity.baseinfo.ApiPerm;
 import com.eip.ability.admin.domain.entity.baseinfo.RoleApi;
 import com.eip.ability.admin.mybatis.annotation.TenantDS;
 import com.eip.ability.admin.mybatis.supers.SuperMapper;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 
 /**

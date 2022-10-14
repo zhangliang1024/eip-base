@@ -1,4 +1,4 @@
-package com.eip.common.captcha.model;
+package com.eip.common.captcha.domian;
 
 import lombok.*;
 import lombok.experimental.Accessors;

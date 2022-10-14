@@ -29,6 +29,8 @@ public class LoginDTO {
 
     private String phone;
 
+    private String verifyKey;
+
     private String verifyCode;
 
 }
