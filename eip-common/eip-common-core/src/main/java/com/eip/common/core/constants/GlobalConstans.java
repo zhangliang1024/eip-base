@@ -34,4 +34,9 @@ public interface GlobalConstans {
      */
     String URL_PERM_ROLES_KEY = "system:perm_roles_rule:url";
 
+    /**
+     * actuator端点入口
+     */
+    String BASE_ACTUATOR_URL = "/actuator";
+
 }
