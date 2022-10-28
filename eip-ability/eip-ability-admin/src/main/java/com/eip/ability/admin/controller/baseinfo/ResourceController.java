@@ -7,7 +7,6 @@ import cn.hutool.core.lang.tree.TreeUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.eip.ability.admin.mybatis.TenantEnvironment;
-import com.eip.ability.admin.domain.Result;
 import com.eip.ability.admin.domain.dto.ResourceQueryDTO;
 import com.eip.ability.admin.domain.dto.ResourceSaveDTO;
 import com.eip.ability.admin.domain.entity.baseinfo.Resource;
@@ -18,6 +17,7 @@ import com.eip.ability.admin.mybatis.wraps.Wraps;
 import com.eip.ability.admin.mybatis.wraps.query.LbqWrapper;
 import com.eip.ability.admin.service.ResourceService;
 import com.eip.ability.admin.util.BeanUtilPlus;
+import com.eip.common.core.core.protocol.response.ApiResult;
 import com.google.common.collect.Lists;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -53,20 +53,20 @@ public class ResourceController {
 
     @GetMapping("/router")
     @Operation(summary = "菜单路由", description = "只能看到自身权限")
-    public Result<List<Tree<Long>>> router(@RequestParam(required = false, defaultValue = "false") Boolean all) {
+    public ApiResult<List<Tree<Long>>> router(@RequestParam(required = false, defaultValue = "false") Boolean all) {
         List<VueRouter> routers = resourceService.findVisibleResource(ResourceQueryDTO.builder().userId(tenantEnvironment.userId()).build());
         List<TreeNode<Long>> list = routers.stream()
                 .filter(router -> all || (router.getType() != null && router.getType() == 1 || router.getType() == 5))
                 .map(VUE_ROUTER_2_TREE_NODE_CONVERTS::convert).collect(toList());
-        return Result.success(TreeUtil.build(list, 0L));
+        return ApiResult.success(TreeUtil.build(list, 0L));
     }
 
     @GetMapping("/permissions")
     @Operation(summary = "资源码", description = "只能看到自身资源码")
-    public Result<List<String>> permissions() {
+    public ApiResult<List<String>> permissions() {
         List<VueRouter> routers = Optional.ofNullable(resourceService.findVisibleResource(ResourceQueryDTO.builder()
                 .userId(tenantEnvironment.userId()).build())).orElseGet(Lists::newArrayList);
-        return Result.success(routers.stream().map(VueRouter::getPermission).collect(toList()));
+        return ApiResult.success(routers.stream().map(VueRouter::getPermission).collect(toList()));
     }
 
     @GetMapping

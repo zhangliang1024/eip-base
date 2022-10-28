@@ -1,4 +1,4 @@
-package com.eip.ability.admin.oauth2.entity;
+package com.eip.ability.admin.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package com.eip.ability.admin.oauth2.exception;
+package com.eip.ability.admin.exception;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;

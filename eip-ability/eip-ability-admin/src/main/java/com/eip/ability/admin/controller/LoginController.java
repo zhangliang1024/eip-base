@@ -1,9 +1,9 @@
 package com.eip.ability.admin.controller;
 
-import com.eip.ability.admin.domain.Result;
 import com.eip.ability.admin.domain.dto.LoginDTO;
 import com.eip.ability.admin.domain.vo.LoginVO;
 import com.eip.ability.admin.service.ILoginService;
+import com.eip.common.core.core.protocol.response.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -30,16 +30,16 @@ public class LoginController {
 
     @PostMapping("login")
     @Operation(summary = "用户登录")
-    public Result<LoginVO> login(@RequestBody LoginDTO loginDTO) {
+    public ApiResult<LoginVO> login(@RequestBody LoginDTO loginDTO) {
         LoginVO result = loginService.login(loginDTO);
-        return Result.success(result);
+        return ApiResult.success(result);
     }
 
     @PostMapping("logout")
     @Operation(summary = "用户退出")
-    public Result logout(@RequestBody LoginDTO loginDTO) {
+    public ApiResult logout(@RequestBody LoginDTO loginDTO) {
         loginService.logout(loginDTO);
-        return Result.success();
+        return ApiResult.success();
     }
 
 

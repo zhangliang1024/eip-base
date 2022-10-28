@@ -4,12 +4,12 @@ package com.eip.ability.admin.controller.common;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeNode;
 import cn.hutool.core.lang.tree.TreeUtil;
-import com.eip.ability.admin.domain.Result;
 import com.eip.ability.admin.domain.dto.AreaEntityDTO;
 import com.eip.ability.admin.domain.entity.common.AreaEntity;
 import com.eip.ability.admin.domain.vo.AreaNodeResp;
 import com.eip.ability.admin.mybatis.wraps.Wraps;
 import com.eip.ability.admin.service.AreaService;
+import com.eip.common.core.core.protocol.response.ApiResult;
 import com.google.common.collect.Maps;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -50,7 +50,7 @@ public class AreaController {
      */
     @GetMapping("/trees")
     @Operation(summary = "查询地址树", description = "查询地址树")
-    public Result<List<Tree<Long>>> tree() {
+    public ApiResult<List<Tree<Long>>> tree() {
         List<AreaEntity> list = this.areaService.list(Wraps.<AreaEntity>lbQ().orderByAsc(AreaEntity::getSequence));
         final List<TreeNode<Long>> nodes = list.stream().map(area -> {
             TreeNode<Long> treeNode = new TreeNode<>(area.getId(), area.getParentId(), area.getName(), area.getSequence());
@@ -63,14 +63,14 @@ public class AreaController {
             treeNode.setExtra(extra);
             return treeNode;
         }).collect(Collectors.toList());
-        return Result.success(TreeUtil.build(nodes, 0L));
+        return ApiResult.success(TreeUtil.build(nodes, 0L));
     }
 
     @GetMapping("/{parent_id}/children")
     @Operation(description = "查询子节点 - [DONE] - [Levin]")
-    public Result<List<AreaNodeResp>> list(@PathVariable(name = "parent_id") Integer parentId) {
+    public ApiResult<List<AreaNodeResp>> list(@PathVariable(name = "parent_id") Integer parentId) {
         final List<AreaEntity> list = this.areaService.listArea(parentId);
-        return Result.success(AREA_ENTITY_2_NODE_RESP_CONVERTS.converts(list));
+        return ApiResult.success(AREA_ENTITY_2_NODE_RESP_CONVERTS.converts(list));
     }
 
     @PostMapping

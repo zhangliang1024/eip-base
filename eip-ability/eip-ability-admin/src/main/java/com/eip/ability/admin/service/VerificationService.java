@@ -1,6 +1,6 @@
 package com.eip.ability.admin.service;
 
-import com.eip.ability.admin.domain.Result;
+import com.eip.common.core.core.protocol.response.ApiResult;
 import com.wf.captcha.base.Captcha;
 
 /**
@@ -23,6 +23,6 @@ public interface VerificationService {
      * @param value val
      * @return 验证结果
      */
-    Result<Boolean> valid(String key, String value);
+    ApiResult<Boolean> valid(String key, String value);
 
 }

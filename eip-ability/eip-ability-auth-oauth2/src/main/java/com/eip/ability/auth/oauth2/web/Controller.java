@@ -1,8 +1,8 @@
 package com.eip.ability.auth.oauth2.web;
 
 import com.eip.ability.auth.oauth2.feign.AdminFeignClient;
-import com.eip.common.auth.core.domain.Result;
 import com.eip.common.auth.core.domain.UserInfoDetails;
+import com.eip.common.core.core.protocol.response.ApiResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,8 +23,8 @@ public class Controller {
 
 
     @GetMapping("/feign")
-    public Result<UserInfoDetails> feign(){
-        Result<UserInfoDetails> result = feignClient.loadUserByUsername("admin","0000");
+    public ApiResult<UserInfoDetails> feign(){
+        ApiResult<UserInfoDetails> result = feignClient.loadUserByUsername("admin","0000");
         return result;
     }
 }

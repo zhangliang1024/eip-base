@@ -4,7 +4,7 @@ import com.eip.ability.admin.controller.TokenInfo;
 import com.eip.ability.admin.domain.key.RedisTokenKey;
 import com.eip.ability.admin.domain.dto.LoginDTO;
 import com.eip.ability.admin.domain.vo.LoginVO;
-import com.eip.ability.admin.oauth2.properties.SecurityIgnoreProperties;
+import com.eip.ability.admin.configuration.properties.SecurityProperties;
 import com.eip.ability.admin.service.ILoginService;
 import com.eip.ability.admin.service.LoginLogService;
 import com.eip.ability.admin.service.VerificationService;
@@ -33,7 +33,7 @@ import static com.eip.common.core.constants.AuthConstants.*;
 public class LoginServiceImpl implements ILoginService {
 
     private final VerificationService verificationService;
-    private final SecurityIgnoreProperties properties;
+    private final SecurityProperties properties;
     private final LoginLogService loginLogService;
     private final RestTemplate restTemplate = new RestTemplate();
     private final RedisService redisService;

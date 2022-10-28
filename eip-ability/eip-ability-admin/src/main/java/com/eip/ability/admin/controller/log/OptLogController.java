@@ -2,11 +2,11 @@ package com.eip.ability.admin.controller.log;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.eip.ability.admin.domain.PageRequest;
-import com.eip.ability.admin.domain.Result;
 import com.eip.ability.admin.domain.entity.log.OptLog;
 import com.eip.ability.admin.mybatis.wraps.Wraps;
 import com.eip.ability.admin.mybatis.annotation.TenantDS;
 import com.eip.ability.admin.service.OptLogService;
+import com.eip.common.core.core.protocol.response.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -42,11 +42,11 @@ public class OptLogController {
             @Parameter(name = "description", description = "描述信息", in = ParameterIn.QUERY)
     })
     @Operation(description = "查询日志 - [DONE] - [Levin]")
-    public Result<Page<OptLog>> query(PageRequest request, String location, String description) {
+    public ApiResult<Page<OptLog>> query(PageRequest request, String location, String description) {
         final Page<OptLog> page = this.optLogService.page(request.buildPage(), Wraps.<OptLog>lbQ()
                 .like(OptLog::getLocation, location)
                 .like(OptLog::getDescription, description).orderByDesc(OptLog::getStartTime));
-        return Result.success(page);
+        return ApiResult.success(page);
     }
 
     @DeleteMapping("/{day}")

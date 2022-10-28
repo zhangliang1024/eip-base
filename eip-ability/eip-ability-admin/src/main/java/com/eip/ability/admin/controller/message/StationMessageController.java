@@ -4,11 +4,11 @@ package com.eip.ability.admin.controller.message;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.eip.ability.admin.mybatis.TenantEnvironment;
 import com.eip.ability.admin.domain.PageRequest;
-import com.eip.ability.admin.domain.Result;
 import com.eip.ability.admin.domain.entity.message.StationMessage;
 import com.eip.ability.admin.mybatis.wraps.Wraps;
 import com.eip.ability.admin.mybatis.annotation.TenantDS;
 import com.eip.ability.admin.service.StationMessageService;
+import com.eip.common.core.core.protocol.response.ApiResult;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,19 +32,19 @@ public class StationMessageController {
     private final StationMessageService stationMessageService;
 
     @GetMapping("/station_messages/my")
-    public Result<Page<StationMessage>> myMessage(String title, String level, Boolean mark, PageRequest request) {
+    public ApiResult<Page<StationMessage>> myMessage(String title, String level, Boolean mark, PageRequest request) {
         final Page<StationMessage> page = stationMessageService.page(request.buildPage(), Wraps.<StationMessage>lbQ()
                 .like(StationMessage::getTitle, title).eq(StationMessage::getLevel, level)
                 .eq(StationMessage::getMark, mark).eq(StationMessage::getReceiveId, tenantEnvironment.userId()));
-        return Result.success(page);
+        return ApiResult.success(page);
     }
 
     @GetMapping("/users/{user_id}/station_messages")
-    public Result<List<StationMessage>> load(@PathVariable("user_id") Long userId) {
+    public ApiResult<List<StationMessage>> load(@PathVariable("user_id") Long userId) {
         final List<StationMessage> messages = this.stationMessageService.list(Wraps.<StationMessage>lbQ()
                 .eq(StationMessage::getMark, false)
                 .eq(StationMessage::getReceiveId, userId));
-        return Result.success(messages);
+        return ApiResult.success(messages);
     }
 
     @PatchMapping("/station_messages/{message_id}/mark")

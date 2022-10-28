@@ -4,13 +4,13 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeNode;
 import cn.hutool.core.lang.tree.TreeUtil;
-import com.eip.ability.admin.domain.Result;
 import com.eip.ability.admin.domain.dto.OrgSaveDTO;
 import com.eip.ability.admin.domain.entity.baseinfo.Org;
 import com.eip.ability.admin.log.SysLog;
 import com.eip.ability.admin.mybatis.wraps.Wraps;
 import com.eip.ability.admin.service.OrgService;
 import com.eip.ability.admin.util.BeanUtilPlus;
+import com.eip.common.core.core.protocol.response.ApiResult;
 import com.google.common.collect.Maps;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -43,7 +43,7 @@ public class OrgController {
      */
     @GetMapping("/trees")
     @Operation(summary = "查询系统所有的组织树", description = "查询系统所有的组织树")
-    public Result<List<Tree<Long>>> tree(String name, Boolean status) {
+    public ApiResult<List<Tree<Long>>> tree(String name, Boolean status) {
         List<Org> list = this.orgService.list(Wraps.<Org>lbQ().like(Org::getLabel, name).eq(Org::getStatus, status).orderByAsc(Org::getSequence));
         final List<TreeNode<Long>> nodes = list.stream().map(org -> {
             TreeNode<Long> treeNode = new TreeNode<>(org.getId(), org.getParentId(), org.getLabel(), org.getSequence());
@@ -57,7 +57,7 @@ public class OrgController {
             treeNode.setExtra(extra);
             return treeNode;
         }).collect(Collectors.toList());
-        return Result.success(TreeUtil.build(nodes, 0L));
+        return ApiResult.success(TreeUtil.build(nodes, 0L));
     }
 
     @PostMapping

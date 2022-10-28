@@ -2,8 +2,8 @@ package com.eip.ability.admin.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.eip.ability.admin.domain.Result;
 import com.eip.ability.admin.util.SecurityUtils;
+import com.eip.common.core.core.protocol.response.ApiResult;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.Operation;
@@ -57,13 +57,13 @@ public class RewriteTokenEndpoint {
      * @author battcn
      */
     @EqualsAndHashCode(callSuper = true)
-    public static class SwaggerEnhancer<T> extends Result<T> {
+    public static class SwaggerEnhancer<T> extends ApiResult<T> {
         @JsonInclude(JsonInclude.Include.NON_NULL)
         @JsonProperty(value = "access_token")
         private String accessToken;
 
-        public SwaggerEnhancer(int code, T data, String message) {
-            super(code, data, message);
+        public SwaggerEnhancer(String code, T data, String message) {
+            super(code, message,data);
         }
 
         public String getAccessToken() {
@@ -116,9 +116,9 @@ public class RewriteTokenEndpoint {
     @ResponseBody
     @GetMapping("/info")
     @Operation(summary = "获取当前用户信息")
-    public Result<Object> userInfo(Principal principal) {
+    public ApiResult<Object> userInfo(Principal principal) {
         OAuth2Authentication oAuth2Authentication = (OAuth2Authentication) principal;
-        return Result.success(oAuth2Authentication.getPrincipal());
+        return ApiResult.success(oAuth2Authentication.getPrincipal());
     }
 
     @ResponseBody

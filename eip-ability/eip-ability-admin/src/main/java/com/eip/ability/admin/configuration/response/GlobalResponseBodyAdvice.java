@@ -1,6 +1,6 @@
-package com.eip.ability.admin.response;
+package com.eip.ability.admin.configuration.response;
 
-import com.eip.ability.admin.domain.Result;
+import com.eip.common.core.core.protocol.response.ApiResult;
 import com.google.common.collect.Lists;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
@@ -32,28 +32,27 @@ public class GlobalResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 
     @SneakyThrows
     @Override
-    public Object beforeBodyWrite(Object body, @NonNull MethodParameter methodParameter, @NonNull MediaType mediaType,
-                                  @NonNull Class<? extends HttpMessageConverter<?>> aClass,
+    public Object beforeBodyWrite(Object body, @NonNull MethodParameter methodParameter, @NonNull MediaType mediaType, @NonNull Class<? extends HttpMessageConverter<?>> aClass,
                                   @NonNull ServerHttpRequest serverHttpRequest, @NonNull ServerHttpResponse serverHttpResponse) {
         final HttpHeaders requestHeaders = serverHttpRequest.getHeaders();
-        String path = serverHttpRequest.getURI().getPath();
+        String requestPath = serverHttpRequest.getURI().getPath();
         //判单当前请求是否需要经过Response统一结果封装
         String isReWrite = requestHeaders.containsKey(RESPONSE_DATA_REWRITE) ? requestHeaders.getFirst(RESPONSE_DATA_REWRITE) : REWRITE;
         serverHttpResponse.getHeaders().add(RESPONSE_DATA_REWRITE, REWRITE);
-        if (IGNORE_URLS.contains(path)) {
+        if (IGNORE_URLS.contains(requestPath)) {
             return body;
         }
         if (REWRITE.equals(isReWrite) || StringUtils.isBlank(isReWrite)) {
             if (body == null) {
-                return Result.success();
+                return ApiResult.success();
             }
-            if (body instanceof Result) {
+            if (body instanceof ApiResult) {
                 return body;
             }
             if (body instanceof Byte[]) {
                 return body;
             }
-            return Result.success(body);
+            return ApiResult.success(body);
         } else {
             return body;
         }

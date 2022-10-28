@@ -3,12 +3,12 @@ package com.eip.ability.admin.controller.tenant;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.eip.ability.admin.domain.PageRequest;
-import com.eip.ability.admin.domain.Result;
 import com.eip.ability.admin.domain.dto.DynamicDatasourceReq;
 import com.eip.ability.admin.domain.entity.tenant.DynamicDatasource;
 import com.eip.ability.admin.mybatis.wraps.Wraps;
 import com.eip.ability.admin.service.DynamicDatasourceService;
 import com.eip.ability.admin.util.BeanUtilPlus;
+import com.eip.common.core.core.protocol.response.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -33,16 +33,16 @@ public class DynamicDatasourceController {
 
     @Operation(summary = "分页查询", description = "分页查询")
     @GetMapping
-    public Result<Page<DynamicDatasource>> page(PageRequest pageRequest, String database) {
+    public ApiResult<Page<DynamicDatasource>> page(PageRequest pageRequest, String database) {
         final Page<DynamicDatasource> page = dynamicDatasourceService.page(pageRequest.buildPage(),
                 Wraps.<DynamicDatasource>lbQ().eq(DynamicDatasource::getDatabase, database));
-        return Result.success(page);
+        return ApiResult.success(page);
     }
 
     @Operation(summary = "查询可用", description = "查询可用数据源")
     @GetMapping("/active")
-    public Result<List<DynamicDatasource>> queryActive() {
-        return Result.success(this.dynamicDatasourceService.list(Wraps.<DynamicDatasource>lbQ().eq(DynamicDatasource::getLocked, false)));
+    public ApiResult<List<DynamicDatasource>> queryActive() {
+        return ApiResult.success(this.dynamicDatasourceService.list(Wraps.<DynamicDatasource>lbQ().eq(DynamicDatasource::getLocked, false)));
     }
 
     @Operation(summary = "Ping数据库")

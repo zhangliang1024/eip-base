@@ -2,16 +2,15 @@ package com.eip.ability.admin.controller.baseinfo;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.eip.ability.admin.domain.Result;
 import com.eip.ability.admin.domain.dto.UserSaveDTO;
 import com.eip.ability.admin.domain.dto.UserUpdateDTO;
 import com.eip.ability.admin.domain.entity.baseinfo.User;
 import com.eip.ability.admin.domain.enums.Sex;
-import com.eip.ability.admin.domain.vo.UserVO;
 import com.eip.ability.admin.log.SysLog;
 import com.eip.ability.admin.mybatis.wraps.Wraps;
-import com.eip.ability.admin.oauth2.entity.UserInfoDetails;
+import com.eip.ability.admin.domain.UserInfoDetails;
 import com.eip.ability.admin.service.UserService;
+import com.eip.common.core.core.protocol.response.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -91,8 +90,8 @@ public class UserController {
     }
 
     @PostMapping("username")
-    public Result<UserInfoDetails> loadByUsername(String username, String tenantCode){
+    public ApiResult<UserInfoDetails> loadByUsername(String username, String tenantCode){
         UserInfoDetails result = this.userService.loadUserByUsername(username,tenantCode);
-        return Result.success(result);
+        return ApiResult.success(result);
     }
 }

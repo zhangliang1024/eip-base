@@ -5,10 +5,9 @@ import com.eip.ability.admin.domain.DataScope;
 import com.eip.ability.admin.domain.dto.UserSaveDTO;
 import com.eip.ability.admin.domain.entity.baseinfo.User;
 import com.eip.ability.admin.domain.vo.UserResp;
-import com.eip.ability.admin.domain.vo.UserVO;
 import com.eip.ability.admin.mybatis.supers.SuperService;
 import com.eip.ability.admin.mybatis.wraps.query.LbqWrapper;
-import com.eip.ability.admin.oauth2.entity.UserInfoDetails;
+import com.eip.ability.admin.domain.UserInfoDetails;
 
 import java.util.List;
 

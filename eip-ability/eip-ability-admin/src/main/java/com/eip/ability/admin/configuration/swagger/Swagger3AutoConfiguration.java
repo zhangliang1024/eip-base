@@ -1,4 +1,4 @@
-package com.eip.ability.admin.swagger;
+package com.eip.ability.admin.configuration.swagger;
 
 
 import io.swagger.v3.oas.models.Components;

@@ -1,9 +1,9 @@
 package com.eip.ability.admin.service.impl;
 
 import cn.hutool.core.util.StrUtil;
-import com.eip.ability.admin.domain.Result;
 import com.eip.ability.admin.exception.CheckedException;
 import com.eip.ability.admin.service.VerificationService;
+import com.eip.common.core.core.protocol.response.ApiResult;
 import com.wf.captcha.ArithmeticCaptcha;
 import com.wf.captcha.base.Captcha;
 import lombok.RequiredArgsConstructor;
@@ -41,19 +41,19 @@ public class VerificationServiceImpl implements VerificationService {
     }
 
     @Override
-    public Result<Boolean> valid(String key, String value) {
+    public ApiResult<Boolean> valid(String key, String value) {
         if (StringUtils.isBlank(value)) {
-            return Result.fail("请输入验证码");
+            return ApiResult.fail("请输入验证码");
         }
         String code = stringRedisTemplate.opsForValue().get(geyKey(key));
         if (StrUtil.isEmpty(code)) {
-            return Result.fail("验证码已过期");
+            return ApiResult.fail("验证码已过期");
         }
         if (!StringUtils.equalsIgnoreCase(value, code)) {
-            return Result.fail("验证码不正确");
+            return ApiResult.fail("验证码不正确");
         }
         stringRedisTemplate.delete(geyKey(key));
-        return Result.success();
+        return ApiResult.success();
     }
 
     private String geyKey(String key) {

@@ -1,9 +1,9 @@
 package com.eip.ability.auth.oauth2.service;
 
 import com.eip.ability.auth.oauth2.feign.AdminFeignClient;
-import com.eip.common.auth.core.domain.Result;
 import com.eip.common.auth.core.domain.UserInfoDetails;
 import com.eip.common.core.constants.AuthConstants;
+import com.eip.common.core.core.protocol.response.ApiResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -46,7 +46,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         //        .authorities(authorize.stream().filter(StringUtils::isNotBlank).map(SimpleGrantedAuthority::new).collect(Collectors.toSet()))
         //        .build();
 
-        Result<UserInfoDetails> result = adminFeignClient.loadUserByUsername(username, tenantCode);
+        ApiResult<UserInfoDetails> result = adminFeignClient.loadUserByUsername(username, tenantCode);
         System.out.println(result);
         UserInfoDetails build = result.getData();
         //data.setAuthorities(authorize.stream().filter(StringUtils::isNotBlank).map(SimpleGrantedAuthority::new).collect(Collectors.toSet()));

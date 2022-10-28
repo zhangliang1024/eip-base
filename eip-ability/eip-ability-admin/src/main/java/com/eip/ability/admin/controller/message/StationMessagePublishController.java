@@ -3,7 +3,6 @@ package com.eip.ability.admin.controller.message;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.eip.ability.admin.domain.PageRequest;
-import com.eip.ability.admin.domain.Result;
 import com.eip.ability.admin.domain.dto.StationMessagePublishReq;
 import com.eip.ability.admin.domain.entity.message.StationMessagePublish;
 import com.eip.ability.admin.domain.enums.ReceiverType;
@@ -14,6 +13,7 @@ import com.eip.ability.admin.mybatis.wraps.Wraps;
 import com.eip.ability.admin.mybatis.annotation.TenantDS;
 import com.eip.ability.admin.service.StationMessagePublishService;
 import com.eip.ability.admin.util.StringUtils;
+import com.eip.common.core.core.protocol.response.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -46,8 +46,8 @@ public class StationMessagePublishController {
 
 
     @GetMapping("/{type}/receivers")
-    public Result<List<CommonDataResp>> query(@PathVariable ReceiverType type, String search) {
-        return Result.success(this.stationMessagePublishService.queryReceiverByType(type, search));
+    public ApiResult<List<CommonDataResp>> query(@PathVariable ReceiverType type, String search) {
+        return ApiResult.success(this.stationMessagePublishService.queryReceiverByType(type, search));
     }
 
     @PostMapping

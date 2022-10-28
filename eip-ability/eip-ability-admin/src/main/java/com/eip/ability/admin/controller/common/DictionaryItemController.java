@@ -3,11 +3,11 @@ package com.eip.ability.admin.controller.common;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.eip.ability.admin.domain.PageRequest;
-import com.eip.ability.admin.domain.Result;
 import com.eip.ability.admin.domain.dto.DictionaryItemDTO;
 import com.eip.ability.admin.domain.entity.common.DictionaryItem;
 import com.eip.ability.admin.mybatis.wraps.Wraps;
 import com.eip.ability.admin.service.DictionaryItemService;
+import com.eip.common.core.core.protocol.response.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -42,11 +42,11 @@ public class DictionaryItemController {
             @Parameter(name = "dictionary_id", description = "字典ID", in = ParameterIn.PATH),
             @Parameter(name = "label", description = "名称", in = ParameterIn.QUERY)
     })
-    public Result<Page<DictionaryItem>> query(@PathVariable("dictionary_id") Long dictionaryId, String label, Boolean status, PageRequest params) {
+    public ApiResult<Page<DictionaryItem>> query(@PathVariable("dictionary_id") Long dictionaryId, String label, Boolean status, PageRequest params) {
         final Page<DictionaryItem> itemPage = this.dictionaryItemService.page(params.buildPage(), Wraps.<DictionaryItem>lbQ()
                 .like(DictionaryItem::getLabel, label).eq(DictionaryItem::getStatus, status)
                 .eq(DictionaryItem::getDictionaryId, dictionaryId));
-        return Result.success(itemPage);
+        return ApiResult.success(itemPage);
     }
 
     @PostMapping

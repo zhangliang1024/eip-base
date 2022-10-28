@@ -1,7 +1,6 @@
 package com.eip.ability.admin.controller.baseinfo;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.eip.ability.admin.domain.Result;
 import com.eip.ability.admin.domain.dto.ApiPermDTO;
 import com.eip.ability.admin.domain.entity.baseinfo.ApiPerm;
 import com.eip.ability.admin.domain.enums.DataScopeType;

@@ -1,6 +1,6 @@
 package com.eip.ability.admin.configuration;
 
-import com.eip.ability.admin.oauth2.properties.SecurityIgnoreProperties;
+import com.eip.ability.admin.configuration.properties.SecurityProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,16 +15,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @author Levin
  */
 @Configuration
-//@EnableWebSecurity
-@EnableConfigurationProperties(SecurityIgnoreProperties.class)
+//@EnableResourceServer
+@EnableConfigurationProperties(SecurityProperties.class)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

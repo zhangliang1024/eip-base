@@ -3,7 +3,7 @@ package com.eip.ability.admin.util;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.eip.ability.admin.exception.CheckedException;
-import com.eip.ability.admin.oauth2.entity.UserInfoDetails;
+import com.eip.ability.admin.domain.UserInfoDetails;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

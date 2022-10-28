@@ -17,19 +17,16 @@ public class TenantEnvironmentConfiguration {
             @Override
             public Long tenantId() {
                 return Long.parseLong(AuthUserContext.get().getTenantId());
-                //return SecurityUtils.getAuthInfo().getTenantId();
             }
 
             @Override
             public Long userId() {
                 return Long.parseLong(AuthUserContext.get().getUserId());
-                //return SecurityUtils.getAuthInfo().getUserId();
             }
 
             @Override
             public String realName() {
                 return AuthUserContext.get().getUsername();
-                //return SecurityUtils.getAuthInfo().getRealName();
             }
 
             @Override

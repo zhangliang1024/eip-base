@@ -1,4 +1,4 @@
-package com.eip.ability.admin.oauth2.properties;
+package com.eip.ability.admin.configuration.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -16,7 +16,7 @@ import java.util.List;
 @Data
 @RefreshScope
 @ConfigurationProperties(prefix = "security.oauth2.client")
-public class SecurityIgnoreProperties {
+public class SecurityProperties {
 
 
     private String clientId;
@@ -24,7 +24,6 @@ public class SecurityIgnoreProperties {
     private String accessTokenUri;
 
     private IgnoreUrls ignore;
-
 
     @Data
     public class IgnoreUrls {

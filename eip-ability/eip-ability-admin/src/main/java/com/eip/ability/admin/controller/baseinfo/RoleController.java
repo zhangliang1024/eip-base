@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.eip.ability.admin.domain.dto.RoleApiDTO;
 import com.eip.ability.admin.domain.vo.*;
 import com.eip.ability.admin.mybatis.TenantEnvironment;
-import com.eip.ability.admin.domain.Result;
 import com.eip.ability.admin.domain.dto.RoleDTO;
 import com.eip.ability.admin.domain.dto.RoleResSaveDTO;
 import com.eip.ability.admin.domain.dto.RoleUserDTO;
@@ -18,6 +17,7 @@ import com.eip.ability.admin.log.SysLog;
 import com.eip.ability.admin.mybatis.wraps.Wraps;
 import com.eip.ability.admin.service.*;
 import com.eip.ability.admin.util.BeanUtilPlus;
+import com.eip.common.core.core.protocol.response.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -53,9 +53,9 @@ public class RoleController {
 
     @GetMapping("/query_all")
     @Operation(summary = "角色列表 - [Levin] - [DONE]")
-    public Result<List<Role>> query() {
+    public ApiResult<List<Role>> query() {
         final List<Role> page = this.roleService.list();
-        return Result.success(page);
+        return ApiResult.success(page);
     }
 
     @GetMapping
@@ -103,15 +103,15 @@ public class RoleController {
 
     @Operation(summary = "角色关联的用户")
     @GetMapping("/{roleId}/users")
-    public Result<UserRoleResp> userByRoleId(@PathVariable Long roleId) {
-        return Result.success(userRoleService.findUserByRoleId(roleId));
+    public ApiResult<UserRoleResp> userByRoleId(@PathVariable Long roleId) {
+        return ApiResult.success(userRoleService.findUserByRoleId(roleId));
     }
 
 
     @GetMapping("/{role_id}/resources/permissions")
     @Operation(summary = "资源权限", description = "只能看到自身权限")
-    public Result<RolePermissionResp> permission(@PathVariable("role_id") Long roleId) {
-        return Result.success(this.roleService.findRolePermissionById(roleId));
+    public ApiResult<RolePermissionResp> permission(@PathVariable("role_id") Long roleId) {
+        return ApiResult.success(this.roleService.findRolePermissionById(roleId));
     }
 
 
@@ -146,8 +146,8 @@ public class RoleController {
     /*-----------分配接口-----------*/
     @Operation(summary = "角色关联的接口")
     @GetMapping("/{roleId}/apis")
-    public Result<ApiRoleResp> apisByRoleId(@PathVariable Long roleId) {
-        return Result.success(apiRoleService.findApiByRoleId(roleId));
+    public ApiResult<ApiRoleResp> apisByRoleId(@PathVariable Long roleId) {
+        return ApiResult.success(apiRoleService.findApiByRoleId(roleId));
     }
 
 

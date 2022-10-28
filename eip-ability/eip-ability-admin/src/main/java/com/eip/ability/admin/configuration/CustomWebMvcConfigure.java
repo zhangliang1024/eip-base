@@ -1,8 +1,6 @@
 package com.eip.ability.admin.configuration;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -12,19 +10,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  *
  * @author Levin
  */
-//@Profile({"demo", "dev"})
 @Configuration
 public class CustomWebMvcConfigure implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        //registry.addInterceptor(demoProfileInterceptor()).addPathPatterns("/**");
-        registry.addInterceptor(new TokenInterceptor()).addPathPatterns("/**");
+        registry.addInterceptor(new RequestTokenInterceptor()).addPathPatterns("/**");
         WebMvcConfigurer.super.addInterceptors(registry);
     }
 
-    //@Bean
-    public DemoProfileInterceptor demoProfileInterceptor() {
-        return new DemoProfileInterceptor();
-    }
 }

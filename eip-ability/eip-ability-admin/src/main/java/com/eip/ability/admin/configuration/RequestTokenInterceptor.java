@@ -21,8 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  * @version V1.0.0
  */
 @Slf4j
-public class TokenInterceptor implements HandlerInterceptor {
-
+public class RequestTokenInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {

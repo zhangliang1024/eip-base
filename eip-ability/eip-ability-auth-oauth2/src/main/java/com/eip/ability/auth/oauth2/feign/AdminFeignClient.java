@@ -1,7 +1,7 @@
 package com.eip.ability.auth.oauth2.feign;
 
-import com.eip.common.auth.core.domain.Result;
 import com.eip.common.auth.core.domain.UserInfoDetails;
+import com.eip.common.core.core.protocol.response.ApiResult;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,5 +19,5 @@ public interface AdminFeignClient {
 
 
     @PostMapping("users/username")
-    Result<UserInfoDetails> loadUserByUsername(@RequestParam("username") String username, @RequestParam("tenantCode") String tenantCode);
+    ApiResult<UserInfoDetails> loadUserByUsername(@RequestParam("username") String username, @RequestParam("tenantCode") String tenantCode);
 }
