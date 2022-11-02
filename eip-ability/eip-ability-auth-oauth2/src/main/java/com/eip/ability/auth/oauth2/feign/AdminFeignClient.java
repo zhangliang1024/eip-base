@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = "wemirr-platform-authority")
 public interface AdminFeignClient {
 
-
     @PostMapping("users/username")
     ApiResult<UserInfoDetails> loadUserByUsername(@RequestParam("username") String username, @RequestParam("tenantCode") String tenantCode);
 }

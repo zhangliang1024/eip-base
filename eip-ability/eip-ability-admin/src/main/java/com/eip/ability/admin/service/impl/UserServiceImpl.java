@@ -7,6 +7,7 @@ import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.eip.ability.admin.domain.DataScope;
+import com.eip.ability.admin.domain.UserInfoDetails;
 import com.eip.ability.admin.domain.dto.UserSaveDTO;
 import com.eip.ability.admin.domain.entity.baseinfo.ApiPerm;
 import com.eip.ability.admin.domain.entity.baseinfo.Role;
@@ -16,13 +17,12 @@ import com.eip.ability.admin.domain.entity.tenant.Tenant;
 import com.eip.ability.admin.domain.key.RedisPermKey;
 import com.eip.ability.admin.domain.key.RedisUserKey;
 import com.eip.ability.admin.domain.vo.UserResp;
-import com.eip.ability.admin.exception.CheckedException;
+import com.eip.ability.admin.exception.AdminExceptionEnum;
+import com.eip.ability.admin.exception.AdminRuntimeException;
 import com.eip.ability.admin.mapper.*;
 import com.eip.ability.admin.mybatis.supers.SuperServiceImpl;
 import com.eip.ability.admin.mybatis.wraps.Wraps;
 import com.eip.ability.admin.mybatis.wraps.query.LbqWrapper;
-import com.eip.ability.admin.domain.UserInfoDetails;
-import com.eip.ability.admin.exception.Auth2Exception;
 import com.eip.ability.admin.service.UserService;
 import com.eip.ability.admin.util.StringUtils;
 import com.eip.common.core.redis.RedisService;
@@ -65,9 +65,8 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
     @Override
     public void addUser(UserSaveDTO dto) {
         final long count = super.count(Wraps.<User>lbQ().eq(User::getUsername, dto.getUsername()));
-        if (count > 0) {
-            throw CheckedException.badRequest("账号已存在");
-        }
+        AdminExceptionEnum.USER_NAME_HAVED_EXIST.assertIsFalse(count > 0);
+
         final User user = BeanUtil.toBean(dto, User.class);
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         super.save(user);
@@ -85,11 +84,10 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
 
     @Override
     public void changePassword(Long userId, String orgPassword, String newPassword) {
-        final User user = Optional.ofNullable(this.baseMapper.selectById(userId))
-                .orElseThrow(() -> CheckedException.notFound("用户不存在"));
-        if (!passwordEncoder.matches(orgPassword, user.getPassword())) {
-            throw CheckedException.badRequest("原始密码错误");
-        }
+        final User user = Optional.ofNullable(this.baseMapper.selectById(userId)).orElseThrow(() -> new AdminRuntimeException(AdminExceptionEnum.USER_NOT_FOUNT.getMessage()));
+
+        AdminExceptionEnum.USER_ORIGIN_PASSWORD_ERROR.assertIsFalse(!passwordEncoder.matches(orgPassword, user.getPassword()));
+
         User record = new User();
         record.setId(userId);
         record.setPassword(passwordEncoder.encode(newPassword));
@@ -99,33 +97,28 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
     @Override
     @DSTransactional
     public void deleteById(Long id) {
-        final User user = Optional.ofNullable(getById(id)).orElseThrow(() -> CheckedException.notFound("用户不存在"));
-        if (user.getReadonly()) {
-            throw CheckedException.badRequest("内置用户不允许删除");
-        }
+        final User user = Optional.ofNullable(getById(id)).orElseThrow(() -> new AdminRuntimeException(AdminExceptionEnum.USER_NOT_FOUNT.getMessage()));
+
+        AdminExceptionEnum.SYSTEM_USER_DONOT_DELETE.assertIsFalse(user.getReadonly());
+
         baseMapper.deleteById(id);
         userRoleMapper.delete(Wraps.<UserRole>lbQ().eq(UserRole::getUserId, id));
     }
 
     @Override
     public UserInfoDetails loadUserByUsername(String username, String tenantCode) {
-        if (StringUtils.isBlank(username)) {
-            throw new Auth2Exception("账号名不能为空");
-        }
-        if (StringUtils.isBlank(tenantCode)) {
-            throw new Auth2Exception("租户编码不能为空");
-        }
+        AdminExceptionEnum.USER_NAME_NOT_EMPTY.assertNotEmpty(username);
+        AdminExceptionEnum.TENANT_CODE_NOT_EMPTY.assertNotEmpty(tenantCode);
 
-        final Tenant tenant = Optional.ofNullable(
-                tenantMapper.selectOne(Wraps.<Tenant>lbQ().eq(Tenant::getCode, tenantCode)))
-                .orElseThrow(() -> CheckedException.notFound("{0}租户不存在", tenantCode));
-        if (tenant.getLocked()) {
-            throw CheckedException.badRequest("租户已被禁用,请联系管理员");
-        }
+
+        final Tenant tenant =
+                Optional.ofNullable(tenantMapper.selectOne(Wraps.<Tenant>lbQ().eq(Tenant::getCode, tenantCode))).orElseThrow(() -> new AdminRuntimeException(AdminExceptionEnum.TENANT_NOT_FOUNT.getMessage()));
+
+        AdminExceptionEnum.TENANT_HAS_BEEN_DISABLED.assertIsFalse(tenant.getLocked());
+
         final User user = this.getOne(Wrappers.<User>lambdaQuery().eq(User::getTenantId, tenant.getId()).eq(User::getUsername, username));
-        if (Objects.isNull(user)) {
-            throw CheckedException.notFound("账户不存在");
-        }
+
+        AdminExceptionEnum.SYSTEM_USER_NOT_FOUND.assertIsFalse(user.getReadonly());
 
         String userInfoKey = redisUserKey.getUserInfoKey(user.getId());
         this.redisService.set(userInfoKey, JSONUtil.toJsonStr(user));
@@ -193,8 +186,7 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
      */
     private void setAuthorize(UserInfoDetails user) {
         final List<String> permissions = Optional.ofNullable(this.resourceMapper.queryPermissionByUserId(user.getUserId())).orElseGet(Lists::newArrayList);
-        final List<String> roles = Optional.ofNullable(this.roleMapper.findRoleByUserId(user.getUserId())).orElseGet(Lists::newArrayList)
-                .stream().map(Role::getCode).collect(toList());
+        final List<String> roles = Optional.ofNullable(this.roleMapper.findRoleByUserId(user.getUserId())).orElseGet(Lists::newArrayList).stream().map(Role::getCode).collect(toList());
         // 验证角色和登录系统
         Set<String> authorize = Sets.newHashSet();
         authorize.addAll(roles);

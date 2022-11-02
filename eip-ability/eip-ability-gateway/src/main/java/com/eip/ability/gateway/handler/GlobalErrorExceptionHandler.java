@@ -1,7 +1,6 @@
 package com.eip.ability.gateway.handler;
 
 import cn.hutool.json.JSONUtil;
-import com.eip.ability.gateway.domain.Result;
 import com.eip.common.core.core.assertion.enums.AuthResponseEnum;
 import com.eip.common.core.core.protocol.response.ApiResult;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +37,7 @@ public class GlobalErrorExceptionHandler implements ErrorWebExceptionHandler {
         if (response.isCommitted()) {
             return Mono.error(ex);
         }
-        Result result = Result.fail(AuthResponseEnum.UNAUTHORIZED.getMessage());
+        ApiResult result = ApiResult.fail(AuthResponseEnum.UNAUTHORIZED.getMessage());
         // JOSN格式返回
         response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
         if (ex instanceof ResponseStatusException) {
@@ -47,10 +46,10 @@ public class GlobalErrorExceptionHandler implements ErrorWebExceptionHandler {
 
         //处理TOKEN失效的异常
         if (ex instanceof InvalidTokenException) {
-            result = Result.fail(AuthResponseEnum.INVALID_TOKEN.getMessage());
+            result = ApiResult.fail(AuthResponseEnum.INVALID_TOKEN.getMessage());
         }
 
-        Result finalResult = result;
+        ApiResult finalResult = result;
         return response.writeWith(Mono.fromSupplier(() -> {
             DataBufferFactory bufferFactory = response.bufferFactory();
             try {

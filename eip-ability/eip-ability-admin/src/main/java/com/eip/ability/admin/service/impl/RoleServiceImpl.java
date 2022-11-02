@@ -3,7 +3,6 @@ package com.eip.ability.admin.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
-import com.eip.ability.admin.mybatis.TenantEnvironment;
 import com.eip.ability.admin.domain.DataScope;
 import com.eip.ability.admin.domain.dto.ResourceQueryDTO;
 import com.eip.ability.admin.domain.dto.RoleDTO;
@@ -13,11 +12,13 @@ import com.eip.ability.admin.domain.entity.baseinfo.RoleRes;
 import com.eip.ability.admin.domain.entity.baseinfo.UserRole;
 import com.eip.ability.admin.domain.vo.RolePermissionResp;
 import com.eip.ability.admin.domain.vo.VueRouter;
-import com.eip.ability.admin.exception.CheckedException;
+import com.eip.ability.admin.exception.AdminExceptionEnum;
+import com.eip.ability.admin.exception.AdminRuntimeException;
 import com.eip.ability.admin.mapper.*;
+import com.eip.ability.admin.mybatis.TenantEnvironment;
+import com.eip.ability.admin.mybatis.supers.SuperServiceImpl;
 import com.eip.ability.admin.mybatis.wraps.Wraps;
 import com.eip.ability.admin.service.RoleService;
-import com.eip.ability.admin.mybatis.supers.SuperServiceImpl;
 import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -58,13 +59,10 @@ public class RoleServiceImpl extends SuperServiceImpl<RoleMapper, Role> implemen
     @Override
     @DSTransactional
     public void removeByRoleId(Long roleId) {
-        final Role role = Optional.ofNullable(baseMapper.selectById(roleId)).orElseThrow(() -> CheckedException.notFound("角色不存在"));
-        if (role.getReadonly()) {
-            throw CheckedException.badRequest("内置角色无法删除");
-        }
-        if (role.getSuperRole()) {
-            throw CheckedException.badRequest("超级角色无法删除");
-        }
+        final Role role = Optional.ofNullable(baseMapper.selectById(roleId)).orElseThrow(() -> new AdminRuntimeException(AdminExceptionEnum.SYSTEM_ROLE_NOT_FOUND.getMessage()));
+        AdminExceptionEnum.SYSTEM_ROLE_DONOT_DELETE.assertIsFalse(role.getReadonly());
+        AdminExceptionEnum.SUPER_ROLE_DONOT_DELETE.assertIsFalse(role.getSuperRole());
+
         baseMapper.deleteById(roleId);
         roleOrgMapper.delete(Wraps.<RoleOrg>lbQ().eq(RoleOrg::getRoleId, roleId));
         roleResMapper.delete(Wraps.<RoleRes>lbQ().eq(RoleRes::getRoleId, roleId));
@@ -83,12 +81,9 @@ public class RoleServiceImpl extends SuperServiceImpl<RoleMapper, Role> implemen
     @Override
     public void updateRole(Long roleId, Long userId, RoleDTO data) {
         Role role = BeanUtil.toBean(data, Role.class);
-        if (role.getReadonly() != null && role.getReadonly()) {
-            throw CheckedException.badRequest("内置角色无法编辑");
-        }
-        if (role.getSuperRole() != null && role.getSuperRole()) {
-            throw CheckedException.badRequest("超级角色无法编辑");
-        }
+        AdminExceptionEnum.SYSTEM_ROLE_DONOT_EDIT.assertIsFalse(role.getReadonly() != null && role.getReadonly());
+        AdminExceptionEnum.SUPER_ROLE_DONOT_EDIT.assertIsFalse(role.getSuperRole() != null && role.getSuperRole());
+
         role.setId(roleId);
         baseMapper.updateById(role);
 
@@ -100,9 +95,7 @@ public class RoleServiceImpl extends SuperServiceImpl<RoleMapper, Role> implemen
     @DSTransactional
     public void saveUserRole(Long roleId, List<Long> userIdList) {
         this.userRoleMapper.delete(Wraps.<UserRole>lbQ().eq(UserRole::getRoleId, roleId));
-        final List<UserRole> userRoles = userIdList.stream().map(userId -> UserRole.builder()
-                .roleId(roleId).userId(userId).build())
-                .collect(Collectors.toList());
+        final List<UserRole> userRoles = userIdList.stream().map(userId -> UserRole.builder().roleId(roleId).userId(userId).build()).collect(Collectors.toList());
         for (UserRole role : userRoles) {
             this.userRoleMapper.insert(role);
         }
@@ -111,8 +104,7 @@ public class RoleServiceImpl extends SuperServiceImpl<RoleMapper, Role> implemen
     private void saveRoleOrg(Role role, List<Long> orgList) {
         // 根据 数据范围类型 和 勾选的组织ID， 重新计算全量的组织ID
         if (CollectionUtil.isNotEmpty(orgList)) {
-            List<RoleOrg> list = orgList.stream().map((orgId) -> RoleOrg.builder().orgId(orgId)
-                    .roleId(role.getId()).build()).collect(Collectors.toList());
+            List<RoleOrg> list = orgList.stream().map((orgId) -> RoleOrg.builder().orgId(orgId).roleId(role.getId()).build()).collect(Collectors.toList());
             for (RoleOrg roleOrg : list) {
                 roleOrgMapper.insert(roleOrg);
             }
@@ -121,10 +113,9 @@ public class RoleServiceImpl extends SuperServiceImpl<RoleMapper, Role> implemen
 
     @Override
     public RolePermissionResp findRolePermissionById(Long roleId) {
-        final List<VueRouter> buttons = resourceMapper.findVisibleResource(ResourceQueryDTO.builder()
-                .userId(tenantEnvironment.userId()).build());
-        final List<Long> roleRes = Optional.of(this.roleResMapper.selectList(Wraps.<RoleRes>lbQ().eq(RoleRes::getRoleId, roleId)))
-                .orElse(Lists.newArrayList()).stream().map(RoleRes::getResId).collect(toList());
+        final List<VueRouter> buttons = resourceMapper.findVisibleResource(ResourceQueryDTO.builder().userId(tenantEnvironment.userId()).build());
+        final List<Long> roleRes =
+                Optional.of(this.roleResMapper.selectList(Wraps.<RoleRes>lbQ().eq(RoleRes::getRoleId, roleId))).orElse(Lists.newArrayList()).stream().map(RoleRes::getResId).collect(toList());
         return RolePermissionResp.builder().resIdList(roleRes).buttons(buttons).build();
     }
 }

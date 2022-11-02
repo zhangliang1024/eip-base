@@ -95,18 +95,13 @@ public class GlobalAuthenticationFilter implements GlobalFilter, Ordered {
             String tenantId = additionalInformation.get(AuthConstants.TENANT_ID).toString();
 
             AuthUserDetail loginUser = new AuthUserDetail();
-            //loginUser.setJwtId(jti);
-            //loginUser.setAuthorities(authorities);
             loginUser.setUserId(userId);
             loginUser.setUsername(userName);
             loginUser.setTenantId(tenantId);
-            //过期时间，单位秒
-            //loginUser.setExpireIn(Long.parseLong(String.valueOf(oAuth2AccessToken.getExpiresIn())));
             //将解析后的token加密放入请求头中，方便下游微服务解析获取用户信息
             String base64 = Base64.encode(JSONUtil.toJsonStr(loginUser));
             //放入请求头中
-            ServerHttpRequest tokenRequest =
-                    exchange.getRequest().mutate().header(AuthConstants.TOKEN_NAME, base64).build();
+            ServerHttpRequest tokenRequest = exchange.getRequest().mutate().header(AuthConstants.TOKEN_NAME, base64).build();
             ServerWebExchange build = exchange.mutate().request(tokenRequest).build();
             return chain.filter(build);
         } catch (InvalidTokenException e) {

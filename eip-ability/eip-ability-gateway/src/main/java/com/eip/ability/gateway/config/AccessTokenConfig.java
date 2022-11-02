@@ -28,7 +28,7 @@ public class AccessTokenConfig {
      */
     @Bean
     public TokenStore tokenStore() {
-        //使用JWT生成令牌
+        // 使用JWT生成令牌
         return new JwtTokenStore(jwtAccessTokenConverter());
     }
 
@@ -39,7 +39,7 @@ public class AccessTokenConfig {
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        //设置秘钥
+        // 设置秘钥
         converter.setSigningKey(privateKey);
         converter.setVerifierKey(publicKey);
         return converter;
@@ -49,7 +49,7 @@ public class AccessTokenConfig {
      * JWT令牌增强，继承JwtAccessTokenConverter
      * 将业务所需额外信息放入令牌中，这样下游微服务就能拆解令牌获取
      */
-    //public static class JwtAccessTokenEnhancer extends JwtAccessTokenConverter {
+    // public static class JwtAccessTokenEnhancer extends JwtAccessTokenConverter {
     //    /**重写enhance方法，在其中扩展*/
     //    @Override
     //    public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {

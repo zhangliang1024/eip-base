@@ -5,7 +5,8 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.dynamic.datasource.annotation.DSTransactional;
 import com.eip.ability.admin.domain.entity.tenant.DynamicDatasource;
 import com.eip.ability.admin.domain.vo.TenantDynamicDatasourceVO;
-import com.eip.ability.admin.exception.CheckedException;
+import com.eip.ability.admin.exception.AdminExceptionEnum;
+import com.eip.ability.admin.exception.AdminRuntimeException;
 import com.eip.ability.admin.mapper.DynamicDatasourceMapper;
 import com.eip.ability.admin.mapper.TenantConfigMapper;
 import com.eip.ability.admin.mybatis.supers.SuperServiceImpl;
@@ -22,10 +23,10 @@ import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
 
-//import com.eip.ability.admin.mybatis.conditions.event.body.TenantDynamicDatasource;
-//import com.eip.ability.admin.mybatis.conditions.event.DynamicDatasourceEvent;
+// import com.eip.ability.admin.mybatis.conditions.event.body.TenantDynamicDatasource;
+// import com.eip.ability.admin.mybatis.conditions.event.DynamicDatasourceEvent;
 
-//import static com.eip.ability.admin.domain.converts.TenantDynamicDatasourceConverts.TENANT_DYNAMIC_DATASOURCE_VO_2_TENANT_DYNAMIC_DATASOURCE_CONVERTS;
+// import static com.eip.ability.admin.domain.converts.TenantDynamicDatasourceConverts.TENANT_DYNAMIC_DATASOURCE_VO_2_TENANT_DYNAMIC_DATASOURCE_CONVERTS;
 
 
 /**
@@ -58,7 +59,7 @@ public class DynamicDatasourceServiceImpl extends SuperServiceImpl<DynamicDataso
             return;
         }
         for (TenantDynamicDatasourceVO dynamicDatasource : dataSourceList) {
-            //publishEvent(EventAction.ADD, dynamicDatasource);
+            // publishEvent(EventAction.ADD, dynamicDatasource);
         }
     }
 
@@ -70,35 +71,34 @@ public class DynamicDatasourceServiceImpl extends SuperServiceImpl<DynamicDataso
             lbqWrapper.ne(DynamicDatasource::getId, dynamicDatasource.getId());
         }
         final long count = super.count(lbqWrapper);
-        if (count > 0) {
-            throw CheckedException.badRequest("连接池名称已存在");
-        }
+        AdminExceptionEnum.DATASOURCE_NAME_HAVED_EXIST.assertIsFalse(count > 0);
+
         super.saveOrUpdate(dynamicDatasource);
     }
 
     @Override
     @DSTransactional
     public void removeDatabaseById(Long id) {
-        Optional.ofNullable(this.baseMapper.selectById(id)).orElseThrow(() -> CheckedException.notFound("数据连接信息不存在"));
+        Optional.ofNullable(this.baseMapper.selectById(id)).orElseThrow(() -> new AdminRuntimeException(AdminExceptionEnum.DATASOURCE_DATA_NOT_FOUNT.getMessage()));
         this.baseMapper.deleteById(id);
         final List<TenantDynamicDatasourceVO> dataSourceList = this.tenantConfigMapper.selectTenantDynamicDatasource(id);
         for (TenantDynamicDatasourceVO tenantDynamicDatasource : dataSourceList) {
-            //publishEvent(EventAction.DEL, tenantDynamicDatasource);
+            // publishEvent(EventAction.DEL, tenantDynamicDatasource);
         }
     }
 
     //@Override
-    //public void publishEvent(EventAction action, Long tenantId) {
+    // public void publishEvent(EventAction action, Long tenantId) {
     //    final TenantDynamicDatasourceVO dynamicDatasource = this.tenantConfigMapper.getTenantDynamicDatasourceByTenantId(tenantId);
     //    publishEvent(action, dynamicDatasource);
     //}
 
-    //private void publishEvent(EventAction action, TenantDynamicDatasourceVO dynamicDatasource) {
+    // private void publishEvent(EventAction action, TenantDynamicDatasourceVO dynamicDatasource) {
     //    if (Objects.isNull(dynamicDatasource)) {
     //        throw CheckedException.notFound("租户未关联数据源信息");
     //    }
-        //final TenantDynamicDatasource datasource = TENANT_DYNAMIC_DATASOURCE_VO_2_TENANT_DYNAMIC_DATASOURCE_CONVERTS.convert(dynamicDatasource);
-        //eventPublisher.publishEvent(new DynamicDatasourceEvent(this, applicationContext.getId(), datasource, action.getType()));
-        //log.debug("event publish successful - {}", datasource);
+    // final TenantDynamicDatasource datasource = TENANT_DYNAMIC_DATASOURCE_VO_2_TENANT_DYNAMIC_DATASOURCE_CONVERTS.convert(dynamicDatasource);
+    // eventPublisher.publishEvent(new DynamicDatasourceEvent(this, applicationContext.getId(), datasource, action.getType()));
+    // log.debug("event publish successful - {}", datasource);
     //}
 }

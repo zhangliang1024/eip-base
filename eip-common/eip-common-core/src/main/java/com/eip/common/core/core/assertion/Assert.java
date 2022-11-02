@@ -1,5 +1,6 @@
 package com.eip.common.core.core.assertion;
 
+import cn.hutool.core.util.StrUtil;
 import com.eip.common.core.core.exception.BaseRuntimeException;
 
 import java.util.Collection;
@@ -51,7 +52,7 @@ public interface Assert {
      * @param str 待判断字符串
      */
     default void assertNotEmpty(String str){
-        if (null == str || "".equals(str.trim())){
+        if (StrUtil.isBlank(str)){
             throw newException();
         }
     }

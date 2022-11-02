@@ -1,6 +1,6 @@
 package com.eip.ability.auth.oauth2.exception;
 
-import com.eip.ability.auth.oauth2.ResponseUtil;
+import com.eip.ability.auth.oauth2.util.ResponseUtil;
 import com.eip.common.core.core.assertion.enums.AuthResponseEnum;
 import com.eip.common.core.core.protocol.response.ApiResult;
 import org.springframework.security.access.AccessDeniedException;

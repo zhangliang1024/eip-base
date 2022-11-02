@@ -1,7 +1,7 @@
 package com.eip.ability.gateway.handler;
 
 import cn.hutool.json.JSONUtil;
-import com.eip.ability.gateway.domain.Result;
+import com.eip.common.core.core.protocol.response.ApiResult;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -32,7 +32,7 @@ public class GatewayAccessDeniedHandler implements ServerAccessDeniedHandler {
         ServerHttpResponse response = exchange.getResponse();
         response.setStatusCode(HttpStatus.FORBIDDEN);
         response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-        String body = JSONUtil.toJsonStr(Result.fail(denied.getMessage()));
+        String body = JSONUtil.toJsonStr(ApiResult.fail(denied.getMessage()));
         DataBuffer buffer = response.bufferFactory().wrap(body.getBytes(StandardCharsets.UTF_8));
         //TODO 权鉴失败日志记录
         System.out.println("2. update log to 403");

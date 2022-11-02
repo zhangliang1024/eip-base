@@ -2,8 +2,8 @@ package com.eip.ability.admin.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.eip.ability.admin.exception.CheckedException;
 import com.eip.ability.admin.domain.UserInfoDetails;
+import com.eip.ability.admin.exception.AdminExceptionEnum;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,9 +26,8 @@ public class SecurityUtils {
      */
     public static UserInfoDetails getAuthInfo() {
         OAuth2Authentication authentication = getAuthentication();
-        if (authentication == null || anonymous()) {
-            throw CheckedException.forbidden("认证信息不存在");
-        }
+        AdminExceptionEnum.OAUTH2_DATA_NOT_FOUND.assertIsFalse(authentication == null || anonymous());
+
         Authentication userAuthentication = authentication.getUserAuthentication();
         if (userAuthentication.getPrincipal() instanceof UserInfoDetails) {
             return (UserInfoDetails) userAuthentication.getPrincipal();

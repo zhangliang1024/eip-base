@@ -9,13 +9,13 @@ import com.eip.ability.admin.domain.entity.message.StationMessage;
 import com.eip.ability.admin.domain.entity.message.StationMessagePublish;
 import com.eip.ability.admin.domain.enums.ReceiverType;
 import com.eip.ability.admin.domain.vo.CommonDataResp;
-import com.eip.ability.admin.exception.CheckedException;
+import com.eip.ability.admin.exception.AdminExceptionEnum;
+import com.eip.ability.admin.exception.AdminRuntimeException;
 import com.eip.ability.admin.mapper.*;
+import com.eip.ability.admin.mybatis.supers.SuperServiceImpl;
 import com.eip.ability.admin.mybatis.wraps.Wraps;
 import com.eip.ability.admin.service.StationMessagePublishService;
-import com.eip.ability.admin.mybatis.supers.SuperServiceImpl;
 import com.eip.ability.admin.util.StringUtils;
-//import com.eip.ability.admin.websocket.WebSocketManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -38,24 +38,22 @@ public class StationMessagePublishServiceImpl extends SuperServiceImpl<StationMe
     private final RoleMapper roleMapper;
     private final StationMessageMapper stationMessageMapper;
     private final UserRoleMapper userRoleMapper;
-    //private final WebSocketManager webSocketManager;
+    // private final WebSocketManager webSocketManager;
 
 
     @Override
     public List<CommonDataResp> queryReceiverByType(ReceiverType type, String search) {
-        if (type == null) {
-            throw CheckedException.notFound("类型不能为空");
-        }
+        AdminExceptionEnum.USER_RECEIVER_TYPE_NOT_EMPTY.assertNotNull(type);
+
         if (type == ReceiverType.USER) {
-            final List<User> users = userMapper.selectList(Wraps.<User>lbQ().eq(User::getStatus, 1)
-                    .and(StringUtils.isNotBlank(search), wrapper -> wrapper.like(User::getNickName, search).or().like(User::getUsername, search)));
+            final List<User> users = userMapper.selectList(Wraps.<User>lbQ().eq(User::getStatus, 1).and(StringUtils.isNotBlank(search),
+                    wrapper -> wrapper.like(User::getNickName, search).or().like(User::getUsername, search)));
             if (CollectionUtil.isEmpty(users)) {
                 return null;
             }
             return users.stream().map(user -> CommonDataResp.builder().id(user.getId()).name(user.getNickName()).build()).collect(toList());
         }
-        final List<Role> roles = roleMapper.selectList(Wraps.<Role>lbQ().eq(Role::getLocked, false)
-                .like(Role::getName, search).or().like(Role::getCode, search));
+        final List<Role> roles = roleMapper.selectList(Wraps.<Role>lbQ().eq(Role::getLocked, false).like(Role::getName, search).or().like(Role::getCode, search));
         if (CollectionUtil.isEmpty(roles)) {
             return null;
         }
@@ -66,9 +64,10 @@ public class StationMessagePublishServiceImpl extends SuperServiceImpl<StationMe
     @Override
     @DSTransactional
     public void publish(Long id) {
-        final StationMessagePublish messagePublish = Optional.ofNullable(this.baseMapper.selectById(id)).orElseThrow(() -> CheckedException.notFound("需要发布的消息不存在"));
-        final List<Long> receiver = Optional.of(Arrays.stream(messagePublish.getReceiver().split(",")).mapToLong(Long::parseLong).boxed().collect(toList()))
-                .orElseThrow(() -> CheckedException.badRequest("接受者不能为空"));
+        final StationMessagePublish messagePublish =
+                Optional.ofNullable(this.baseMapper.selectById(id)).orElseThrow(() -> new AdminRuntimeException(AdminExceptionEnum.SESSION_MESSAGE_NOT_FOUND.getMessage()));
+        final List<Long> receiver =
+                Optional.of(Arrays.stream(messagePublish.getReceiver().split(",")).mapToLong(Long::parseLong).boxed().collect(toList())).orElseThrow(() -> new AdminRuntimeException(AdminExceptionEnum.SESSION_MESSAGE_RECEIVE_NOT_EMPTY.getMessage()));
         StationMessagePublish record = new StationMessagePublish();
         record.setId(id);
         record.setStatus(true);
@@ -96,7 +95,7 @@ public class StationMessagePublishServiceImpl extends SuperServiceImpl<StationMe
             message.setReceiveId(userId);
             message.setCreatedTime(LocalDateTime.now());
             this.stationMessageMapper.insert(message);
-            //this.webSocketManager.sendMessage(String.valueOf(userId), JSON.toJSONString(message));
+            // this.webSocketManager.sendMessage(String.valueOf(userId), JSON.toJSONString(message));
         }
     }
 }

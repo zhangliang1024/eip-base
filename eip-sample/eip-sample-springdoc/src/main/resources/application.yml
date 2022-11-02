@@ -10,3 +10,14 @@ springdoc:
 #  paths-to-match: /system/**,/captcha/**,/login/** #配置需要生成接口文档的接口路径
   eip-docs:
     group-name: eip-sample
+server:
+  tomcat:
+    uri-encoding: UTF-8
+    threads:
+      min-spare: 100 #最小工作空闲线程数，默认10, 适当增大一些，以便应对突然增长的访问量
+      max: 800  #最大工作线程数，默认200。4核8g内存，线程数经验值800; 操作系统做线程之间的切换调度是有系统开销的，所以不是越多越好。
+    accept-count: 10000 # 等待队列长度，默认100
+    max-connections: 10000 # 最大连接数
+    connection-timeout: 5000 # 连接超时时间
+
+

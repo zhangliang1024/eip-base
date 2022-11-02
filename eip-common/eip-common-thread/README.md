@@ -188,6 +188,11 @@ AbortPolicy
 DiscardPolicy
 DiscardOldestPolicy
 ```
+- 支持动态调整队列的长度
+```text
+#将队列长度对外暴露可修改
+ResizableCapacityLinkedBlockIngQueue 
+```
 
 ### 四、告警说明
 > 这里只提供钉钉告警配置，但没做实现。此插件还是围绕核心功能提供动态线程池的管理。
@@ -197,3 +202,24 @@ DiscardOldestPolicy
 2. 可自定义告警指标，通过DynamicThreadPoolProperties的getExecutors()获取线程池，然后计算告警指标进行告警
 ```
 ![](https://ae02.alicdn.com/kf/H3e7f057f928b48b9ba1ec52313856692F.png)
+
+### 五、线程池监控
+- 监控目的
+> 监控是为了防患于未然，防止发生生产事故。
+
+- 使用线程池可能出现的问题
+```text
+a. 线程池异步处理，消费速度过慢，导致任务积压，响应过慢。或者队列有限，导致拒绝提交。
+b. 线程池做并行请求，请求量过大，导致处理积压，响应变慢。
+c. 业务评估不准确，导致线程池资源设置不合理。
+```
+
+- 线程池监控的指标
+```text
+a. 队列的饱和度
+b. 单位时间内提交任务的速度远大于消费速度
+```
+
+### 六、参考文档
+
+[基于SpringBoot集成线程池，实现线程的池的动态监控](https://www.cnblogs.com/mic112/archive/2021/10/19/15424574.html)

@@ -2,15 +2,15 @@ package com.eip.ability.admin.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.convert.Convert;
-import com.eip.ability.admin.mybatis.TenantEnvironment;
 import com.eip.ability.admin.domain.Entity;
 import com.eip.ability.admin.domain.entity.baseinfo.Org;
-import com.eip.ability.admin.exception.CheckedException;
+import com.eip.ability.admin.exception.AdminExceptionEnum;
 import com.eip.ability.admin.mapper.OrgMapper;
 import com.eip.ability.admin.mybatis.MapHelper;
+import com.eip.ability.admin.mybatis.TenantEnvironment;
+import com.eip.ability.admin.mybatis.supers.SuperServiceImpl;
 import com.eip.ability.admin.mybatis.wraps.Wraps;
 import com.eip.ability.admin.service.OrgService;
-import com.eip.ability.admin.mybatis.supers.SuperServiceImpl;
 import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -62,9 +62,8 @@ public class OrgServiceImpl extends SuperServiceImpl<OrgMapper, Org> implements 
 
     @Override
     public void addOrg(@NotNull Org org) {
-        if (org == null) {
-            throw CheckedException.notFound("信息不能为空");
-        }
+        AdminExceptionEnum.DATA_NOT_EMPTY.assertNotNull(org);
+
         final String treePath = this.baseMapper.getTreePathByParentId(org.getParentId());
         org.setTreePath(treePath);
         org.setTenantId(tenantEnvironment.tenantId());
@@ -75,7 +74,7 @@ public class OrgServiceImpl extends SuperServiceImpl<OrgMapper, Org> implements 
     @Override
     public Map<Serializable, Object> findOrgByIds(Set<Serializable> ids) {
         List<Org> list = getOrgList(ids);
-        //key 是 组织id， value 是org 对象
+        // key 是 组织id， value 是org 对象
         return MapHelper.uniqueIndex(list, Org::getId, (org) -> org);
     }
 

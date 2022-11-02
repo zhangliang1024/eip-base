@@ -17,13 +17,5 @@
             <groupId>com.eip.cloud</groupId>
             <artifactId>eip-common-core</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-actuator-autoconfigure</artifactId>
-        </dependency>
     </dependencies>
 </project>

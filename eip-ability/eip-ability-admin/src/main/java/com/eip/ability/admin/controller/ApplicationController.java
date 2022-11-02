@@ -3,7 +3,7 @@ package com.eip.ability.admin.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.eip.ability.admin.domain.entity.baseinfo.OAuthClientDetails;
-import com.eip.ability.admin.exception.CheckedException;
+import com.eip.ability.admin.exception.AdminExceptionEnum;
 import com.eip.ability.admin.log.SysLog;
 import com.eip.ability.admin.mybatis.wraps.Wraps;
 import com.eip.ability.admin.service.ApplicationService;
@@ -33,17 +33,12 @@ public class ApplicationController {
     private final ApplicationService applicationService;
 
     @GetMapping
-    @Parameters({
-            @Parameter(description = "应用ID", name = "clientId", in = ParameterIn.QUERY),
-            @Parameter(description = "应用名称", name = "clientName", in = ParameterIn.QUERY),
-    })
+    @Parameters({@Parameter(description = "应用ID", name = "clientId", in = ParameterIn.QUERY), @Parameter(description = "应用名称", name = "clientName", in = ParameterIn.QUERY),})
     @Operation(summary = "应用列表 - [Levin] - [DONE]")
     public IPage<OAuthClientDetails> query(@Parameter(description = "当前页") @RequestParam(required = false, defaultValue = "1") Integer current,
-                                           @Parameter(description = "条数") @RequestParam(required = false, defaultValue = "20") Integer size,
-                                           String clientId, String clientName) {
-        return this.applicationService.page(new Page<>(current, size),
-                Wraps.<OAuthClientDetails>lbQ().like(OAuthClientDetails::getClientId, clientId)
-                        .like(OAuthClientDetails::getClientName, clientName));
+                                           @Parameter(description = "条数") @RequestParam(required = false, defaultValue = "20") Integer size, String clientId, String clientName) {
+        return this.applicationService.page(new Page<>(current, size), Wraps.<OAuthClientDetails>lbQ().like(OAuthClientDetails::getClientId, clientId).like(OAuthClientDetails::getClientName,
+                clientName));
     }
 
     @PostMapping
@@ -51,9 +46,7 @@ public class ApplicationController {
     @Operation(summary = "添加应用")
     public void save(@Validated @RequestBody OAuthClientDetails dto) {
         final long count = this.applicationService.count(Wraps.<OAuthClientDetails>lbQ().eq(OAuthClientDetails::getClientId, dto.getClientId()));
-        if (count > 0) {
-            throw CheckedException.badRequest("客户ID已存在");
-        }
+        AdminExceptionEnum.USER_ID_HAVED_EXIST.assertIsFalse(count > 0);
         this.applicationService.save(dto);
     }
 

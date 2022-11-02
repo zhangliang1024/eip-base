@@ -67,16 +67,29 @@ public class ApiResult<T> implements Serializable {
         this.data = data;
     }
 
+    public ApiResult(String code, String message, T data) {
+        this.code = code;
+        this.message = message;
+        this.data = data;
+    }
+
     private ApiResult(Throwable e) {
         this.code = BaseResponseEnum.SERVER_ERROR.getCode();
         this.message = e.getMessage();
     }
 
     public static ApiResult ok() {
-        return new ApiResult();
+        return success();
     }
 
     public static ApiResult ok(Object data) {
+        return success(data);
+    }
+
+    public static ApiResult success() {
+        return new ApiResult();
+    }
+    public static ApiResult success(Object data) {
         return new ApiResult(data);
     }
 
@@ -86,6 +99,14 @@ public class ApiResult<T> implements Serializable {
 
     public static ApiResult error(IResponseEnum responseEnum) {
         return new ApiResult(responseEnum);
+    }
+
+    public static ApiResult fail(String message) {
+        return ApiResult.builder()
+                .code(BaseResponseEnum.SERVER_ERROR.getCode())
+                .message(message)
+                .logTraceId(MDC.get(GlobalConstans.GLOBAL_TRACE_ID))
+                .build();
     }
 
     public static ApiResult error(String message) {

@@ -8,16 +8,15 @@ import com.eip.ability.admin.domain.entity.baseinfo.UserRole;
 import com.eip.ability.admin.domain.entity.common.AreaEntity;
 import com.eip.ability.admin.domain.entity.tenant.Tenant;
 import com.eip.ability.admin.domain.entity.tenant.TenantConfig;
-//import com.eip.ability.admin.domain.enums.EventAction;
-import com.eip.ability.admin.exception.CheckedException;
+import com.eip.ability.admin.exception.AdminExceptionEnum;
+import com.eip.ability.admin.exception.AdminRuntimeException;
 import com.eip.ability.admin.mapper.*;
-import com.eip.ability.admin.mybatis.wraps.Wraps;
-//import com.eip.ability.admin.mybatis.conditions.event.TenantDynamicDataSourceProcess;
 import com.eip.ability.admin.mybatis.properties.DatabaseProperties;
 import com.eip.ability.admin.mybatis.properties.MultiTenantType;
+import com.eip.ability.admin.mybatis.supers.SuperServiceImpl;
+import com.eip.ability.admin.mybatis.wraps.Wraps;
 import com.eip.ability.admin.service.DynamicDatasourceService;
 import com.eip.ability.admin.service.TenantService;
-import com.eip.ability.admin.mybatis.supers.SuperServiceImpl;
 import com.eip.ability.admin.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -71,14 +70,11 @@ public class TenantServiceImpl extends SuperServiceImpl<TenantMapper, Tenant> im
 
     @Override
     public void tenantConfig(TenantConfig tenantConfig) {
-        final Tenant tenant = Optional.ofNullable(this.baseMapper.selectById(tenantConfig.getTenantId()))
-                .orElseThrow(() -> CheckedException.notFound("租户不存在"));
-        if (tenant.getLocked()) {
-            throw CheckedException.badRequest("租户已被禁用");
-        }
-        if (StringUtils.equals(tenant.getCode(), properties.getMultiTenant().getSuperTenantCode())) {
-            throw CheckedException.badRequest("超级租户,禁止操作");
-        }
+        final Tenant tenant =
+                Optional.ofNullable(this.baseMapper.selectById(tenantConfig.getTenantId())).orElseThrow(() -> new AdminRuntimeException(AdminExceptionEnum.TENANT_NOT_FOUNT.getMessage()));
+        AdminExceptionEnum.TENANT_HAS_BEEN_DISABLED.assertIsFalse(tenant.getLocked());
+        AdminExceptionEnum.SUPER_TENANT_DONOT_EDIT.assertIsFalse(StringUtils.equals(tenant.getCode(), properties.getMultiTenant().getSuperTenantCode()));
+
         if (tenantConfig.getId() == null) {
             tenantConfigMapper.delete(Wraps.<TenantConfig>lbQ().eq(TenantConfig::getTenantId, tenantConfig.getTenantId()));
             tenantConfigMapper.insert(tenantConfig);
@@ -86,23 +82,21 @@ public class TenantServiceImpl extends SuperServiceImpl<TenantMapper, Tenant> im
             tenantConfigMapper.updateById(tenantConfig);
         }
         // 先创建
-        //dynamicDatasourceService.publishEvent(EventAction.INIT, tenantConfig.getTenantId());
+        // dynamicDatasourceService.publishEvent(EventAction.INIT, tenantConfig.getTenantId());
     }
 
     @Override
     @DSTransactional
     public void initSqlScript(Long id) {
-        final Tenant tenant = Optional.ofNullable(this.baseMapper.selectById(id)).orElseThrow(() -> CheckedException.notFound("租户信息不存在"));
-        if (tenant.getLocked()) {
-            throw CheckedException.badRequest("租户已被禁用");
-        }
+        final Tenant tenant = Optional.ofNullable(this.baseMapper.selectById(id)).orElseThrow(() -> new AdminRuntimeException(AdminExceptionEnum.TENANT_NOT_FOUNT.getMessage()));
+
+        AdminExceptionEnum.TENANT_HAS_BEEN_DISABLED.assertIsFalse(tenant.getLocked());
         final DatabaseProperties.MultiTenant multiTenant = properties.getMultiTenant();
-        if (StringUtils.equals(tenant.getCode(), multiTenant.getSuperTenantCode())) {
-            throw CheckedException.badRequest("超级租户,禁止操作");
-        }
+        AdminExceptionEnum.SUPER_TENANT_DONOT_EDIT.assertIsFalse(StringUtils.equals(tenant.getCode(), multiTenant.getSuperTenantCode()));
+
         if (multiTenant.getType() == MultiTenantType.COLUMN) {
-            final Role role = Optional.ofNullable(roleMapper.selectOne(Wraps.<Role>lbQ()
-                    .eq(Role::getCode, "TENANT-ADMIN"))).orElseThrow(() -> CheckedException.notFound("内置租户管理员角色不存在"));
+            final Role role =
+                    Optional.ofNullable(roleMapper.selectOne(Wraps.<Role>lbQ().eq(Role::getCode, "TENANT-ADMIN"))).orElseThrow(() -> new AdminRuntimeException(AdminExceptionEnum.SYSTEM_TENANT_ROLE_NOT_FOUNT.getMessage()));
             final List<User> users = this.userMapper.selectByTenantId(tenant.getId());
             if (CollUtil.isNotEmpty(users)) {
                 final List<Long> userIdList = users.stream().map(User::getId).distinct().collect(Collectors.toList());
@@ -123,8 +117,8 @@ public class TenantServiceImpl extends SuperServiceImpl<TenantMapper, Tenant> im
             this.userRoleMapper.insert(UserRole.builder().userId(record.getId()).roleId(role.getId()).build());
 
         } else if (multiTenant.getType() == MultiTenantType.DATASOURCE) {
-            //TenantDynamicDataSourceProcess tenantDynamicDataSourceProcess = SpringUtil.getBean(TenantDynamicDataSourceProcess.class);
-            //tenantDynamicDataSourceProcess.initSqlScript(tenant.getId(), tenant.getCode());
+            // TenantDynamicDataSourceProcess tenantDynamicDataSourceProcess = SpringUtil.getBean(TenantDynamicDataSourceProcess.class);
+            // tenantDynamicDataSourceProcess.initSqlScript(tenant.getId(), tenant.getCode());
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.eip.ability.auth.oauth2;
+package com.eip.ability.auth.oauth2.util;
 
 import cn.hutool.json.JSONUtil;
 import com.eip.common.core.core.protocol.response.ApiResult;

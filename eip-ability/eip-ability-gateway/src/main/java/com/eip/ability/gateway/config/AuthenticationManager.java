@@ -1,6 +1,5 @@
 package com.eip.ability.gateway.config;
 
-import com.eip.ability.gateway.domain.UserInfoDetails;
 import com.eip.common.core.auth.AuthUserContext;
 import com.eip.common.core.auth.AuthUserDetail;
 import lombok.extern.slf4j.Slf4j;

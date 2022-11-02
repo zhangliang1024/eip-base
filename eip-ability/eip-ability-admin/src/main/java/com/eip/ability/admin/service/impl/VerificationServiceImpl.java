@@ -1,7 +1,7 @@
 package com.eip.ability.admin.service.impl;
 
 import cn.hutool.core.util.StrUtil;
-import com.eip.ability.admin.exception.CheckedException;
+import com.eip.ability.admin.exception.AdminExceptionEnum;
 import com.eip.ability.admin.service.VerificationService;
 import com.eip.common.core.core.protocol.response.ApiResult;
 import com.wf.captcha.ArithmeticCaptcha;
@@ -30,9 +30,8 @@ public class VerificationServiceImpl implements VerificationService {
     @SneakyThrows
     @Override
     public Captcha create(String key) {
-        if (StrUtil.isBlank(key)) {
-            throw CheckedException.badRequest("验证码key不能为空");
-        }
+        AdminExceptionEnum.VERFIY_CODE_NOT_EMPTY.assertNotEmpty(key);
+
         Captcha captcha = new ArithmeticCaptcha(115, 42);
         captcha.setCharType(2);
         stringRedisTemplate.opsForValue().set(geyKey(key), captcha.text(), 3, TimeUnit.MINUTES);

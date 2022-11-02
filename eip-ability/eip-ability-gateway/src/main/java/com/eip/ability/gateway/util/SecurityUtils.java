@@ -1,13 +1,6 @@
-package com.eip.ability.gateway;
+package com.eip.ability.gateway.util;
 
-import cn.hutool.crypto.asymmetric.RSA;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.eip.ability.gateway.domain.UserInfoDetails;
-import com.google.common.base.Throwables;
-import com.sun.xml.internal.ws.api.model.CheckedException;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import org.apache.commons.codec.binary.Base64;
@@ -19,7 +12,6 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
-import java.security.PublicKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.X509EncodedKeySpec;
 
@@ -32,24 +24,6 @@ public class SecurityUtils {
         return (OAuth2Authentication) SecurityContextHolder.getContext().getAuthentication();
     }
 
-    /**
-     * 获取用户详细信息(只适用于 authority 模块)
-     *
-     * @return 结果
-     */
-    public static UserInfoDetails getAuthInfo() {
-        OAuth2Authentication authentication = getAuthentication();
-        if (authentication == null || anonymous()) {
-            throw new RuntimeException("认证信息不存在");
-        }
-        Authentication userAuthentication = authentication.getUserAuthentication();
-        if (userAuthentication.getPrincipal() instanceof UserInfoDetails) {
-            return (UserInfoDetails) userAuthentication.getPrincipal();
-        }
-        String detailsText = JSON.toJSONString(userAuthentication.getDetails());
-        final JSONObject detailJson = JSON.parseObject(detailsText);
-        return detailJson.getObject(AUTH_DETAILS_PRINCIPAL, UserInfoDetails.class);
-    }
 
     public static final String AUTH_DETAILS_PRINCIPAL = "principal";
     public static final String ANONYMOUS_USER = "anonymousUser";
@@ -98,7 +72,7 @@ public class SecurityUtils {
         Jws<Claims> claimsJws = parserToken(token, pubkey);
         if (claimsJws != null) {
             Claims body = claimsJws.getBody();
-            Object userId =  body.get("user_id");
+            Object userId = body.get("user_id");
             return userId;
         }
         return null;
