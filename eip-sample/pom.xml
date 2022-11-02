@@ -19,6 +19,7 @@
         <module>eip-sample-springdoc</module>
         <module>eip-sample-sensitive</module>
         <module>eip-sample-common</module>
+        <module>eip-sample-eureka</module>
     </modules>
 
 

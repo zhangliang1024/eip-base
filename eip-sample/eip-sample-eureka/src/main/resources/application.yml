@@ -1,9 +1,9 @@
 server:
-  port: 9003
+  port: 19001
 
 spring:
   application:
-    name: eip-admin
+    name: eip-sample-eureka
 
 eureka:
   instance:
