@@ -13,9 +13,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class CustomWebMvcConfigure implements WebMvcConfigurer {
 
+    // 不拦截Url [/**/v3匹配设置项目路径] [/v3/** 匹配/v3开头的所有路径]
+    // 路径要分开配置，放一起不生效
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new RequestTokenInterceptor()).addPathPatterns("/**");
+        registry.addInterceptor(new RequestTokenInterceptor())
+                .addPathPatterns("/**")
+                .excludePathPatterns("/**/swagger-ui/**")
+                .excludePathPatterns("/**/v3/**");
         WebMvcConfigurer.super.addInterceptors(registry);
     }
 

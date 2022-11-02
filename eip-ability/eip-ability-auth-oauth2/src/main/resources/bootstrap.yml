@@ -1,12 +1,10 @@
 server:
-  port: 5003
+  port: 9001
 spring:
   application:
-    name: wemirr-platform-authority
+    name: eip-auth
   cloud:
     nacos:
-      username: nacos
-      password: nacos
       server-addr: 140.246.154.99:8848
       discovery:
         metadata:
@@ -19,4 +17,3 @@ spring:
         # 共享配置
         shared-configs:
           - application.${spring.cloud.nacos.config.file-extension}
-

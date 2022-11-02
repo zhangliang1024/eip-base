@@ -23,7 +23,6 @@ public class GatewayApplication {
 
 
     public static void main(String[] args) {
-        //SpringApplication.run(GatewayApplication.class,args);
         final ConfigurableApplicationContext applicationContext = SpringApplication.run(GatewayApplication.class, args);
         Environment env = applicationContext.getEnvironment();
         final String appName = env.getProperty("spring.application.name");
