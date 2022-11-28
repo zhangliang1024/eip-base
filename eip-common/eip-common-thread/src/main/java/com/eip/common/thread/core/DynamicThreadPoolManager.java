@@ -159,9 +159,9 @@ public class DynamicThreadPoolManager {
      * 自定义线程工厂
      */
     static class DynamicThreadFactory implements ThreadFactory {
-        private static final AtomicInteger poolNumber = new AtomicInteger(1);
+        private static final AtomicInteger poolNumber = new AtomicInteger(1); // static变量 全局递增
         private final ThreadGroup group;
-        private final AtomicInteger threadNumber = new AtomicInteger(1);
+        private final AtomicInteger threadNumber = new AtomicInteger(1);    // 常量 每个对象递增
         private final String namePrefix;
 
         DynamicThreadFactory(String threadPoolName) {

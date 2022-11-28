@@ -14,6 +14,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.eip.cloud</groupId>
+            <artifactId>eip-common-core</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.ctrip.framework.apollo</groupId>
             <artifactId>apollo-client</artifactId>
         </dependency>

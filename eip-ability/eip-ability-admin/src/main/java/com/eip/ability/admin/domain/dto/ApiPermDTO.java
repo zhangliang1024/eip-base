@@ -36,19 +36,20 @@ public class ApiPermDTO implements Serializable {
     @Schema(description = "接口名称")
     @NotEmpty(message = "接口名称不能为空")
     @Length(max = 30, message = "接口名称长度不能超过30")
-    private String interfaceName;
+    private String apiName;
 
     @Schema(description = "接口方法")
+    @NotEmpty(message = "接口名称不能为空")
     @Length(max = 10, message = "接口方法长度不能超过20")
-    private String interfaceMethod;
+    private String apiMethod;
 
     @Schema(description = "接口地址")
     @NotEmpty(message = "接口地址不能为空")
-    private String interfacePath;
+    private String apiPath;
 
     @Schema(description = "接口描述")
     @Length(max = 100, message = "接口描述长度不能超过100")
-    private String interfaceDescription;
+    private String apiDescription;
 
 
     @Schema(description = "状态")
@@ -63,4 +64,5 @@ public class ApiPermDTO implements Serializable {
     @Schema(description = "数据权限类型")
     @NotNull(message = "数据权限类型不能为空")
     private DataScopeType scopeType;
+
 }

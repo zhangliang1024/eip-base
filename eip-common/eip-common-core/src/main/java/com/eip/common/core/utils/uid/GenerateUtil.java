@@ -1,6 +1,8 @@
 package com.eip.common.core.utils.uid;
 
+import com.eip.common.core.constants.GlobalConstans;
 import com.eip.common.core.utils.date.CalendarUtil;
+import org.slf4j.MDC;
 
 import java.util.Date;
 import java.util.Random;
@@ -104,6 +106,11 @@ public class GenerateUtil {
     public static String getLogTraceId() {
         String dateTime = CalendarUtil.getDateNotSlashFormat(new Date());
         return UUIDUtil.fastSimpleUUID().substring(10).toUpperCase() + "_" + dateTime;
+    }
+
+    public static void putLogTraceId(){
+        String logTraceId = getLogTraceId();
+        MDC.put(GlobalConstans.GLOBAL_TRACE_ID, logTraceId);
     }
 
     public static void main(String[] args) {

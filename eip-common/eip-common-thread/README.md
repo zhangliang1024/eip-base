@@ -220,6 +220,18 @@ a. 队列的饱和度
 b. 单位时间内提交任务的速度远大于消费速度
 ```
 
-### 六、参考文档
+### 六、跨线程日志链路
+> `MDC`底层使用`ThreadLocal`，无法传递跨线程的`TraceId`。对于大量跨线程的业务操作，形成日志链路，方便排查问题。
+
+- 方案：封装线程池
+> 在线程执行前将一个线程的日志`TraceId`传递给将要执行的线程日志`MDC`
+```text
+ThreadMDCUtil
+```
+
+
+### 七、参考文档
 
 [基于SpringBoot集成线程池，实现线程的池的动态监控](https://www.cnblogs.com/mic112/archive/2021/10/19/15424574.html)
+[跨线程(线程池)日志链路追踪](https://www.cnblogs.com/lyhc/p/16661650.html)
+[自定义实现JAVA线程池的线程工厂类-ThreadFactory](https://www.jianshu.com/p/1411da2df689)

@@ -1,5 +1,8 @@
 package com.eip.common.thread.core;
 
+import com.eip.common.thread.util.ThreadMDCUtil;
+import org.slf4j.MDC;
+
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -47,6 +50,25 @@ public class DynamicThreadPoolExecutor extends ThreadPoolExecutor {
 
     private ThreadLocal<Long> startTimeThreadLocal = new ThreadLocal<>();
 
+    @Override
+    public void execute(Runnable task) {
+        super.execute(ThreadMDCUtil.wrap(task, MDC.getCopyOfContextMap()));
+    }
+
+    @Override
+    public <T> Future<T> submit(Runnable task, T result) {
+        return super.submit(ThreadMDCUtil.wrap(task, MDC.getCopyOfContextMap()), result);
+    }
+
+    @Override
+    public <T> Future<T> submit(Callable<T> task) {
+        return super.submit(ThreadMDCUtil.wrap(task, MDC.getCopyOfContextMap()));
+    }
+
+    @Override
+    public Future<?> submit(Runnable task) {
+        return super.submit(ThreadMDCUtil.wrap(task, MDC.getCopyOfContextMap()));
+    }
 
     @Override
     protected void beforeExecute(Thread t, Runnable r) {

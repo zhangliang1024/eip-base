@@ -90,12 +90,23 @@ public class AuthAccessManager implements ReactiveAuthorizationManager<Authoriza
     private boolean checkAuthorities(Authentication auth, List<String> perms, String permission) {
         if (auth instanceof OAuth2Authentication) {
             Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
-            return perms.contains(permission);
+            for (String perm : perms) {
+                String[] permStr = StringUtils.splitByWholeSeparator(perm, AuthConstants.METHOD_SUFFIX);
+                String permMethod = permStr[0], permPath = permStr[1];
+                String[] requestPermStr = StringUtils.splitByWholeSeparator(permission, AuthConstants.METHOD_SUFFIX);
+                String requestMethod = requestPermStr[0], requestPath = requestPermStr[1];
+                if (StringUtils.endsWithIgnoreCase(permMethod, requestMethod)) {
+                    if (antPathMatcher.match(permPath, requestPath)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
         return perms.contains(permission);
     }
 
     private String getKey(String prefix, String key) {
-        return "wemirr-platform-authority:" + prefix + ":" + key;
+        return "wemirr-platform-authority:" + prefix + AuthConstants.METHOD_SUFFIX + key;
     }
 }
