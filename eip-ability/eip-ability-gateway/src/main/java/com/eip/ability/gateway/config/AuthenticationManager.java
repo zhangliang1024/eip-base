@@ -59,7 +59,6 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
                         Object userId = additionalInformation.get("user_id");
                         Object username = additionalInformation.get("user_name");
                         Object tenantCode = additionalInformation.get("tenant_code");
-                        log.info("userID:{}", userId);
 
                         AuthUserDetail build = AuthUserDetail.builder()
                                 .userId(String.valueOf(userId))

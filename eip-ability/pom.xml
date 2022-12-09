@@ -25,26 +25,26 @@
 
 
     <dependencies>
-        <!--<dependency>-->
-            <!--<groupId>com.eip.cloud</groupId>-->
-            <!--<artifactId>eip-common-banner</artifactId>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>com.eip.cloud</groupId>-->
-            <!--<artifactId>eip-common-logback</artifactId>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>com.eip.cloud</groupId>-->
-            <!--<artifactId>eip-config</artifactId>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>com.eip.cloud</groupId>
+            <artifactId>eip-common-banner</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.eip.cloud</groupId>
+            <artifactId>eip-common-log-logback</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.eip.cloud</groupId>
+            <artifactId>eip-config</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>cn.hutool</groupId>-->
-            <!--<artifactId>hutool-all</artifactId>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

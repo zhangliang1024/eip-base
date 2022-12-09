@@ -3,6 +3,7 @@ package com.eip.ability.gateway.config;
 import cn.hutool.core.util.ArrayUtil;
 import com.eip.ability.gateway.filter.CorsFilter;
 import com.eip.ability.gateway.filter.GatewayProperies;
+import com.eip.ability.gateway.filter.GlobalTraceIdWebFilter;
 import com.eip.ability.gateway.handler.GatewayAccessDeniedHandler;
 import com.eip.ability.gateway.handler.GatewayAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,8 @@ public class GatewaySecurityConfig {
 
     @Autowired
     private CorsFilter corsFilter;
+    // @Autowired
+    // private GlobalTraceIdWebFilter traceIdWebFilter;
 
     //系统参数配置
     @Autowired
@@ -69,6 +72,7 @@ public class GatewaySecurityConfig {
                 .and()
                 //跨域处理
                 .addFilterAt(corsFilter, SecurityWebFiltersOrder.CORS)
+                // .addFilterAt(traceIdWebFilter,SecurityWebFiltersOrder.REACTOR_CONTEXT)
                 /**token认证过滤器，用于校验token和认证**/
                 .addFilterAt(authenticationWebFilter, SecurityWebFiltersOrder.AUTHENTICATION);
 

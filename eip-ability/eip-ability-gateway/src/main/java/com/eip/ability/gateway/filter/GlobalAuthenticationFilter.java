@@ -62,7 +62,8 @@ public class GlobalAuthenticationFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String requestUrl = exchange.getRequest().getPath().value();
-        //校验是否白名单 如登录、授权等放行
+        log.info("request url: {}", requestUrl);
+        // 校验是否白名单 如登录、授权等放行
         if (checkUrls(requestUrl)) {
             return chain.filter(exchange);
         }

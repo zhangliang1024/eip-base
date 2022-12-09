@@ -17,3 +17,8 @@ spring:
         # 共享配置
         shared-configs:
           - application.${spring.cloud.nacos.config.file-extension}
+
+logging:
+  file:
+    path: ./logs
+    name: ${spring.application.name}
