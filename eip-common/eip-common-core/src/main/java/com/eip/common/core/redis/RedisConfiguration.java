@@ -29,7 +29,7 @@ import java.util.Arrays;
 @Configuration
 public class RedisConfiguration {
 
-    @Bean
+    @Bean(name = "redisTemplate")
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(factory);
@@ -47,6 +47,28 @@ public class RedisConfiguration {
 
         template.setHashKeySerializer(stringRedisSerializer);// hash的key也采用String的序列化方式
         template.setHashValueSerializer(jackson2JsonRedisSerializer);// hash的value序列化方式采用jackson
+        template.afterPropertiesSet();
+        return template;
+    }
+
+    @Bean(name = "redisTemplateTransaction")
+    public RedisTemplate<String, Object> redisTemplateTransaction(RedisConnectionFactory factory) {
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
+        template.setConnectionFactory(factory);
+        // 开启支持redis事务
+        template.setEnableTransactionSupport(true);
+
+        Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+        mapper.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+        jackson2JsonRedisSerializer.setObjectMapper(mapper);
+
+        StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
+        template.setKeySerializer(stringRedisSerializer);
+        template.setValueSerializer(jackson2JsonRedisSerializer);
+        template.setHashKeySerializer(stringRedisSerializer);
+        template.setHashValueSerializer(jackson2JsonRedisSerializer);
         template.afterPropertiesSet();
         return template;
     }

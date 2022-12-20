@@ -1,11 +1,16 @@
-package com.eip.common.job.client;
+package com.eip.common.job.client.config;
 
+import com.eip.common.job.client.register.service.JobGroupService;
+import com.eip.common.job.client.register.service.JobInfoService;
+import com.eip.common.job.client.register.service.JobLoginService;
+import com.eip.common.job.client.register.XxlJobAutoRegister;
 import com.eip.common.job.core.executor.impl.XxlJobSpringExecutor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 /**
  * ClassName: ConstantXxLJob
@@ -17,12 +22,14 @@ import org.springframework.context.annotation.Configuration;
  */
 @Slf4j
 @Configuration
-@EnableConfigurationProperties(value = {XxlJobConfig.class})
+@EnableConfigurationProperties(value = {XxlJobAutoConfig.class})
+@Import({XxlJobAutoRegister.class, JobGroupService.class, JobInfoService.class, JobLoginService.class})
 @ConditionalOnProperty(prefix = ConstantXxLJob.XXL_JOB, name = ConstantXxLJob.ENABLED, havingValue = ConstantXxLJob.TRUE, matchIfMissing = true)
 public class XxlJobAutoConfiguration {
 
-    @Bean(initMethod = "start", destroyMethod = "destroy")
-    public XxlJobSpringExecutor xxlJobExecutor(XxlJobConfig jobConfig) {
+    // 移除initMethod方法，否则会导致重复注册
+    @Bean
+    public XxlJobSpringExecutor xxlJobExecutor(XxlJobAutoConfig jobConfig) {
         log.info("[eip-xxl-job] executor init ...");
         XxlJobSpringExecutor xxlJobSpringExecutor = new XxlJobSpringExecutor();
         xxlJobSpringExecutor.setAdminAddresses(jobConfig.getAdminAddresses());

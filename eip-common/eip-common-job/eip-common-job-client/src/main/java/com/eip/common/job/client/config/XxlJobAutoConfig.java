@@ -1,4 +1,4 @@
-package com.eip.common.job.client;
+package com.eip.common.job.client.config;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,7 +14,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @Data
 @ConfigurationProperties(ConstantXxLJob.XXL_JOB)
-public class XxlJobConfig {
+public class XxlJobAutoConfig {
 
     private Boolean enabled = false;
 
@@ -34,5 +34,19 @@ public class XxlJobConfig {
     private String logPath = ConstantXxLJob.LOG_PATH;
 
     private int logRetentionDays = ConstantXxLJob.LOG_RETENTION_DAYS;
+
+    /*---------------------------自动注册执行器---------------------------*/
+    /**
+     * xxl-job admin 用户名
+     */
+    private String username;
+    /**
+     * xxl-job admin 密码
+     */
+    private String password;
+    /**
+     * 执行器名称
+     */
+    private String title;
 
 }

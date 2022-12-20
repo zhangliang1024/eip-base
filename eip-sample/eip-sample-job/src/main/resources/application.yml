@@ -1,0 +1,14 @@
+server:
+  port: 8909
+spring:
+  application:
+    name: eip-sample-job
+eip:
+  job:
+    enabled : true
+    port: 30006
+    adminAddresses: http://localhost:9006/job-admin
+    username: admin
+    password: 123456
+    title: eip-sample
+

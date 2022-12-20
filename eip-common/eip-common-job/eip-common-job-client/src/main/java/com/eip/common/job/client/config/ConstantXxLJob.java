@@ -1,4 +1,4 @@
-package com.eip.common.job.client;
+package com.eip.common.job.client.config;
 
 /**
  * ClassName: ConstantXxLJob
@@ -10,7 +10,7 @@ package com.eip.common.job.client;
  */
 public class ConstantXxLJob {
 
-    public static final String XXL_JOB = "eip.xxl";
+    public static final String XXL_JOB = "eip.job";
 
     public static final String ENABLED = "enabled";
 

@@ -64,7 +64,7 @@ pzy:
 
 [rsa-encrypt-body-spring-boot](https://github.com/ishuibo/rsa-encrypt-body-spring-boot)
 
-
+[SpringBoot 接口加密解密，新姿势](https://blog.csdn.net/qq_42914528/article/details/128168527)
 
 ### 四、对称加密&非对称加密
 

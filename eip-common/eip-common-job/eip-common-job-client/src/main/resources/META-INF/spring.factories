@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.eip.common.job.client.XxlJobAutoConfiguration
+  com.eip.common.job.client.config.XxlJobAutoConfiguration
