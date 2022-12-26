@@ -19,3 +19,7 @@ springcloud开发脚手架
 | eip-job  | 9004 |  |
 
 ## 参考文档
+
+[OpenSSL SSL_read: Connection was reset, errno 10054](https://blog.csdn.net/wjh1840226173/article/details/124355167)
+
+[Failed to connect to github.com port 443 after 21098 ms: Timed out](https://blog.csdn.net/weixin_52796927/article/details/121664227)
