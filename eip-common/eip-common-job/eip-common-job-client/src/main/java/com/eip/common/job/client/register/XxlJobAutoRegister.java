@@ -51,9 +51,9 @@ public class XxlJobAutoRegister implements ApplicationListener<ApplicationReadyE
             return;
         }
         if (jobGroupService.autoRegisterGroup()) {
-            log.info("mina-job auto register xxl-job group success!");
+            log.info("eip-xxl-job auto register xxl-job group success!");
         } else {
-            throw new RuntimeException("mina-job auto register xxl-job group filed");
+            throw new RuntimeException("eip-xxl-job auto register xxl-job group filed");
         }
     }
 

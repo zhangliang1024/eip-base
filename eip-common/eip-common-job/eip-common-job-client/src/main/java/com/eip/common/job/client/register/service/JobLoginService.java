@@ -45,7 +45,7 @@ public class JobLoginService {
                 .filter(cookie -> cookie.getName().equals(TOKEN_KEY))
                 .findFirst();
         if (!cookieOpt.isPresent()) {
-            throw new XxlJobAutoException("[AUTO-JOB] get xxl-job cookie error!");
+            throw new XxlJobAutoException("[eip-xxl-job] get xxl-job cookie error!");
         }
         String value = cookieOpt.get().getValue();
         loginCookie.put(TOKEN_KEY, value);
@@ -62,6 +62,6 @@ public class JobLoginService {
             }
             login();
         }
-        throw new RuntimeException("[AUTO-JOB] get xxl-job cookie error!");
+        throw new RuntimeException("[eip-xxl-job] get xxl-job cookie error!");
     }
 }

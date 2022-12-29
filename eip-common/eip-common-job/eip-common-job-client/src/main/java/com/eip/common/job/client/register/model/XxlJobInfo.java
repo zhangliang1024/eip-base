@@ -2,6 +2,7 @@ package com.eip.common.job.client.register.model;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Date;
  * @author xuxueli  2016-1-12 18:25:49
  */
 @Data
-public class XxlJobInfo {
+public class XxlJobInfo implements Serializable {
 
     private int id;                // 主键ID
 

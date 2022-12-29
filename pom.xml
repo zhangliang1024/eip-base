@@ -547,6 +547,7 @@
                 <directory>src/main/resources</directory>
                 <includes>
                     <include>META-INF/**</include>
+                    <include>doc/**</include>
                     <include>**/*.xml</include>
                     <include>**/*.key</include>
                     <include>**/*.jks</include>
