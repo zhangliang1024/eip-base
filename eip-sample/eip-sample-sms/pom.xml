@@ -3,29 +3,24 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>eip-common</artifactId>
+        <artifactId>eip-sample</artifactId>
         <groupId>com.eip.cloud</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>eip-common-sms</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>eip-common-sms-mail</module>
-        <module>eip-common-sms-phone</module>
-        <module>eip-common-sms-wxchart</module>
-    </modules>
+    <artifactId>eip-sample-sms</artifactId>
 
 
     <dependencies>
         <dependency>
             <groupId>com.eip.cloud</groupId>
-            <artifactId>eip-common-core</artifactId>
+            <artifactId>eip-common-sms-mail</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-mail</artifactId>
+            <groupId>com.eip.cloud</groupId>
+            <artifactId>eip-common-sms-wxchart</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

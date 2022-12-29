@@ -1,0 +1,28 @@
+server:
+  port: 6006
+spring:
+  application:
+    name: eip-sample-sms
+  mail:
+    enabled: true
+    host: smtp.qq.com
+    username: 4934xxxx@qq.com
+    password: tjnhxxxxxbici
+    default-encoding: UTF-8
+    properties:
+      from: 49347xxxx@qq.com
+  redis:
+    host: 192.168.100.xxx
+    port: 6379
+    password: 123456
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+eip:
+  mail:
+    enabled: true
+  wx-chart:
+    enabled: true
+    webhook: https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=bde3d879-078d-42a4-ae9c-xxxxxx

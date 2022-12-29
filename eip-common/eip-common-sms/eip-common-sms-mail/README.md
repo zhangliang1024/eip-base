@@ -4,7 +4,7 @@
 > - 依赖`Springboot`官方提供的`spring-boot-starter-mail`来实现
 
 ## 一、使用方式
-> pom.xml中加入依赖
+- 依赖
 ```xml
 <dependency>
     <groupId>com.jycloud.sms</groupId>
@@ -12,7 +12,7 @@
     <version>0.0.1-SNAPSHOT</version>
 </dependency>
 ```
-> application.yml 中配置邮件信息
+- 配置文件
 ```yaml
 spring:
   mail:
@@ -23,9 +23,15 @@ spring:
     password: 123456 #登陆密码（或授权码）
     properties:
       from: socks@163.com #邮件发信人（即真实邮箱）
-
+eip:
+  mail:
+    enabled: true
 ```
-> 核心逻辑
+## 二、核心逻辑
+> - `MailSendService` 封装发送邮件核心逻辑
+> - `MailRequest` 发送邮件请求参数
+> - `MultiFile` 发送携带附件邮件
+
 ```java
 public class MailSendService {
 
@@ -47,29 +53,6 @@ public class MailSendService {
 
 }
 ```
-> 代码实现
-```java
-@RestController
-@RequestMapping("sms/send")
-public class MailController{
-    @Autowired
-    private MailSendService mailService;
-
-    @GetMapping("mail")
-    public String sendMail()  {
-        MailRequest mail = new MailRequest();
-        mail.setFrom("134xxx@qq.com");
-        mail.to("xxx@126.com");
-        mail.setSubject("我是主题");
-        mail.setText("我是内容");
-        mail.setSentDate(new Date());
-        mailService.sendMail(dto);
-    }
-}    
-```
-
-## 二、实现思路
-> 用对象封装邮件的信息
 ```java
 /**
  * 邮件发送对象
@@ -88,29 +71,41 @@ public class MailRequest {
     private String status;//状态
     private String error;//报错信息
     private MultiFile[] multiFiles;//邮件附件
+    
 }
+```
+```java
 /**
  * 多媒体文件发送
  */
 public class MultiFile {
-    /**
-     * 文件名
-     */
-    private String fileName;
-    /**
-     * 文件字节数组
-     */
-    private byte[] input;
-    /**
-     * 文件类型
-     */
-    private String fileType;
+    
+    private String fileName; //文件名
+    private byte[] input; // 文件字节数组
+    private String fileType; //文件类型
+    
 }
 ```
-> 文件发送示例
+
+
+## 三、案例演示
 ```java
 @RestController
-public class MailSendController{
+@RequestMapping("sms/send")
+public class MailController{
+    @Autowired
+    private MailSendService mailService;
+
+    @GetMapping("mail")
+    public String sendMail()  {
+        MailRequest mail = new MailRequest();
+        mail.setFrom("134xxx@qq.com");
+        mail.to("xxx@126.com");
+        mail.setSubject("我是主题");
+        mail.setText("我是内容");
+        mail.setSentDate(new Date());
+        mailService.sendMail(dto);
+    }
 
     @PostMapping("email/file")
     public ApiResult sendEmailFile(MultipartFile[] files) {
@@ -122,8 +117,8 @@ public class MailSendController{
         text.append("<body><p>祝好！</p></body>");
         text.append("</html>");
         MailRequest mail = MailRequest.builder()
-                .from("493478910@qq.com")
-                .to("zhangliang1024_job@126.com")
+                .from("xxx@qq.com")
+                .to("xxxxb@126.com")
                 .subject("附件发送")
                 .text(text.toString())
                 .html(true)
@@ -145,9 +140,18 @@ public class MailSendController{
         ApiResult apiResult = mailSendService.sendMail(mail);
         return ApiResult.ok();
     }
-}
+}    
 ```
-> 预留落库接口
+- 发送结果
+
+<img src="http://tva1.sinaimg.cn/large/d1b93a20ly1h9khyf012uj20ps0etdj4.jpg"/>
+
+<img src="http://tva1.sinaimg.cn/large/d1b93a20ly1h9khzpkk16j20ty0e2n11.jpg"/>
+
+<img src="http://tva1.sinaimg.cn/large/d1b93a20ly1h9ki19mruhj20t90kgtcw.jpg"/>
+
+
+## 四、预留接口
 ```java
 /**
 * 保存邮件到数据库
@@ -182,7 +186,26 @@ public class CustomMailServiceImpl implements IMailService {
 }
 ```
 
-三、参考文档
+## 五、附件名称显示
+> 邮件发送携带附件时，若附件名称过长。则在发送成功后，附件名称会显示为：`ATT00002.xxx`等，原因为附件名过长，触发了校验导致进行了截取。
+- 解决方案
+> - 缩短文件名
+> - 干掉此校验
+
+```java
+@SpringBootApplication
+public class SmsWebApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(SmsWebApplication.class, args);
+        System.getProperties().setProperty("mail.mime.splitlongparameters", "false");
+    }
+
+}
+
+```
+## 六、参考文档
 
 * [springboot 发送带excel附件的邮件](https://blog.csdn.net/hlz5857475/article/details/90403100)
 * [SpringBoot 发送邮件和附件（实用版）](https://www.jianshu.com/p/5eb000544dd7)
+* [JavaMail发送带附件邮件时附件名变](https://blog.csdn.net/qq_39699665/article/details/122325704)

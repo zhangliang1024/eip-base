@@ -21,6 +21,7 @@
         <module>eip-sample-common</module>
         <module>eip-sample-eureka</module>
         <module>eip-sample-job</module>
+        <module>eip-sample-sms</module>
     </modules>
 
     <properties>
