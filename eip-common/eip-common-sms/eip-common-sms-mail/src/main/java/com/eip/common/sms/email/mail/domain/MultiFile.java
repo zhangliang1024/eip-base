@@ -21,5 +21,9 @@ public class MultiFile {
      * 文件字节数组
      */
     private byte[] input;
+    /**
+     * 文件类型
+     */
+    private String fileType;
 
 }
