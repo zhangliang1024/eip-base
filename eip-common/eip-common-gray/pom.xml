@@ -10,6 +10,21 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>eip-common-gray</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>eip-common-gray-core</module>
+        <module>eip-common-gray-eureka</module>
+        <module>eip-common-gray-nacos</module>
+        <module>eip-common-gray-feign-eureka</module>
+        <module>eip-common-gray-feign-nacos</module>
+        <module>eip-common-gray-zuul-eureka</module>
+        <module>eip-common-gray-zuul</module>
+        <module>eip-common-gray-zuul-nacos</module>
+        <module>eip-common-gray-gateway</module>
+        <module>eip-common-gray-gateway-eureka</module>
+        <module>eip-common-gray-gateway-nacos</module>
+    </modules>
 
 
 </project>
