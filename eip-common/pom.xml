@@ -32,6 +32,7 @@
         <module>eip-common-xss</module>
         <module>eip-common-oss</module>
         <module>eip-common-limit</module>
+        <module>eip-common-sensitive</module>
         <module>eip-common-datasource</module>
         <module>eip-common-job</module>
         <module>eip-common-banner</module>

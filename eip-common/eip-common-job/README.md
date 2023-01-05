@@ -1,12 +1,13 @@
+<meta name="referrer" content="no-referrer" />
 # 定时任务组件
 > 基于`xxl-job`的`2.3.1-SNAPSHOT`改造而来
 >
 > 任务调度中心登录：`admin\123456`，建立执行器和任务策略。 
 
 ## 一、添加依赖
-> - `pom.xml` 如果按标准建立项目则无需依赖。
+> `pom.xml` 如果按标准建立项目则无需依赖。
 ```xml
- <dependency>
+<dependency>
     <groupId>com.eip.cloud</groupId>
     <artifactId>eip-common-job-client</artifactId>
     <version>0.0.1-SNAPSHOT</version>
