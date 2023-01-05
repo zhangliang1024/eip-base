@@ -15,7 +15,6 @@ public class WxBotProperties {
      * 超时时间（默认5秒）
      */
     public static final int DEFAULT_TIMEOUT = 5 * 1000;
-
     /**
      * 是否启用
      */
@@ -23,12 +22,11 @@ public class WxBotProperties {
     /**
      * webhook地址
      */
-    private String webhook;
+    private String tokenId;
     /**
      * 超时时间
      */
     private int timeout = DEFAULT_TIMEOUT;
-
 
     public boolean isEnabled() {
         return enabled;
@@ -38,12 +36,12 @@ public class WxBotProperties {
         this.enabled = enabled;
     }
 
-    public String getWebhook() {
-        return webhook;
+    public String getTokenId() {
+        return tokenId;
     }
 
-    public void setWebhook(String webhook) {
-        this.webhook = webhook;
+    public void setTokenId(String tokenId) {
+        this.tokenId = tokenId;
     }
 
     public int getTimeout() {

@@ -1,5 +1,6 @@
 package com.eip.common.sms.wxchart.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -8,11 +9,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Base64;
 
-
+@Slf4j
 public class Base64Utils {
 
     /**
      * 本地图片转换
+     *
      * @param imgFile 图片本地路径
      */
     public static ImageBase64Md5 ImageToBase64ByLocal(String imgFile) {
@@ -33,6 +35,7 @@ public class Base64Utils {
 
     /**
      * 在线图片转换
+     *
      * @param imgURL 图片线上路径
      */
     public static ImageBase64Md5 ImageToBase64ByOnline(String imgURL) {
@@ -90,7 +93,7 @@ public class Base64Utils {
 
             return true;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.info("Base64ToImage error : {}", e.getMessage());
             return false;
         }
     }

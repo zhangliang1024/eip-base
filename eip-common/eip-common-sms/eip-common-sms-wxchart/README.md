@@ -17,7 +17,7 @@ eip:
     enabled: true
   wx-chart:
     enabled: true
-    webhook: https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=bde3d879-078d-42a4-ae9c-xxxxxxxx
+    tokenId: bde3d879-078d-42a4-ae9c-xxxxxxxx
 ```
 
 ## 二、核心逻辑
@@ -161,3 +161,4 @@ public class WxBotController {
 ## 三、参考文档
 
 [wechat-work-bot](https://github.com/lqccan/wechat-work-bot)
+[企业微信机器人官方文档](https://developer.work.weixin.qq.com/document/path/91770)

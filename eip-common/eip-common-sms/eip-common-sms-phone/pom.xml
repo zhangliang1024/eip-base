@@ -11,5 +11,25 @@
 
     <artifactId>eip-common-sms-phone</artifactId>
 
+    <properties>
+        <aliyun-java-sdk-core.version>4.6.3</aliyun-java-sdk-core.version>
+        <aliyun-dysms-sdk.version>2.2.1</aliyun-dysms-sdk.version>
+    </properties>
 
+    <dependencies>
+        <!-- 阿里云基础api -->
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-core</artifactId>
+            <version>${aliyun-java-sdk-core.version}</version>
+        </dependency>
+
+        <!-- 阿里云大鱼短信api -->
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+            <version>${aliyun-dysms-sdk.version}</version>
+        </dependency>
+
+    </dependencies>
 </project>

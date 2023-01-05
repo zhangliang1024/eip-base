@@ -9,6 +9,7 @@ import com.eip.common.sms.wxchart.common.MsgType;
 import com.eip.common.sms.wxchart.common.WxBotBuilder;
 import com.eip.common.sms.wxchart.config.WxBotProperties;
 import com.eip.common.sms.wxchart.model.*;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,15 +31,15 @@ public class WxBotSendService {
     /**
      * 企业微信群中获取的webhook地址
      */
-    private String webhook;
+    private String webhook = " https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=";
 
 
-    public WxBotSendService(String webhook) {
-        this.webhook = webhook;
+    public WxBotSendService(String tokenId) {
+        this.webhook = StringUtils.join(webhook, tokenId);
     }
 
-    public WxBotSendService(String webhook, int timeout) {
-        this.webhook = webhook;
+    public WxBotSendService(String tokenId, int timeout) {
+        this.webhook = StringUtils.join(webhook, tokenId);
         this.timeout = timeout;
     }
 

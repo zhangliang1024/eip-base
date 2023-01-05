@@ -22,6 +22,6 @@ public class WxBotAutoConfiguration {
 
     @Bean
     public WxBotSendService wxBotService(){
-        return new WxBotSendService(wxChartProperties.getWebhook());
+        return new WxBotSendService(wxChartProperties.getTokenId());
     }
 }
