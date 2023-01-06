@@ -1,0 +1,26 @@
+server:
+  port: 8092
+spring:
+
+#自定义属性
+CustomProperty:
+  serverName: xlt_api_gateway
+  cookie:
+    name:
+      userLogin: xlt_user_login_token
+      customerLogin: xlt_customer_login_token
+      openid: xlt_weixin_openid_token
+    domain:
+      default:
+  routeLancher: 0
+  permissionLancher: 0
+  swagger:
+    title: SERVER
+  needLogin: true
+  checkAcl: true
+  customerNeedLogin: true
+  ribbonLancherType: test
+logging:
+  level:
+    com:
+      ken: debug

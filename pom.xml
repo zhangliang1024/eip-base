@@ -555,6 +555,8 @@
                     <include>bootstrap.yml</include>
                     <include>bootstrap-${my-profile}.yml</include>
                     <include>application.yml</include>
+                    <include>application-dev1.yml</include>
+                    <include>application-dev2.yml</include>
                     <include>application-${my-profile}.yml</include>
                 </includes>
             </resource>

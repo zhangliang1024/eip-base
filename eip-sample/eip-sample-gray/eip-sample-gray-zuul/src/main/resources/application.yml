@@ -1,0 +1,43 @@
+spring:
+eureka:
+  instance:
+    metadata-map:
+      grayVersion: 0
+ribbon:
+  ConnectTimeout: 10000
+  ReadTimeout: 20000
+  SocketTimeout: 10000
+#对当前服务的重试次数
+  MaxAutoRetries: 1
+#切换相同Server的次数
+  MaxAutoRetriesNextServer: 1
+#刷新服务列表的时间间隔
+  ServerListRefreshInterval: 2000
+zuul:
+  #是否开启重试功能
+  retryable: true
+path-list:
+  filterPaths:
+    - filterName: service-A
+      fullPath: /service-a/**
+      rule: 1
+      flage: 1
+    - filterName: service-B
+      fullPath: /service-b/**
+      rule: 1
+      flage: 1
+    - filterName: service-C
+      fullPath: /service-c/**
+      rule: 1
+      flage: 1
+    - filterName: service-D
+      fullPath: /service-d/**
+      rule: 1
+      flage: 1
+#feign:
+#  hystrix:
+#    enable: true
+#  httpclient:
+#    enabled: true
+#  okhttp:
+#    enabled: false

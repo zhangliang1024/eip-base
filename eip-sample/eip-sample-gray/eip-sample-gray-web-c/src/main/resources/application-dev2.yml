@@ -1,0 +1,9 @@
+eureka:
+  instance:
+    metadata-map:
+      grayVersion: blue
+server:
+  port: 8086
+spring:
+  application:
+    name: service-c

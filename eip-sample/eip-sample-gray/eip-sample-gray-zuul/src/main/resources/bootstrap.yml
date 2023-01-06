@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: apigateway
+  profiles:
+    active: dev
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka/
+  instance:
+    prefer-ip-address: true
+zuul:
+  sensitive-headers:
+  ignored-patterns: /**/innerservice/**
+  ignored-services: config_server
+error:
+  path: /error

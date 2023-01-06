@@ -22,6 +22,7 @@
         <module>eip-sample-eureka</module>
         <module>eip-sample-job</module>
         <module>eip-sample-sms</module>
+        <module>eip-sample-gray</module>
     </modules>
 
     <properties>
