@@ -98,3 +98,6 @@ ribbon-lancher-map | {"service-a":"green","service-b":"blue","service-c":"green"
 > 可以观测到每次调用链与 `header` 中指定的一致
 
 
+
+## 四、示例代码
+[eip-sample-gray](https://github.com/zhangliang1024/eip-base/tree/master/eip-sample/eip-sample-gray)
