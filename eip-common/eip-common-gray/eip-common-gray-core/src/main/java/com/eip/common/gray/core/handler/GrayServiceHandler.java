@@ -13,16 +13,20 @@ import org.apache.commons.lang3.StringUtils;
  */
 public abstract class GrayServiceHandler {
 
+    public static final String GRAY_VERSION = "grayVersion";
+
     protected boolean handle(String serviceId) {
         String grayVersion = getGrayVersion(serviceId);
         if (StringUtils.isNotBlank(grayVersion)) {
             RibbonFilterContextHolder.clearCurrentContext();
-            RibbonFilterContextHolder.getCurrentContext().add("lancher", grayVersion);
+            RibbonFilterContextHolder.getCurrentContext().add(GRAY_VERSION, grayVersion);
             return true;
         }
         return false;
     }
 
-
+    /**
+     * 支持通过子类实现来扩展自定义访问策略
+     */
     protected abstract String getGrayVersion(String serviceId);
 }
