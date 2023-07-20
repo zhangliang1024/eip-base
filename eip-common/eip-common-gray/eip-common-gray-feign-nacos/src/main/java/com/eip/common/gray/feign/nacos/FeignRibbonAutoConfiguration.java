@@ -1,6 +1,6 @@
-package com.eip.common.gray.nacos;
+package com.eip.common.gray.feign.nacos;
 
-import com.eip.common.gray.nacos.aspect.FeignRibbonFilterAspect;
+import com.eip.common.gray.feign.nacos.aspect.FeignRibbonFilterAspect;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

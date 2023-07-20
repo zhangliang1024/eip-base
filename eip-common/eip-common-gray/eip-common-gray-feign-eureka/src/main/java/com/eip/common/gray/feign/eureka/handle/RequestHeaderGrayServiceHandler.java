@@ -1,4 +1,4 @@
-package com.eip.common.gray.nacos.handle;
+package com.eip.common.gray.feign.eureka.handle;
 
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;

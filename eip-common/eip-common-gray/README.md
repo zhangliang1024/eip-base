@@ -101,3 +101,52 @@ ribbon-lancher-map | {"service-a":"green","service-b":"blue","service-c":"green"
 
 ## 四、示例代码
 [eip-sample-gray](https://github.com/zhangliang1024/eip-base/tree/master/eip-sample/eip-sample-gray)
+
+## `Ribbon`负载均衡
+> `Ribbon`是一个内置软件`负载均衡器`的进程间通信(远程过程调用)库。`Ribbon`客户端组件提供一系列完善的配置项如连接超时，重试等。
+
+- `Ribbon`是一个经过云测试的客户端库。提供了以下特性
+> - Load balancing 负载均衡
+> - Fault tolerance 故障容错
+> - 异步和响应模型中支持多个协议(HTTP\TCP\UDP)
+> - 缓存和批处理
+
+- `Ribbon`核心组件
+
+组件名称|组件说明
+---|---
+ServerList | 响应客户端的特定服务的服务器列表
+ServerListFilter | 动态获得的具有所需特征的候选服务器列表的过滤器
+ServerListUpdate | 用于执行动态服务器列表更新
+IRule | 负载均衡策略，用于确定从服务器列表返回哪个服务器
+IPing | 客户端用于快速检查服务器当时是否处于活动状态（心跳检测）
+ILoadBalancer | 负载均衡器，负责负载均衡调度的管理
+IClientConfig | 定义Ribbon中管理配置的接口 
+
+<img src="https://pic8.58cdn.com.cn/nowater/webim/big/n_v265b6e9ad98f349ba87a7a92cf2ad989c.png" alt="企业微信截图_1673322150657.png" title="企业微信截图_1673322150657.png" />
+
+
+
+- 路由规则器：`PredicateBaseRule`
+<img src="https://pic5.58cdn.com.cn/nowater/webim/big/n_v27f26887760064792abe59597a625a426.png"/>
+```java
+// 抽象策略，继承自ClientConfigEnabledRoundRobinRule
+// 基于Predicate策略 Predicate是Google Guava Collection工具对集合进行过滤的条件接口
+public abstract class PredicateBasedRule extends ClientConfigEnabledRoundRobinRule {
+    public PredicateBasedRule() {
+    }
+
+    // 定义一个抽象函数来获取 AbstractServerPredicate
+    public abstract AbstractServerPredicate getPredicate();
+
+    public Server choose(Object key) {
+        ILoadBalancer lb = this.getLoadBalancer();
+        // 通过AbstractServerPredicate的chooseRoundRobinAfterFiltering函数来选出具体的服务实例
+        // AbstractServerPredicate的子类实现的Predicate逻辑来过滤一部分服务实例
+        // 然后在以线性轮询的方式从过滤后的实例中选出一个
+        Optional<Server> server = this.getPredicate().chooseRoundRobinAfterFiltering(lb.getAllServers(), key);
+        return server.isPresent() ? (Server)server.get() : null;
+    }
+}
+```
+<img src="https://pic6.58cdn.com.cn/nowater/webim/big/n_v24f6e800d2a7f41169e9336a0cf6942dd.png"/>

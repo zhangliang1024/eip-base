@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.eip.common.gray.nacos.FeignRibbonAutoConfiguration
+  com.eip.common.gray.feign.eureka.FeignRibbonAutoConfiguration

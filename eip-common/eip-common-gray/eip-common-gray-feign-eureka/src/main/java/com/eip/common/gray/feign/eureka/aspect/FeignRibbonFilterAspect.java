@@ -1,4 +1,4 @@
-package com.eip.common.gray.nacos.aspect;
+package com.eip.common.gray.feign.eureka.aspect;
 
 import com.eip.common.gray.core.handler.GrayServiceHandlerChain;
 import com.eip.common.gray.core.support.RibbonFilterContextHolder;
