@@ -21,5 +21,10 @@
             <groupId>com.eip.cloud</groupId>
             <artifactId>eip-common-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.eip.cloud</groupId>
+            <artifactId>eip-common-base-rocketmq</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>

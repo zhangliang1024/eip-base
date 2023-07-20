@@ -47,9 +47,9 @@
         <module>eip-common-gateway</module>
         <module>eip-common-captcha</module>
         <module>eip-common-log</module>
-        <module>eip-common-delay-rocketmq</module>
         <module>eip-common-apidoc-gateway</module>
         <module>eip-common-gateway-custom</module>
+        <module>eip-common-rocketmq</module>
     </modules>
 
 
