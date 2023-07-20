@@ -195,34 +195,43 @@
         <appender-ref ref="MYBATIS-FILE"/>
     </logger>
 
-
-    <!-- 异步输出 -->
+    <!-- 异步输出
+     1. discardingThreshold指定了日志事件达到一定数量时开始丢弃较旧的日志事件。如果将其设置为-1，表示不丢弃任何日志事件。
+     2. neverBlock表示当队列已满时，是否阻塞日志记录线程。将其设置为true表示不阻塞，如果队列已满，则日志记录线程会立即返回，并且后续的日志事件将被丢弃。
+     3. 因此，使用discardingThreshold为-1和neverBlock为true的组合配置，可以实现不丢弃任何日志事件，并且不阻塞日志记录线程的效果。
+    -->
     <appender name="ASYNC-ALL" class="ch.qos.logback.classic.AsyncAppender">
         <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
         <discardingThreshold>0</discardingThreshold>
         <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
         <queueSize>256</queueSize>
+        <!--表示当异步队列已满时，新的日志事件将不会阻塞，而是立即返回-->
+        <neverBlock>true</neverBlock>
         <!-- 添加附加的appender,最多只能添加一个 -->
         <appender-ref ref="ALL-FILE"/>
     </appender>
     <appender name="ASYNC-INFO" class="ch.qos.logback.classic.AsyncAppender">
-        <discardingThreshold>0</discardingThreshold>
-        <queueSize>256</queueSize>
+        <discardingThreshold>-1</discardingThreshold>
+        <queueSize>1000</queueSize>
+        <neverBlock>true</neverBlock>
         <appender-ref ref="INFO-FILE"/>
     </appender>
     <appender name="ASYNC-WARN" class="ch.qos.logback.classic.AsyncAppender">
-        <discardingThreshold>0</discardingThreshold>
-        <queueSize>256</queueSize>
+        <discardingThreshold>-1</discardingThreshold>
+        <queueSize>1000</queueSize>
+        <neverBlock>true</neverBlock>
         <appender-ref ref="WARN-FILE"/>
     </appender>
     <appender name="ASYNC-ERROR" class="ch.qos.logback.classic.AsyncAppender">
-        <discardingThreshold>0</discardingThreshold>
-        <queueSize>256</queueSize>
+        <discardingThreshold>-1</discardingThreshold>
+        <queueSize>1000</queueSize>
+        <neverBlock>true</neverBlock>
         <appender-ref ref="ERROR-FILE"/>
     </appender>
     <appender name="ASYNC-LOGSTASH" class="ch.qos.logback.classic.AsyncAppender">
-        <discardingThreshold>0</discardingThreshold>
-        <queueSize>256</queueSize>
+        <discardingThreshold>-1</discardingThreshold>
+        <queueSize>1000</queueSize>
+        <neverBlock>true</neverBlock>
         <appender-ref ref="LOGSTASH-FILE"/>
     </appender>
 

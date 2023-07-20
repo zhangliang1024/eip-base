@@ -22,6 +22,11 @@
             <artifactId>eip-common-sms-wxchart</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.eip.cloud</groupId>
+            <artifactId>eip-common-sms-phone</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>
