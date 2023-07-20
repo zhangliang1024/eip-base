@@ -1,0 +1,60 @@
+server:
+  port: 6002
+spring:
+  application:
+    name: service-b
+  cloud:
+    nacos:
+      discovery:
+        namespace: 50bf94a8-d492-4bd6-b403-e8fd9e620bef
+        server-addr: 140.246.154.99:8849
+      config:
+        namespace: 50bf94a8-d492-4bd6-b403-e8fd9e620bef
+        server-addr: 140.246.154.99:8849
+        file-extension: yaml
+        refresh-enabled: true
+    sentinel:
+      transport:
+        dashboard: localhost:8088
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+ribbon:
+  ReadTimeout: 5000
+  ConnectTimeout: 5000
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 1
+  OkToRetryOnAllOperations: false
+
+feign:
+  sentinel:
+    enabled: true
+  okhttp:
+    enabled: true
+  httpclient:
+    enabled: false
+    ok-http:
+      read-timeout: 60s
+    connection-timer-repeat: 3000
+  # 开启压缩
+  compression:
+    request:
+      enabled: true
+      min-request-size: 1024
+      mime-types: text/xml,application/xml,application/json
+    response:
+      enabled: true
+  client:
+    config:
+      default:
+        connect-timeout: 5000 # 连接超时时间
+        read-timeout: 5000    # 读取超时时间
+        logger-level: basic   # 日志级别
+#        retryer: com.jy.base.Retryer # 重试策略配置
+
+

@@ -1,0 +1,30 @@
+server:
+  port: 8000
+spring:
+  application:
+    name: serivce-m
+  cloud:
+    nacos:
+      discovery:
+        namespace: 50bf94a8-d492-4bd6-b403-e8fd9e620bef
+        server-addr: 140.246.154.99:8849
+      config:
+        namespace: 50bf94a8-d492-4bd6-b403-e8fd9e620bef
+        server-addr: 140.246.154.99:8849
+        file-extension: yaml
+        refresh-enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    routes:
+      enabled: true
+
+hystrix:
+  dashboard:
+    proxy-stream-allow-list: "*"

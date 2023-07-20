@@ -1,0 +1,58 @@
+server:
+  port: 6003
+spring:
+  application:
+    name: service-c
+  cloud:
+    nacos:
+      discovery:
+        namespace: 50bf94a8-d492-4bd6-b403-e8fd9e620bef
+        server-addr: 140.246.154.99:8849
+      config:
+        namespace: 50bf94a8-d492-4bd6-b403-e8fd9e620bef
+        server-addr: 140.246.154.99:8849
+        file-extension: yaml
+        refresh-enabled: true
+    sentinel:
+      transport:
+        dashboard: localhost:8088
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+# ribbon 超时重试配置，Feign超时配置会覆盖Ribbon配置
+ribbon:
+  ReadTimeout: 3000
+  ConnectTimeout: 3000
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 1
+  OkToRetryOnAllOperations: false
+
+feign:
+  hystrix:
+    enabled: true
+  httpclient:
+    enabled: true
+    connection-timer-repeat: 3000
+  # 开启压缩
+  compression:
+    request:
+      enabled: true
+      min-request-size: 1024
+      mime-types: text/xml,application/xml,application/json
+    response:
+      enabled: true
+  client:
+    config:
+      default:
+        connect-timeout: 500 # 连接超时时间  ★Feign配置超时逻辑后，Ribbon配置会失效 包括超时重试逻辑
+        read-timeout: 700   # 读取超时时间
+        logger-level: basic   # 日志级别 basic 只打印请求地址状态及耗时，需项目日志级别设置为Debug时才会打印。
+        retryer: com.eip.cloud.sc.feign.SampleRetryer # 重试策略配置
+
+

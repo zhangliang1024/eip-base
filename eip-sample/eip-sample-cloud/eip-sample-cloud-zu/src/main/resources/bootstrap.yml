@@ -1,0 +1,107 @@
+server:
+  port: 6000
+spring:
+  application:
+    name: zuul-service
+  cloud:
+    nacos:
+      discovery:
+        namespace: 50bf94a8-d492-4bd6-b403-e8fd9e620bef
+        server-addr: 140.246.154.99:8849
+      config:
+        namespace: 50bf94a8-d492-4bd6-b403-e8fd9e620bef
+        server-addr: 140.246.154.99:8849
+        file-extension: yaml
+        refresh-enabled: true
+    sentinel:
+      transport:
+        dashboard: localhost:8088
+zuul:
+  #如果路由方式是serviceId的方式，那么ribbon的生效，如果是url的方式，则zuul.host开头的生效
+  # TODO 这里配置不生效，因为底层还是基于serviceId方式
+  host:
+    connect-timeout-millis: 30000
+    socket-timeout-millis: 10000
+    max-total-connections: 200 # 每个服务的http客户端连接池最大连接，默认值是200 (隔离策略THREAD 时生效)
+    max-per-route-connections: 20  # 每个route可用的最大连接数，默认值是20 (隔离策略THREAD 时生效)
+  ribbon-isolation-strategy: thread # 可选：semaphore thread  默认是 semaphore
+  ribbon:
+    eager-load:
+      enabled: true
+  sensitive-headers: Cookie,Set-Cookie
+  routes:
+    service-a:
+      path: /sa/**
+      service-id: service-a
+    service-b:
+      path: /sb/**
+      service-id: service-b
+    service-c:
+      path: /sc/**
+      service-id: service-c
+# 默认超过1秒 即报 504 gateway timeout
+# 用的是service-id这种方式 配置超时时间
+ribbon:
+  #处理请求的超时时间，默认为1秒
+  ReadTimeout: 1000
+  #连接建立的超时时长，默认1秒
+  ConnectTimeout: 1000
+  #同一台实例的最大重试次数，但是不包括首次调用，默认为0次
+  MaxAutoRetries: 0
+  #重试负载均衡其他实例的最大重试次数，不包括首次调用，默认为1次
+  MaxAutoRetriesNextServer: 0
+  #是否对所有操作都重试，默认false
+  OkToRetryOnAllOperations: false
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    routes:
+      enabled: true
+
+feign:
+  hystrix:
+    enabled: true
+  httpclient:
+    enabled: true
+    connection-timer-repeat: 3000
+  # 开启压缩
+  compression:
+    request:
+      enabled: true
+      min-request-size: 1024
+      mime-types: text/xml,application/xml,application/json
+    response:
+      enabled: true
+  client:
+    config:
+      default:
+        connect-timeout: 5000 # 连接超时时间
+        read-timeout: 5000    # 读取超时时间
+        logger-level: basic   # 日志级别
+        retryer: com.jy.base.Retryer # 重试策略配置
+
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          #是否给方法执行设置超时时间，默认为true。一般我们不要改。
+          enabled: true
+        isolation:
+          #配置请求隔离的方式，这里是默认的线程池方式。还有一种信号量的方式semaphore，使用比较少。
+          strategy: THREAD
+          thread:
+            #方式执行的超时时间，默认为1000毫秒，在实际场景中需要根据情况设置
+            timeoutInMilliseconds: 2000
+            #发生超时时是否中断方法的执行，默认值为true。不要改。
+            interruptOnTimeout: true
+            #是否在方法执行被取消时中断方法，默认值为false。没有实际意义，默认就好！
+            interruptOnCancel: false
+
